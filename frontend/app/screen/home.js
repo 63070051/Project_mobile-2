@@ -1,5 +1,18 @@
 import { StyleSheet, Text, View , Image, TouchableOpacity} from "react-native";
 import * as React from "react";
+import axios from 'axios';
+
+
+const testget = () => {
+  axios.get(`http://localhost:3000/getSubject`)
+  .then((response) => {
+    console.log(response.data);
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+}
+
 function home() {
   return (
     <View style={styles.container}>
@@ -11,7 +24,7 @@ function home() {
         <Text style={styles.textcenter}>Online Structural Validate-based System © v1.1</Text>
       </View>
       <View style={styles.buttoncontainer}>
-        <TouchableOpacity style={styles.enterclassbutton}>
+        <TouchableOpacity onPress={testget} style={styles.enterclassbutton}>
           <Text style={styles.textbutton}>เข้าสู่คอร์สเรียน</Text>
         </TouchableOpacity>
       </View>
