@@ -15,9 +15,13 @@ app.use(bodyParser.urlencoded({ extended: false}));
 // Config Router
 // routers
 const subjectRouter = require('./routes/subject')
+const registerRouter = require('./routes/register')
+const userRouter = require('./routes/user')
 
 
 app.use(subjectRouter);
+app.use(registerRouter);
+app.use(userRouter);
 
 
 app.listen(3000, () => {
