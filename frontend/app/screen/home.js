@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View , Image, TouchableOpacity} from "react-native";
+import { StyleSheet, Text, View , Image, TouchableOpacity, ScrollView} from "react-native";
 import * as React from "react";
 import axios from 'axios';
 
@@ -15,7 +15,9 @@ const testget = () => {
 
 function home() {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <View style={styles.navbar}>
+      </View>
       <View style={styles.logocontainer}>
         <Image style={styles.logo} source={require('../assets/logo.png')}/>
       </View>
@@ -61,30 +63,30 @@ function home() {
         <Text style={{fontSize : 13, textAlign : "center"}}>Faculty of Information Technology, King Mongkut's Institute of Technology Ladkrabang</Text>
         <Text style={{fontSize : 13, textAlign : "center"}}>1 Chalongkrung Road Bangkok Thailand 10520</Text>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
     container :{
-      backgroundColor : "#FFFEFE",
+      backgroundColor : "#FFFEFE"
     },
     logo:{
         width : 180,
         height : 180,
     },
     logocontainer:{
-        flex : 1,
+        // flex : 1,
         alignItems : "center"
     },
     textcenter: {
       textAlign : "center",
-      marginTop : 20,
+      // marginTop : 20,
       fontSize : 18 
     },
     textcontainer:{
       paddingLeft : 5,
       paddingRight : 5, 
-      marginTop : 40
+      // marginTop : 40
     },
     enterclassbutton:{
       paddingTop : 8,
@@ -100,9 +102,10 @@ const styles = StyleSheet.create({
       color : "#2F845B"
     },
     buttoncontainer :{
-      flex : 1,
+      // flex : 1,
       alignItems : "center",
-      marginTop : 20
+      marginTop : 20,
+      marginBottom : 20
     },
     userlogo:{
       width : 60,
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
       textAlign : "center"
     },
     containercenter : {
-      flex : 1,
+      // flex : 1,
       alignItems : "center",
       padding : 10
     },
