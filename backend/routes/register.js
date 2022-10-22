@@ -12,7 +12,7 @@ let md5 = require('md5');
 
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, "./static/uploads");
+        callback(null, "./static/profiles");
     },
     filename: function (req, file, callback) {
         callback(
@@ -26,12 +26,13 @@ var storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-router.post("/register/account", async function (req, res, next) {
+router.post("/register/account", upload.single('profile'), async function (req, res, next) {
     const conn = await pool.getConnection();
     await conn.beginTransaction();
 
     try{
-        let profile = req.files
+        let profile = req.file;
+        let path_profile = profile.path.substring(6);
         let email = req.body.email;
         let password = req.body.password;
         let tokens = md5(password);
@@ -40,7 +41,7 @@ router.post("/register/account", async function (req, res, next) {
         }
         const [user, field] = await conn.query(
           "INSERT INTO user(email, tokens, img) VALUES(?, ?, ?)",
-          [email, tokens, profile]  
+          [email, tokens, path_profile]  
         );
         await conn.commit();
         return res.json("success");
