@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View , Image, TouchableOpacity, ScrollView} from "react-native";
 import * as React from "react";
 import axios from 'axios';
+import { Button } from "react-native";
 
 
 const testget = () => {
@@ -21,13 +22,10 @@ function home() {
       <View style={styles.logocontainer}>
         <Image style={styles.logo} source={require('../assets/logo.png')}/>
       </View>
-      <View style={styles.textcontainer}>
-        <Text style={styles.textcenter}>J:LEARN</Text>
-        <Text style={styles.textcenter}>Online Structural Validate-based System © v1.1</Text>
-      </View>
+
       <View style={styles.buttoncontainer}>
         <TouchableOpacity onPress={testget} style={styles.enterclassbutton}>
-          <Text style={styles.textbutton}>เข้าสู่คอร์สเรียน</Text>
+          <Text style={styles.textbutton}>เข้าสู่ระบบ</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.card}>
@@ -68,11 +66,12 @@ function home() {
 }
 const styles = StyleSheet.create({
     container :{
-      backgroundColor : "#FFFEFE"
+      backgroundColor : "#FFF8EA"
     },
     logo:{
-        width : 180,
-        height : 180,
+        width : 500,
+        height : 300,
+        marginTop : 20,
     },
     logocontainer:{
         // flex : 1,
@@ -93,13 +92,24 @@ const styles = StyleSheet.create({
       paddingBottom : 8,
       paddingLeft : 12,
       paddingRight : 12,
-      borderColor : "#2F845B",
+      borderColor : "#FF9A00",
       borderWidth : 2,
-      borderRadius : 5
+      borderRadius : 5,
+      backgroundColor: "#FFFFFF",
+      width: 150,
+      height: 50,
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 6,
+      },
+      shadowOpacity: 0.39,
+      shadowRadius: 8.30,
     },
     textbutton:{
       textAlign : "center",
-      color : "#2F845B"
+      fontSize : 20,
+
     },
     buttoncontainer :{
       // flex : 1,
