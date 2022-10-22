@@ -17,11 +17,13 @@ app.use(bodyParser.urlencoded({ extended: false}));
 const subjectRouter = require('./routes/subject')
 const registerRouter = require('./routes/register')
 const userRouter = require('./routes/user')
+const adminRouter = require('./routes/admin')
 
 
 app.use(subjectRouter);
 app.use(registerRouter);
 app.use(userRouter);
+app.use(adminRouter);
 
 
 app.listen(3000, () => {
