@@ -2,9 +2,10 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import Home from "./app/screen/home";
 import Login from "./app/screen/login";
+import ManageRole from "./app/screen/ManageRole";
 export default function App() {
   return (
-    <Login />
+    <ManageRole />
   );
 }
 
