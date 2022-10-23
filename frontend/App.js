@@ -3,9 +3,10 @@ import { StyleSheet, Text, View } from "react-native";
 import Home from "./app/screen/home";
 import Login from "./app/screen/login";
 import ManageRole from "./app/screen/ManageRole";
+import Register from "./app/screen/register";
 export default function App() {
   return (
-    <ManageRole />
+    <Register />
   );
 }
 
