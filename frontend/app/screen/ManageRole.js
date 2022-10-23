@@ -7,24 +7,36 @@ import {
   ScrollView,
   TextInput,
 } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { FlatList} from "react-native";
+import { FlatList } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 
 const role = ["Student", "Teacher"];
+
+
+const changeDataBaseRole = (id, role) => {
+  axios.post('http://localhost:3000/updateRole', {
+    id : id,
+    role : role
+  }).then((response) =>{
+    console.log(response.data)
+  }).catch((err) =>{
+    console.log(err)
+  })
+}
 
 const MapData = (props) => {
   return (
     <View style={styles.inside}>
       <Text style={styles.text}>{props.email}</Text>
-
       <SelectDropdown
         data={role}
         dropdownStyle={styles.dropdown}
+        defaultButtonText={props.role}
         buttonStyle={styles.button}
         onSelect={(selectedItem, index) => {
-          console.log(selectedItem, index);
+          {changeDataBaseRole(props.id, selectedItem)};
         }}
         buttonTextAfterSelection={(selectedItem, index) => {
           // text represented after item is selected
@@ -39,53 +51,62 @@ const MapData = (props) => {
       />
     </View>
   );
-}
+};
 
-async function Box(){
-  await axios.get('http://localhost:3000/getUser')
-  .then((response) =>{
-    // setAllUser(response.data);
-    return response.data;
-  })
-  .catch((err) =>{
-    console.log(err);
-  })
-}
+
 
 function manageRole() {
   const [search, setSearch] = useState("");
-  let allUser = Box();
-  
+  const [allUser, setAllUser] = useState([]);
+  const [backUp, setBackUp] = useState([]);
+
+
+
+  function Search(text) {
+    const filteredData = backUp.filter(
+      (data) => data.email.toUpperCase().indexOf(text.toUpperCase()) + 1
+    );
+    setAllUser(filteredData);
+  }
+
+
+
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/getUser")
+      .then((response) => {
+        // setAllUser(response.data);
+        setAllUser(response.data);
+        setBackUp(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const renderItem = (itemData) => {
-    console.log(itemData)
-    // return (
-    //   <MapData
-    //     title={itemData.item.title}
-    //     duration={itemData.item.duration}
-    //     complexity={itemData.item.complexity}
-    //     affordability={itemData.item.affordability}
-    //     image={itemData.item.imageUrl}
-    //     onSelectMeal={() => {
-    //       props.route.navigation.navigate("S3", {data : itemData , props : props.route})
-    //     }}
-    //   />
-    // );
+    // console.log(itemData);
+    return (
+      <MapData data={itemData}/>
+    );
   };
-  console.log(allUser)
   return (
-    <ScrollView nestedScrollEnabled={true} horizontal={true} style={styles.scrollview}>
+    <ScrollView
+      nestedScrollEnabled={true}
+      horizontal={true}
+      style={styles.scrollview}
+    >
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.text_header}>Manage Role</Text>
-          <TextInput style={styles.textInput} placeholder="Search" />
+          <TextInput style={styles.textInput} placeholder="Search" onChangeText={(text) => {Search(text)}}/>
         </View>
         <View style={styles.box}>
-          {/* <FlatList data={allUser} renderItems={renderItem} style={{ width: "100%" }}/> */}
-          {/* {allUser.map((value) =>{
-            console.log(value.email);
-          })} */}
-          <MapData email={allUser[0]}/>
+          {/* <FlatList data={allUser} renderItems={MapData} style={{ width: "100%" }}/> */}
+          {allUser.map((value) => {
+            return <MapData email={value.email} role={value.role} id={value.user_id}/>;
+          })}
         </View>
       </View>
     </ScrollView>
