@@ -2,8 +2,7 @@ import { StyleSheet, Text, View , Image, TouchableOpacity, ScrollView, TextInput
 import * as React from "react";
 import axios from 'axios';
 import {AntDesign, Zocial, Ionicons} from "@expo/vector-icons";
-import { launchImageLibrary } from 'react-native-image-picker';
-
+import {launchImageLibrary} from 'react-native-image-picker';
 
 function register() {
     const [email, setEmail] = React.useState("")
@@ -13,6 +12,7 @@ function register() {
     const [checkpass, setCheckpass] = React.useState(false)
     const checkHandle = () => {
         console.log(email.indexOf('@it.kmitl.ac.th'));
+        setCheckpass(false)
         if(!email){
             alert('Please Enter Email');
         }else if(email.indexOf('@it.kmitl.ac.th') == -1){
@@ -23,6 +23,7 @@ function register() {
             alert('Please Enter Confirm Password')
         }else if(password != confirmPass){
             alert('Password not match')
+            setCheckpass(true)
         }else if(!key){
             alert('Please Enter Secret Key')
         }
@@ -30,6 +31,7 @@ function register() {
 
     const [photo, setPhoto] = React.useState(null);
     const handleChoosePhoto = () => {
+        const option = {};
         launchImageLibrary({ noData: true }, (response) => {
             console.log(response);
             if (response) {
@@ -132,7 +134,6 @@ const styles = StyleSheet.create({
     inputcontainer:{
         alignItems: "center",
         marginBottom: 20,
-        flexDirection: "row",
         justifyContent: "center"
     },
     input:{
