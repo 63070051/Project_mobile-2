@@ -5,7 +5,7 @@ import {AntDesign, Zocial, Ionicons} from "@expo/vector-icons";
 import { launchImageLibrary } from 'react-native-image-picker';
 
 
-function register() {
+function Register() {
     const [email, setEmail] = React.useState("")
     const [password, setPassword] = React.useState("")
     const [confirmPass, setConfirmpass] = React.useState("")
@@ -171,4 +171,4 @@ const styles = StyleSheet.create({
         marginBottom: 30
     }
 });
-export default register;
+export default Register;

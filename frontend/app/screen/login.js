@@ -15,7 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const test = async () => {
   try {
-    const value = await AsyncStorage.getItem("login");
+    const value = await AsyncStorage.getItem("@login");
     if (value !== null) {
       // We have data!!
       console.log(value);
@@ -28,7 +28,7 @@ const test = async () => {
 
 
 
-function login(props) {
+function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
@@ -44,7 +44,7 @@ function login(props) {
     .then((response) => {
       if(response.data != "error login"){
         setError(false);
-        AsyncStorage.setItem("login" , JSON.stringify(response.data));
+        AsyncStorage.setItem("@login" , JSON.stringify(response.data));
       }
       else{
         setError(true);
@@ -96,6 +96,11 @@ function login(props) {
           <Text>Sign up</Text>
         </View>
       </TouchableHighlight>
+      <TouchableHighlight onPress={() => {test()}}>
+        <View style={styles.button}>
+          <Text>test</Text>
+        </View>
+      </TouchableHighlight>
       <View style={styles.countContainer}>
         <Text style={styles.countText}></Text>
       </View>
@@ -145,4 +150,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-export default login;
+export default Login;
