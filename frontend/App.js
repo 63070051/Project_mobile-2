@@ -6,7 +6,7 @@ import ManageRole from "./app/screen/ManageRole";
 import Register from "./app/screen/register";
 export default function App() {
   return (
-    <Register />
+    <Login />
   );
 }
 
