@@ -3,7 +3,20 @@ import * as React from "react";
 import axios from 'axios';
 import {AntDesign, Zocial, Ionicons} from "@expo/vector-icons";
 import { launchImageLibrary } from 'react-native-image-picker';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+const test = async () => {
+    try {
+      const value = await AsyncStorage.getItem("@login");
+      if (value !== null) {
+        // We have data!!
+        console.log(value);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
 
 function Register() {
     const [email, setEmail] = React.useState("")
@@ -102,7 +115,7 @@ function Register() {
                 {checkpass ? <Text style={{color : "red"}}>Password not match</Text> : null}
             </View>
             <View style={styles.inputcontainer}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => {test()}}>
                     <Text style={{color: "white"}}>Get Secret Key</Text>
                 </TouchableOpacity>
             </View>

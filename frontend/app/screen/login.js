@@ -18,7 +18,7 @@ const test = async () => {
     const value = await AsyncStorage.getItem("@login");
     if (value !== null) {
       // We have data!!
-      console.log(value);
+      // console.log(value);
     }
   } catch (error) {
     console.log(error);
@@ -45,6 +45,7 @@ function Login(props) {
       if(response.data != "error login"){
         setError(false);
         AsyncStorage.setItem("@login" , JSON.stringify(response.data));
+        {props.navigation.replace("Home")}
       }
       else{
         setError(true);
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   input: {
-    width: 350,
+    width: 330,
     borderWidth: 1,
     margin: 10,
     padding: 10,
