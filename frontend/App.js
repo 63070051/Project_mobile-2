@@ -4,9 +4,10 @@ import Home from "./app/screen/home";
 import Login from "./app/screen/login";
 import ManageRole from "./app/screen/ManageRole";
 import Register from "./app/screen/register";
+import MyNavigator from "./app/navigator/navigation";
 export default function App() {
   return (
-    <Login />
+    <MyNavigator />
   );
 }
 

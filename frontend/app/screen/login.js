@@ -28,7 +28,7 @@ const test = async () => {
 
 
 
-function login() {
+function login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
@@ -91,7 +91,7 @@ function login() {
           <Text>Sign in</Text>
         </View>
       </TouchableHighlight>
-      <TouchableHighlight onPress={() => {test()}}>
+      <TouchableHighlight onPress={() => {props.navigation.navigate("register")}}>
         <View style={styles.button}>
           <Text>Sign up</Text>
         </View>
