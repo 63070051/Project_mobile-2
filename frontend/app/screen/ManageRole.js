@@ -7,68 +7,107 @@ import {
   ScrollView,
   TextInput,
 } from "react-native";
-import * as React from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { Button } from "react-native";
+import { FlatList } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 
 const role = ["Student", "Teacher"];
 
-function manageRole() {
+
+const changeDataBaseRole = (id, role) => {
+  axios.post('http://localhost:3000/updateRole', {
+    id : id,
+    role : role
+  }).then((response) =>{
+    console.log(response.data)
+  }).catch((err) =>{
+    console.log(err)
+  })
+}
+
+const MapData = (props) => {
   return (
-    <ScrollView style={styles.scrollview}>
+    <View style={styles.inside}>
+      <Text style={styles.text}>{props.email}</Text>
+      <SelectDropdown
+        data={role}
+        dropdownStyle={styles.dropdown}
+        defaultButtonText={props.role}
+        buttonStyle={styles.button}
+        onSelect={(selectedItem, index) => {
+          {changeDataBaseRole(props.id, selectedItem)};
+        }}
+        buttonTextAfterSelection={(selectedItem, index) => {
+          // text represented after item is selected
+          // if data array is an array of objects then return selectedItem.property to render after item is selected
+          return selectedItem;
+        }}
+        rowTextForSelection={(item, index) => {
+          // text represented for each item in dropdown
+          // if data array is an array of objects then return item.property to represent item in dropdown
+          return item;
+        }}
+      />
+    </View>
+  );
+};
+
+
+
+function manageRole() {
+  const [search, setSearch] = useState("");
+  const [allUser, setAllUser] = useState([]);
+  const [backUp, setBackUp] = useState([]);
+
+
+
+  function Search(text) {
+    const filteredData = backUp.filter(
+      (data) => data.email.toUpperCase().indexOf(text.toUpperCase()) + 1
+    );
+    setAllUser(filteredData);
+  }
+
+
+
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/getUser")
+      .then((response) => {
+        // setAllUser(response.data);
+        setAllUser(response.data);
+        setBackUp(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const renderItem = (itemData) => {
+    // console.log(itemData);
+    return (
+      <MapData data={itemData}/>
+    );
+  };
+  return (
+    <ScrollView
+      nestedScrollEnabled={true}
+      horizontal={true}
+      style={styles.scrollview}
+    >
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.text_header}>Manage Role</Text>
-          <TextInput style={styles.textInput} placeholder="Search" />
+          <TextInput style={styles.textInput} placeholder="Search" onChangeText={(text) => {Search(text)}}/>
         </View>
         <View style={styles.box}>
-          <View style={styles.inside}>
-            <Text style={styles.text}>63070153@it.kmitl.ac.th</Text>
-
-            <SelectDropdown
-              data={role}
-              dropdownStyle={styles.dropdown}
-              buttonStyle={styles.button}
-              onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index);
-              }}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                // text represented after item is selected
-                // if data array is an array of objects then return selectedItem.property to render after item is selected
-                return selectedItem;
-              }}
-              rowTextForSelection={(item, index) => {
-                // text represented for each item in dropdown
-                // if data array is an array of objects then return item.property to represent item in dropdown
-                return item;
-              }}
-            />
-          </View>
-          <View style={styles.inside}>
-            <Text style={styles.text}>E-mail</Text>
-
-            <SelectDropdown
-              data={role}
-              dropdownStyle={styles.dropdown}
-              buttonStyle={styles.button}
-              onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index);
-              }}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                // text represented after item is selected
-                // if data array is an array of objects then return selectedItem.property to render after item is selected
-                return selectedItem;
-              }}
-              rowTextForSelection={(item, index) => {
-                // text represented for each item in dropdown
-                // if data array is an array of objects then return item.property to represent item in dropdown
-                return item;
-              }}
-            />
-          </View>
+          {/* <FlatList data={allUser} renderItems={MapData} style={{ width: "100%" }}/> */}
+          {allUser.map((value) => {
+            return <MapData email={value.email} role={value.role} id={value.user_id}/>;
+          })}
         </View>
-        
       </View>
     </ScrollView>
   );
@@ -120,7 +159,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginTop: 20,
-
   },
   dropdown: {
     width: 200,
@@ -144,10 +182,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
     backgroundColor: "#A8E890",
   },
-    inside: {
+  inside: {
     flexDirection: "row",
     marginBottom: 10,
-    
-    },
+  },
 });
 export default manageRole;
