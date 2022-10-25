@@ -26,3 +26,5 @@ function HomeNav(){
         </HomeNavigator.Navigator>
     );
 }
+
+export default HomeNav;

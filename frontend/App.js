@@ -3,9 +3,10 @@ import { StyleSheet, Text, View } from "react-native";
 import Home from "./app/screen/Home";
 import ManageRole from "./app/screen/ManageRole";
 import Course from "./app/screen/Course";
+import navbar from "./app/component/navbar";
 export default function App() {
   return (
-    <Course/>
+    <ManageRole/>
   );
 }
 
