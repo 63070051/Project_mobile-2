@@ -8,15 +8,7 @@ import { jsx } from "@emotion/react";
 
 
 
-const testget = () => {
-  axios.get(`http://localhost:3000/getSubject`)
-  .then((response) => {
-    console.log(response.data);
-  })
-  .catch((err) => {
-    console.log(err);
-  })
-}
+
 
 
 
@@ -34,7 +26,7 @@ function Home(props) {
   }, [])
 
   // // let user = await AsyncStorage.getItem("@login");
-  console.log(user);
+  // console.log(user);
   return (
     <ScrollView style={styles.container}>
       <View style={styles.navbar}>

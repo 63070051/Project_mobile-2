@@ -3,29 +3,86 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons, Entypo, FontAwesome } from "@expo/vector-icons";
 import Login from "../screen/login";
 import Home from "../screen/home";
 import Register from "../screen/register";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Profile from "../screen/Profile";
+import Chat from "../screen/Chat";
+import Course from "../screen/Course";
 
 const LoginNavigator = createNativeStackNavigator();
 // const FavNavigator = createNativeStackNavigator();
 // const Drawer = createDrawerNavigator();
-// const MealsFavTabNavigator = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 // const FilterNavigator = createNativeStackNavigator();
 
+function TabNavigater() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => {
+            return <Ionicons name="home" size={size} color="black" />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Course"
+        component={Course}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => {
+            return <Entypo name="open-book" size={size} color="black" />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Chat"
+        component={Chat}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => {
+            return <Ionicons name="chatbubble" size={size} color="black" />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => {
+            return <FontAwesome name="user-circle" size={size} color="black" />;
+          },
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
 
 function LoginStackNavigator() {
   return (
     <LoginNavigator.Navigator>
-      <LoginNavigator.Screen name="login" component={Login} options={{
-        title : "Login"
-      }}/>
-      <LoginNavigator.Screen name="register" component={Register} options={{
-        title : "Register"
-      }}/>
-      <LoginNavigator.Screen name="Home" component={Home} options={{
+      <LoginNavigator.Screen
+        name="login"
+        component={Login}
+        options={{
+          title: "Login",
+        }}
+      />
+      <LoginNavigator.Screen
+        name="register"
+        component={Register}
+        options={{
+          title: "Register",
+        }}
+      />
+      <LoginNavigator.Screen name="TabHome" component={TabNavigater} options={{
         headerShown : false
       }}/>
     </LoginNavigator.Navigator>
@@ -34,7 +91,6 @@ function LoginStackNavigator() {
 function MyNavigator() {
   const [login, setLogin] = useState(false);
 
-
   const checkUser = async () => {
     try {
       const value = await AsyncStorage.getItem("@login");
@@ -42,8 +98,7 @@ function MyNavigator() {
         // We have data!!
         // console.log(value);
         setLogin(true);
-      }
-      else{
+      } else {
         setLogin(false);
       }
     } catch (error) {
@@ -51,18 +106,15 @@ function MyNavigator() {
     }
   };
 
-  let page_componet = (<LoginStackNavigator />);
-  {checkUser()}
-  // console.log(AsyncStorage.getItem("@login"))
-  if(login){
-    page_componet = (<Home/>);
+  let page_componet = <LoginStackNavigator />;
+  {
+    checkUser();
   }
-  return (
-    <NavigationContainer>
-      {page_componet}
-    </NavigationContainer>
-  );
+  // console.log(AsyncStorage.getItem("@login"))
+  if (login) {
+    page_componet = <TabNavigater />;
+  }
+  return <NavigationContainer>{page_componet}</NavigationContainer>;
 }
-
 
 export default MyNavigator;

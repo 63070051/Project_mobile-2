@@ -13,17 +13,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
-const test = async () => {
-  try {
-    const value = await AsyncStorage.getItem("@login");
-    if (value !== null) {
-      // We have data!!
-      // console.log(value);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 
 
@@ -45,7 +34,7 @@ function Login(props) {
       if(response.data != "error login"){
         setError(false);
         AsyncStorage.setItem("@login" , JSON.stringify(response.data));
-        {props.navigation.replace("Home")}
+        {props.navigation.replace("TabHome")}
       }
       else{
         setError(true);
@@ -78,7 +67,8 @@ function Login(props) {
       <View style={styles.TextInput}>
         <TextInput
           style={styles.input}
-          placeholder="Password"
+          placeholder="*************"
+          secureTextEntry={true}
           onChangeText={(password) => setPassword(password)}
         />
       </View>
@@ -95,11 +85,6 @@ function Login(props) {
       <TouchableHighlight onPress={() => {props.navigation.navigate("register")}}>
         <View style={styles.button}>
           <Text>Sign up</Text>
-        </View>
-      </TouchableHighlight>
-      <TouchableHighlight onPress={() => {test()}}>
-        <View style={styles.button}>
-          <Text>test</Text>
         </View>
       </TouchableHighlight>
       <View style={styles.countContainer}>
