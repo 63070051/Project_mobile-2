@@ -34,7 +34,7 @@ function Login(props) {
       if(response.data != "error login"){
         setError(false);
         AsyncStorage.setItem("@login" , JSON.stringify(response.data));
-        {props.navigation.replace("TabHome")}
+        {props.navigation.replace("TabHome", {user : response.data})}
       }
       else{
         setError(true);
