@@ -3,7 +3,7 @@ import {
   Text,
   View,
   Image,
-  TouchableHighlight,
+  TouchableOpacity,
   ScrollView,
   TextInput,
 } from "react-native";
@@ -55,38 +55,37 @@ function Login(props) {
       <View style={styles.logocontainer}>
         <Image style={styles.logo} source={require("../assets/logo.png")} />
       </View>
-      <Text style={styles.text}>Email</Text>
-      <View style={styles.TextInput}>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          onChangeText={(email) => setEmail(email)}
-        />
-      </View>
-      <Text style={styles.text}>Password</Text>
-      <View style={styles.TextInput}>
-        <TextInput
-          style={styles.input}
-          placeholder="*************"
-          secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
-        />
-      </View>
-        <View>{TextError}</View>
-      <TouchableHighlight
-        onPress={() => {
-          SignIn();
-        }}
-      >
-        <View style={styles.button}>
-          <Text>Sign in</Text>
+      <View style={styles.box}>
+        <View style={styles.TextInput}>
+          <Text style={styles.text}>Email</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            onChangeText={(email) => setEmail(email)}
+          />
         </View>
-      </TouchableHighlight>
-      <TouchableHighlight onPress={() => {props.navigation.navigate("register")}}>
-        <View style={styles.button}>
-          <Text>Sign up</Text>
+        <View style={styles.TextInput}>
+          <Text style={styles.text}>Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="*************"
+            secureTextEntry={true}
+            onChangeText={(password) => setPassword(password)}
+          />
         </View>
-      </TouchableHighlight>
+          <View>{TextError}</View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            SignIn();
+          }}
+        >
+          <Text style={{color: "white"}}>Sign in</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => {props.navigation.navigate("register")}}>
+          <Text style={{color: "white"}}>Sign up</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.countContainer}>
         <Text style={styles.countText}></Text>
       </View>
@@ -95,34 +94,53 @@ function Login(props) {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFF8EA",
-    paddingTop: 70,
-    paddingLeft: 40,
-    paddingRight: 40,
+    backgroundColor : "#FFF8EA",
+    paddingTop: 60,
   },
   text: {
     fontSize: 20,
   },
   TextInput: {
-    alignItems: "center",
+    justifyContent: "flex-start",
   },
   input: {
     width: 330,
-    borderWidth: 1,
-    margin: 10,
+    borderRadius: 10,
     padding: 10,
-    borderRadius: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+        width: -2,
+        height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
+    backgroundColor: "white",
+    marginVertical: 9
   },
   button: {
-    alignItems: "center",
+    width: 330,
     backgroundColor: "#FF9A00",
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5,
+    alignItems: "center",
+    padding: 13,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+        width: -2,
+        height: 4,
+    },
+    shadowOpacity: 2,
+    shadowRadius: 5,
+    elevation: 5,
+    marginVertical: 9
   },
   countContainer: {
     alignItems: "center",
     padding: 10,
+    justifyContent: "center"
+  },
+  box: {
+    alignSelf: "center"
   },
   logo: {
     width: 300,
