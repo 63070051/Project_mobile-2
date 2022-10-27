@@ -70,7 +70,7 @@ router.post("/login/account", async function (req, res, next) {
   }
 });
 
-router.post("/comfirmemail", async function (req, res, next) {
+router.post("/confirmemail", async function (req, res, next) {
   let email = req.body.email;
   let chars =
     "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
