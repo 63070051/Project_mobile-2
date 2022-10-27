@@ -27,19 +27,17 @@ const test = async () => {
   }
 };
 
-
-
-
-function Register() {
+function Register(props) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPass, setConfirmpass] = React.useState("");
   const [key, setKey] = React.useState("");
   const [checkpass, setCheckpass] = React.useState(false);
   const [image, setImage] = React.useState(null);
+  const [objectImg, setObjectImg] = React.useState([]);
   const [secret, setSecret] = React.useState("");
   const checkHandle = () => {
-      console.log(email.indexOf("@it.kmitl.ac.th"));
+    // console.log(email.indexOf("@it.kmitl.ac.th"));
     setCheckpass(false);
     if (!email) {
       alert("Please Enter Email");
@@ -54,32 +52,58 @@ function Register() {
       setCheckpass(true);
     } else if (!key) {
       alert("Please Enter Secret Key");
+    } else if (key != secret) {
+      alert("Secret key is not true");
+    } else {
+      const data = new FormData();
+      const newImageUri =  "file:///" + objectImg.uri.split("file:/").join("");
+      data.append("email", email);
+      data.append("password", password);
+      data.append("profile", {
+        uri : newImageUri,
+        type: "image",
+        name: newImageUri.split("/").pop(),
+      });
+      axios.post("http://localhost:3000/register/account", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) =>{
+        if(response.data == "success"){
+          alert("Register Success");
+          {props.navigation.replace("login")}
+        }
+      })
+      .catch((err) =>{
+        console.log(err)
+      })
     }
   };
 
-
-  const sendSecretCode = () =>{
-    let formdata = FormData();
-    formdata.add('email' , email)
-    axios.post("http://localhost:3000/confirmemail", formdata)
-    .then((response) => {
-        setSecret(response.data);
-        console.log(response.data)
-    })
-    .catch((err) => {
+  const sendSecretCode = () => {
+    axios
+      .post("http://localhost:3000/confirmemail", { email: email })
+      .then((response) => {
+        if (response.data == "used") {
+          alert("Email is taken");
+        } else {
+          setSecret(response.data);
+        }
+      })
+      .catch((err) => {
         console.log(err);
-    })
-}
+      });
+  };
 
-  let profile_user_not_upload = 
+  let profile_user_not_upload = (
     <View style={styles.inputcontainer}>
       <Image
         source={require("../assets/user.png")}
         style={{ width: 150, height: 150, borderRadius: 999 }}
       />
     </View>
-  ;
-
+  );
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -93,11 +117,15 @@ function Register() {
 
     if (!result.cancelled) {
       setImage(result.uri);
+      setObjectImg(result);
     }
   };
 
   return (
-    <ScrollView contentContainerStyle={{paddingBottom : 60}} style={styles.container}>
+    <ScrollView
+      contentContainerStyle={{ paddingBottom: 60 }}
+      style={styles.container}
+    >
       <Image
         source={require("../assets/newLogo.png")}
         style={styles.logo}
@@ -112,23 +140,31 @@ function Register() {
             />
           </>
         )}
-        <View style={{flexDirection : "row", width : "65%", justifyContent : "space-between"}}>
-            <TouchableOpacity onPress={pickImage}
-                style={[styles.buttonpho, {backgroundColor : "royalblue"}]}
-                >
-                <Text style={{color : "white"}}>Upload Photo</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setImage(null)}
-            style={[styles.buttonpho, {backgroundColor : "red"}]}
-            >
-                <Text style={{color : "white"}}>Remove Photo</Text>
-            </TouchableOpacity>
+        <View
+          style={{
+            flexDirection: "row",
+            width: "65%",
+            justifyContent: "space-between",
+          }}
+        >
+          <TouchableOpacity
+            onPress={pickImage}
+            style={[styles.buttonpho, { backgroundColor: "royalblue" }]}
+          >
+            <Text style={{ color: "white" }}>Upload Photo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setImage(null)}
+            style={[styles.buttonpho, { backgroundColor: "red" }]}
+          >
+            <Text style={{ color: "white" }}>Remove Photo</Text>
+          </TouchableOpacity>
         </View>
       </View>
-      <View style={[styles.inputcontainer, {flexDirection : "row"}]}>
+      <View style={[styles.inputcontainer, { flexDirection: "row" }]}>
         {/* <Zocial name="email" size={24} color="black" /> */}
         <TextInput
-          style={[styles.input, {width : "60%"}]}
+          style={[styles.input, { width: "60%" }]}
           placeholder="Email"
           keyboardType="email-address"
           onChangeText={(mail) => {
@@ -136,12 +172,12 @@ function Register() {
           }}
         />
         <TouchableOpacity
-          style={[styles.button, {width : "20%", marginLeft : 15}]}
+          style={[styles.button, { width: "20%", marginLeft: 15 }]}
           onPress={() => {
             sendSecretCode();
           }}
         >
-            <Text style={{color : "white"}}>Send</Text>
+          <Text style={{ color: "white" }}>Send</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.inputcontainer}>
@@ -190,7 +226,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFF8EA",
     paddingTop: 30,
-    flex : 1, 
+    flex: 1,
   },
   inputcontainer: {
     alignItems: "center",

@@ -24,7 +24,7 @@ var storage = multer.diskStorage({
     );
   },
 });
-const upload = multer({ storage: storage });
+const upload = multer({storage: storage});
 
 router.post(
   "/register/account",
@@ -35,6 +35,7 @@ router.post(
 
     try {
       let profile = req.file;
+      console.log(profile.path)
       let path_profile = profile.path.substring(6);
       let email = req.body.email;
       let password = req.body.password;
@@ -72,6 +73,15 @@ router.post("/login/account", async function (req, res, next) {
 
 router.post("/confirmemail", async function (req, res, next) {
   let email = req.body.email;
+
+  const [checkEmail, field] = await pool.query(
+    "SELECT * FROM user WHERE email = ?",
+    [email]
+  );
+  // console.log(checkEmail)
+  if(checkEmail.length != 0){
+    return res.json("used");
+  }
   let chars =
     "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   let passwordLength = 5;
