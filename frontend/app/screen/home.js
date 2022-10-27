@@ -2,19 +2,31 @@ import { StyleSheet, Text, View , Image, TouchableOpacity, ScrollView} from "rea
 import * as React from "react";
 import axios from 'axios';
 import { Button } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { jsx } from "@emotion/react";
 
 
-const testget = () => {
-  axios.get(`http://localhost:3000/getSubject`)
-  .then((response) => {
-    console.log(response.data);
-  })
-  .catch((err) => {
-    console.log(err);
-  })
-}
 
-function home() {
+
+
+
+
+
+
+function Home(props) {
+  const [user, setUser] = React.useState([]);
+  
+  const getUser = async () =>{
+    let users = await AsyncStorage.getItem("@login");
+    setUser(JSON.parse(users))
+    // return JSON.parse(user);
+  }
+  React.useEffect(() =>{
+    getUser();
+  }, [])
+
+  // // let user = await AsyncStorage.getItem("@login");
+  // console.log(user);
   return (
     <ScrollView style={styles.container}>
       <View style={styles.navbar}>
@@ -24,8 +36,8 @@ function home() {
       </View>
 
       <View style={styles.buttoncontainer}>
-        <TouchableOpacity onPress={testget} style={styles.enterclassbutton}>
-          <Text style={styles.textbutton}>เข้าสู่ระบบ</Text>
+        <TouchableOpacity style={styles.enterclassbutton} onPress={() => {getUser()}}>
+          <Text style={styles.textbutton}>{user.email}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.card}>
@@ -96,7 +108,6 @@ const styles = StyleSheet.create({
       borderWidth : 2,
       borderRadius : 5,
       backgroundColor: "#FFFFFF",
-      width: 150,
       height: 50,
       shadowColor: "#000",
       shadowOffset: {
@@ -151,4 +162,4 @@ const styles = StyleSheet.create({
       textAlign : "center"
     },
 });
-export default home;
+export default Home;

@@ -4,10 +4,12 @@ import Home from "./app/screen/home";
 import Register from "./app/screen/register";
 import Login from "./app/screen/login";
 import ManageRole from "./app/screen/ManageRole";
+import Course from "./app/screen/Course";
 import Register from "./app/screen/register";
+import MyNavigator from "./app/navigator/navigation";
 export default function App() {
   return (
-    <Register />
+    <MyNavigator/>
   );
 }
 

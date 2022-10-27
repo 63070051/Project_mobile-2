@@ -51,7 +51,7 @@ router.post(
 router.get("/getSubject", async function (req, res, next) {
   try {
     const [subject, field] = await pool.query("SELECT * FROM course");
-    res.json(subject[0]);
+    res.json(subject);
   } catch (error) {
     res.json(error);
   }
