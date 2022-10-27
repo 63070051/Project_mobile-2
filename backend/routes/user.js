@@ -27,14 +27,14 @@ const upload = multer({ storage: storage });
 
 router.get("/getUser", async function (req, res, next) {
   try {
-    const [allUser, field] = await pool.query("SELECT * FROM user");
+    const [allUser, field] = await pool.query("SELECT * FROM user WHERE role != 'Admin'");
     res.json(allUser);
   } catch (error) {
     res.json(error);
   }
 });
 
-router.get("/getUserId", async function (req, res, next) {
+router.post("/getUserId", async function (req, res, next) {
   try {
     let email = req.body.email;
     const [user, field] = await pool.query(
