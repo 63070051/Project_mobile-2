@@ -155,7 +155,7 @@ function Register(props) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => setImage(null)}
-            style={[styles.buttonpho, { backgroundColor: "red" }]}
+            style={[styles.buttonpho, { backgroundColor: "darkgray" }]}
           >
             <Text style={{ color: "white" }}>Remove Photo</Text>
           </TouchableOpacity>
@@ -164,7 +164,7 @@ function Register(props) {
       <View style={[styles.inputcontainer, { flexDirection: "row" }]}>
         {/* <Zocial name="email" size={24} color="black" /> */}
         <TextInput
-          style={[styles.input, { width: "60%" }]}
+          style={[styles.input, { width: 235 }]}
           placeholder="Email"
           keyboardType="email-address"
           onChangeText={(mail) => {
@@ -211,7 +211,7 @@ function Register(props) {
           }}
         />
         {checkpass ? (
-          <Text style={{ color: "red" }}>Password not match</Text>
+          <Text style={{ color: "red" , marginTop : 5}}>Password not match</Text>
         ) : null}
       </View>
       <View style={styles.inputcontainer}>
@@ -248,18 +248,18 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   button: {
-    width: "83%",
+    width: 330,
     backgroundColor: "#FF9A00",
     alignItems: "center",
-    padding: 13,
+    padding: 10,
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
       width: -2,
       height: 4,
     },
-    shadowOpacity: 2,
-    shadowRadius: 5,
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
     elevation: 5,
   },
   logo: {
@@ -278,8 +278,8 @@ const styles = StyleSheet.create({
       width: -2,
       height: 4,
     },
-    shadowOpacity: 2,
-    shadowRadius: 5,
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
     elevation: 5,
   },
 });
