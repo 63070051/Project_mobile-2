@@ -54,7 +54,6 @@ function TabNavigater() {
           })
           .then((response) => {
             setRole(response.data.role);
-            console.log(role);
           })
           .catch((err) => {
             console.log(err);
@@ -203,7 +202,7 @@ function LoginStackNavigator() {
     </LoginNavigator.Navigator>
   );
 }
-function MyNavigator() {
+function MyNavigator(props) {
   const [login, setLogin] = useState(false);
   const [user, setUser] = useState([]);
   const checkUser = async () => {
@@ -222,12 +221,7 @@ function MyNavigator() {
     }
   };
   let page_componet = <LoginStackNavigator />;
-  useEffect(() => {
-    checkUser();
-  }, []);
-  if (login) {
-    page_componet = <TabNavigater />;
-  }
+
   return <NavigationContainer>{page_componet}</NavigationContainer>;
 }
 

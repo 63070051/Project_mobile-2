@@ -24,7 +24,7 @@ function RenderCrouse(props) {
         <Image style={styles.courselogo} source={{ uri: img }}></Image>
       </View>
       <View style={{ padding: 5 }}>
-        <Text numberOfLines={1} style={{ fontSize: 20, fontWeight : "600"}}>
+        <Text numberOfLines={1} style={{ fontSize: 20, fontWeight : "600" , padding: 10}}>
           {props.title}
         </Text>
       </View>
@@ -32,7 +32,7 @@ function RenderCrouse(props) {
         style={{ padding: 10, height: 100, marginBottom: 10 }}
         contentContainerStyle={{ paddingBottom: 30 }}
       >
-        <Text style={{fontSize : 16}}>{props.subtitle}</Text>
+        <Text style={{fontSize : 16, paddingLeft : 5, paddingRight : 5}}>{props.subtitle}</Text>
       </ScrollView>
       {props.role == "Student" && (
         <View style={styles.buttoncontainer}>
@@ -87,7 +87,7 @@ function Course(props) {
   }, []);
 
   return (
-    <ScrollView style={styles.scrollview}>
+    <ScrollView style={styles.scrollview} contentContainerStyle={{ paddingBottom: 30 }}>
       <View style={styles.container}>
         <Image
           style={styles.logo}
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     width: 350,
     borderRadius: 20,
     borderColor: "gray",
-    borderWidth: 1,
+    // borderWidth: 1,
     marginTop: 50,
     flexDirection: "column",
     borderColor: "#FF9A00",
