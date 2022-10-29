@@ -77,7 +77,7 @@ function Course() {
         </View>
         {/* <FlatList data={allCourse} renderItems={RenderCrouse} style={{ width: "100%" }}/> */}
         {allCourse.map((value) => {
-            return <RenderCrouse key={value.key} id={value.course_id} img={value.img} title={value.title} subtitle={value.subtitle}/>;
+            return <RenderCrouse key={value.course_id} id={value.course_id} img={value.img} title={value.title} subtitle={value.subtitle}/>;
         })}
       </View>
     </ScrollView>

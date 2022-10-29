@@ -55,7 +55,7 @@ const MapData = (props) => {
 
 
 
-function manageRole() {
+function ManageRole() {
   const [search, setSearch] = useState("");
   const [allUser, setAllUser] = useState([]);
   const [backUp, setBackUp] = useState([]);
@@ -105,7 +105,7 @@ function manageRole() {
         <View style={styles.box}>
           {/* <FlatList data={allUser} renderItems={MapData} style={{ width: "100%" }}/> */}
           {allUser.map((value) => {
-            return <MapData email={value.email} role={value.role} id={value.user_id}/>;
+            return <MapData key={value.user_id} email={value.email} role={value.role} id={value.user_id}/>;
           })}
         </View>
       </View>
@@ -119,8 +119,7 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    flex: 1,
-    alignItems: "center",
+    padding : 12
   },
   header: {
     marginTop: 50,
@@ -187,4 +186,4 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-export default manageRole;
+export default ManageRole;
