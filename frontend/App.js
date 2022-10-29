@@ -6,9 +6,11 @@ import ManageRole from "./app/screen/ManageRole";
 import Course from "./app/screen/Course";
 import Register from "./app/screen/register";
 import MyNavigator from "./app/navigator/navigation";
+import CourseInfo from "./app/screen/courseinfo";
+import CourseAdmin from "./app/screen/CourseAdmin";
 export default function App() {
   return (
-    <MyNavigator/>
+    <CourseAdmin />
   );
 }
 

@@ -5,30 +5,23 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  FlatList
+  FlatList,
 } from "react-native";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "react-native";
-import { AntDesign, Entypo } from "@expo/vector-icons";
-
-
-
-
+import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 
 function RenderCrouse(props) {
-  let img = ""
-  if(props.img){
-    img = "http://localhost:3000" + props.img
-    console.log(img)
+  let img = "";
+  if (props.img) {
+    img = "http://localhost:3000" + props.img;
+    console.log(img);
   }
   return (
     <View style={styles.box}>
       <View style={styles.inside}>
-        <Image
-          style={styles.courselogo}
-          source={{uri : img}}
-        ></Image>
+        <Image style={styles.courselogo} source={{ uri: img }}></Image>
       </View>
       <View style={{ padding: 5 }}>
         <Text numberOfLines={1} style={{ fontSize: 18 }}>
@@ -36,31 +29,32 @@ function RenderCrouse(props) {
         </Text>
       </View>
       <ScrollView style={{ padding: 10, height: 100 }}>
-        <Text>
-          {props.subtitle}
-        </Text>
+        <Text>{props.subtitle}</Text>
       </ScrollView>
       <View style={styles.buttoncontainer}>
-        <TouchableOpacity style={styles.enterclassbutton}>
-          <Entypo name="lock" size={30} color="red" />
+        <TouchableOpacity style={styles.editcontainer}>
+        <AntDesign name="edit" size={30 } color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.deletecontainer}>
+        <MaterialCommunityIcons name="delete" size={30 } color="red" />
         </TouchableOpacity>
       </View>
     </View>
   );
 }
 
-function Course() {
+function CourseAdmin() {
   const [allCourse, setAllCourse] = useState([]);
 
-
-  useEffect(() =>{
-    axios.get(`http://localhost:3000/getSubject`)
-    .then((response) => {
-      setAllCourse(response.data);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3000/getSubject`)
+      .then((response) => {
+        setAllCourse(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
   // console.log(allCourse);
 
@@ -74,10 +68,21 @@ function Course() {
 
         <View style={styles.header}>
           <Text style={styles.text_header}>Course</Text>
+          <TouchableOpacity style={styles.plus}>
+          <AntDesign name="plus" size={30} color="black" />
+          </TouchableOpacity>
         </View>
         {/* <FlatList data={allCourse} renderItems={RenderCrouse} style={{ width: "100%" }}/> */}
         {allCourse.map((value) => {
-            return <RenderCrouse key={value.key} id={value.course_id} img={value.img} title={value.title} subtitle={value.subtitle}/>;
+          return (
+            <RenderCrouse
+              key={value.key}
+              id={value.course_id}
+              img={value.img}
+              title={value.title}
+              subtitle={value.subtitle}
+            />
+          );
         })}
       </View>
     </ScrollView>
@@ -102,6 +107,7 @@ const styles = StyleSheet.create({
   header: {
     marginTop: 50,
     paddingHorizontal: 20,
+    flexDirection: "row",
   },
   text_header: {
     color: "#000",
@@ -132,19 +138,24 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 25,
   },
-  enterclassbutton:{
-    padding: 10,
-    backgroundColor: "#ffd7a8",
-    alignItems: "center",
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-
+  plus:{
+    marginTop: 5,
+    
   },
   buttoncontainer:{
-    width:"100%",
+    flexDirection: "row",
+    padding: 10,
     
+  },
+  editcontainer:{
+    marginTop: 10,
+    marginRight: 150,
+    
+  },
+  deletecontainer:{
+    marginTop: 10,  
+  },
 
-  }
 });
 
-export default Course;
+export default CourseAdmin;
