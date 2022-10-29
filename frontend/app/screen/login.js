@@ -53,7 +53,7 @@ function Login(props) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.logocontainer}>
-        <Image style={styles.logo} source={require("../assets/logo.png")} />
+        <Image style={styles.logo} source={require("../assets/logo_login.png")} />
       </View>
       <View style={styles.box}>
         <View style={styles.TextInput}>
@@ -126,8 +126,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
-        width: -2,
-        height: 4,
+      width: -2,
+      height: 4,
     },
     shadowOpacity: 0.2,
     shadowRadius: 3,

@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
   inside: {
     flexDirection: "row",
     marginBottom: 10,
+    marginLeft : 8,
   },
 });
 export default ManageRole;

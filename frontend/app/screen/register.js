@@ -143,7 +143,7 @@ function Register(props) {
         <View
           style={{
             flexDirection: "row",
-            width: "65%",
+            width: "75%",
             justifyContent: "space-between",
           }}
         >
@@ -161,10 +161,10 @@ function Register(props) {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={[styles.inputcontainer, { flexDirection: "row" }]}>
+      <View style={[styles.inputcontainer, { flexDirection: "row" , justifyContent : "space-between"}]}>
         {/* <Zocial name="email" size={24} color="black" /> */}
         <TextInput
-          style={[styles.input, { width: 235 }]}
+          style={[styles.input, { width: "65%" }]}
           placeholder="Email"
           keyboardType="email-address"
           onChangeText={(mail) => {
@@ -172,7 +172,7 @@ function Register(props) {
           }}
         />
         <TouchableOpacity
-          style={[styles.button, { width: "20%", marginLeft: 15 }]}
+          style={[styles.button_send, { width: "30%"}]}
           onPress={() => {
             sendSecretCode();
           }}
@@ -226,6 +226,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFF8EA",
     paddingTop: 30,
+    paddingLeft : 50,
+    paddingRight : 50,
     flex: 1,
   },
   inputcontainer: {
@@ -234,7 +236,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   input: {
-    width: 330,
+    width: "100%",
     borderRadius: 10,
     padding: 10,
     shadowColor: "#000",
@@ -248,7 +250,22 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   button: {
-    width: 330,
+    width: "100%",
+    backgroundColor: "#FF9A00",
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: -2,
+      height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  button_send: {
+    width: "100%",
     backgroundColor: "#FF9A00",
     alignItems: "center",
     padding: 10,
