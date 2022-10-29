@@ -10,36 +10,55 @@ import {
   FontAwesome,
   Octicons,
 } from "@expo/vector-icons";
-import Login from "../screen/login";
-import Home from "../screen/home";
-import Register from "../screen/register";
+import Login from "../screen/Login";
+import Home from "../screen/Home";
+import Register from "../screen/Register";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Profile from "../screen/Profile";
 import Chat from "../screen/Chat";
 import Course from "../screen/Course";
 import ManageRole from "../screen/ManageRole";
+import CourseCreate from "../screen/CourseCreate";
 import axios from "axios";
 
 const LoginNavigator = createNativeStackNavigator();
+const CourseNavigator = createNativeStackNavigator();
 // const FavNavigator = createNativeStackNavigator();
 // const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 // const FilterNavigator = createNativeStackNavigator();
 
+function CourseStack() {
+  return (
+    <CourseNavigator.Navigator>
+      <CourseNavigator.Screen name="coursepage" component={Course} options={{
+        headerShown : false,
+        title : "Course"
+      }}/>
+      <CourseNavigator.Screen name="coursecreate" component={CourseCreate} options={{
+        title : "Create Course"
+      }}/>
+    </CourseNavigator.Navigator>
+  );
+}
+
 function TabNavigater() {
-  const [role , setRole] = useState("");
+  const [role, setRole] = useState("");
   const checkRole = async () => {
     try {
       const value = await AsyncStorage.getItem("@login");
       if (value !== null) {
-        axios.post("http://localhost:3000/getUserId", {email : JSON.parse(value).email})
-        .then((response) =>{
-          setRole(response.data.role);
-          console.log(role);
-        })
-        .catch((err) =>{
-          console.log(err)
-        })
+        axios
+          .post("http://localhost:3000/getUserId", {
+            id: JSON.parse(value).user_id,
+          })
+          .then((response) => {
+            setRole(response.data.role);
+            console.log(role);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
         // setRole(JSON.parse(value).role);
         // // We have data!!
         // // console.log(value);
@@ -68,7 +87,7 @@ function TabNavigater() {
         />
         <Tab.Screen
           name="Course"
-          component={Course}
+          component={CourseStack}
           options={{
             headerShown: false,
             tabBarIcon: ({ color, size }) => {
@@ -125,7 +144,7 @@ function TabNavigater() {
       />
       <Tab.Screen
         name="Course"
-        component={Course}
+        component={CourseStack}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => {
@@ -207,7 +226,7 @@ function MyNavigator() {
     checkUser();
   }, []);
   if (login) {
-    page_componet = <TabNavigater/>;
+    page_componet = <TabNavigater />;
   }
   return <NavigationContainer>{page_componet}</NavigationContainer>;
 }

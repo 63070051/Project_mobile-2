@@ -36,8 +36,10 @@ function Home(props) {
       </View>
 
       <View style={styles.buttoncontainer}>
-        <TouchableOpacity style={styles.enterclassbutton} onPress={() => {getUser()}}>
-          <Text style={styles.textbutton}>{user.email}</Text>
+        <TouchableOpacity style={styles.enterclassbutton} onPress={() => {
+          props.navigation.navigate("coursepage");
+        }}>
+          <Text style={styles.textbutton}>Getting Started</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.card}>
@@ -81,9 +83,9 @@ const styles = StyleSheet.create({
       backgroundColor : "#FFF8EA"
     },
     logo:{
-        width : 500,
-        height : 300,
-        marginTop : 20,
+        width : 350,
+        height : 150,
+        marginTop : 50,
     },
     logocontainer:{
         // flex : 1,
