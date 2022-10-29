@@ -6,9 +6,10 @@ import ManageRole from "./app/screen/ManageRole";
 import Course from "./app/screen/Course";
 import Register from "./app/screen/register";
 import MyNavigator from "./app/navigator/navigation";
+import Profile from "./app/screen/Profile";
 export default function App() {
   return (
-    <MyNavigator/>
+    <Profile/>
   );
 }
 
