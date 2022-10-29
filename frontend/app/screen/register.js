@@ -155,7 +155,7 @@ function Register(props) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => setImage(null)}
-            style={[styles.buttonpho, { backgroundColor: "red" }]}
+            style={[styles.buttonpho, { backgroundColor: "darkgray" }]}
           >
             <Text style={{ color: "white" }}>Remove Photo</Text>
           </TouchableOpacity>
@@ -211,7 +211,7 @@ function Register(props) {
           }}
         />
         {checkpass ? (
-          <Text style={{ color: "red" }}>Password not match</Text>
+          <Text style={{ color: "red" , marginTop : 5}}>Password not match</Text>
         ) : null}
       </View>
       <View style={styles.inputcontainer}>
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#FF9A00",
     alignItems: "center",
-    padding: 13,
+    padding: 10,
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
