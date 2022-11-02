@@ -28,6 +28,10 @@ LogBox.ignoreLogs([
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
 ]);
+LogBox.ignoreLogs([
+  "Warning: Can't perform a React state update on an unmounted component",
+]);
+
 
 const LoginNavigator = createNativeStackNavigator();
 const CourseNavigator = createNativeStackNavigator();
