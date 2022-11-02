@@ -33,6 +33,17 @@ router.get("/getUser", async function (req, res, next) {
     res.json(error);
   }
 });
+router.post("/getUserChat", async function (req, res, next) {
+  let id = req.body.id;
+  try {
+    const [allUser, field] = await pool.query("SELECT * FROM user WHERE user_id != ?", [
+      id
+    ]);
+    res.json(allUser);
+  } catch (error) {
+    res.json(error);
+  }
+});
 
 
 router.post("/getUserId", async function (req, res, next) {

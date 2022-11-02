@@ -3,7 +3,6 @@ import * as React from "react";
 import axios from 'axios';
 import { Button } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { jsx } from "@emotion/react";
 
 
 

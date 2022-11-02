@@ -18,12 +18,14 @@ const subjectRouter = require('./routes/subject')
 const registerRouter = require('./routes/register')
 const userRouter = require('./routes/user')
 const adminRouter = require('./routes/admin')
+const chatRouter = require('./routes/chat')
 
 
 app.use(subjectRouter);
 app.use(registerRouter);
 app.use(userRouter);
 app.use(adminRouter);
+app.use(chatRouter);
 
 
 app.listen(3000, () => {

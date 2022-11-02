@@ -9,6 +9,8 @@ import MyNavigator from "./app/navigator/Navigation";
 import Profile from "./app/screen/Profile";
 import CourseInfo from "./app/screen/Courseinfo";
 import CourseAdmin from "./app/screen/CourseAdmin";
+
+
 export default function App() {
   return <MyNavigator />;
 }
