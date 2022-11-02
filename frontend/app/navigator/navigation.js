@@ -20,6 +20,7 @@ import Course from "../screen/Course";
 import ManageRole from "../screen/ManageRole";
 import CourseCreate from "../screen/CourseCreate";
 import ChatPeople from "../screen/ChatPeople";
+import CourseInfo from "../screen/Courseinfo";
 import axios from "axios";
 import { LogBox } from "react-native";
 LogBox.ignoreLogs([
@@ -57,6 +58,7 @@ function ChatStack() {
   );
 }
 
+
 function CourseStack() {
   return (
     <CourseNavigator.Navigator>
@@ -66,6 +68,13 @@ function CourseStack() {
         options={{
           headerShown: false,
           title: "Course",
+        }}
+      />
+      <CourseNavigator.Screen
+        name="courseinfo"
+        component={CourseInfo}
+        options={{
+          title: "Course Info",
         }}
       />
       <CourseNavigator.Screen
