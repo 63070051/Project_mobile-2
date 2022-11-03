@@ -62,7 +62,7 @@ function Profile() {
   const logout = () => {
     return Alert.alert(
       "Are your sure?",
-      "Are you to Logout?",
+      "Are you to sure Logout?",
       [
         // The "Yes" button
         {
