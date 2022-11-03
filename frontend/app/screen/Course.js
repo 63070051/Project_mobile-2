@@ -44,6 +44,14 @@ function Course(props) {
       });
     // return JSON.parse(user);
     await axios
+      .get(`http://localhost:3000/getSubject`)
+      .then((response) => {
+        setAllCourse(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    await axios
       .post("http://localhost:3000/getSubjectStudent", { id: s_id })
       .then((response) => {
         let loopcourse = [];
@@ -58,14 +66,6 @@ function Course(props) {
   };
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3000/getSubject`)
-      .then((response) => {
-        setAllCourse(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
     getUser();
   }, []);
 
@@ -252,7 +252,10 @@ function Course(props) {
             <TouchableOpacity
               style={styles.plus}
               onPress={() => {
-                props.navigation.navigate("coursecreate");
+                props.navigation.navigate("coursecreate", {
+                  route: props.navigation,
+                  teacher: user.user_id,
+                });
               }}
             >
               <AntDesign name="plus" size={30} color="black" />

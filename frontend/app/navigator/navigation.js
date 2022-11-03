@@ -20,7 +20,7 @@ import Course from "../screen/Course";
 import ManageRole from "../screen/ManageRole";
 import CourseCreate from "../screen/CourseCreate";
 import ChatPeople from "../screen/ChatPeople";
-import CourseInfo from "../screen/CourseInfo";
+import CourseInfo from "../screen/Courseinfo";
 import axios from "axios";
 import { LogBox } from "react-native";
 LogBox.ignoreLogs([
@@ -32,7 +32,6 @@ LogBox.ignoreLogs([
 LogBox.ignoreLogs([
   "Warning: Can't perform a React state update on an unmounted component",
 ]);
-
 
 const LoginNavigator = createNativeStackNavigator();
 const CourseNavigator = createNativeStackNavigator();
@@ -57,7 +56,6 @@ function ChatStack() {
     </ChatNavigator.Navigator>
   );
 }
-
 
 function CourseStack() {
   return (

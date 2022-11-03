@@ -121,7 +121,6 @@ router.post("/checkUser", async function (req, res, next) {
       "SELECT * FROM user WHERE email = ? AND tokens = ?",
       [email, tokens]
     );
-    console.log(user.length)
     if (user.length == 0) {
       res.json("error login");
     } else {

@@ -7,10 +7,9 @@ import Course from "./app/screen/Course";
 import Register from "./app/screen/Register";
 import MyNavigator from "./app/navigator/Navigation";
 import Profile from "./app/screen/Profile";
-import CourseInfo from "./app/screen/CourseInfo";
+import CourseInfo from "./app/screen/Courseinfo";
 import CourseAdmin from "./app/screen/CourseAdmin";
 import CourseCreate from "./app/screen/CourseCreate";
-
 
 export default function App() {
   return <MyNavigator />;
