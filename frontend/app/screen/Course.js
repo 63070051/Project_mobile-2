@@ -8,6 +8,7 @@ import {
   FlatList,
   Modal,
   Pressable,
+  Alert
 } from "react-native";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -69,6 +70,22 @@ function Course(props) {
     getUser();
   }, []);
 
+  const confirmDel = (id) => {
+    return Alert.alert("Are your sure?", "Are you sure to Delete course?", [
+      // The "Yes" button
+      {
+        text: "Yes",
+        onPress: async () => {
+          DeleteCourse(id);
+        },
+      },
+      // The "No" button
+      // Does nothing but dismiss the dialog when tapped
+      {
+        text: "No",
+      },
+    ]);
+  };
   async function AddCourse() {
     if (secretkey == textKey) {
       await axios
@@ -167,7 +184,7 @@ function Course(props) {
             <TouchableOpacity
               style={styles.deletecontainer}
               onPress={() => {
-                DeleteCourse(props.id);
+                confirmDel(props.id);
               }}
             >
               <MaterialCommunityIcons name="delete" size={30} color="red" />
