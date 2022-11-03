@@ -23,7 +23,6 @@ function ChatPeople({ route }) {
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState(route.params.user);
   let target_id = route.params.DATA.item.user_id;
-  console.log(users.user_id)
   async function getAllMessage() {
     const docId =
       target_id > users.user_id

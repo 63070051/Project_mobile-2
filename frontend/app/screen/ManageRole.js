@@ -12,7 +12,7 @@ import axios from "axios";
 import { FlatList } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 
-const role = ["Student", "Teacher"];
+const role = ["Student", "Teacher", "Student"];
 
 
 const changeDataBaseRole = (id, role) => {
