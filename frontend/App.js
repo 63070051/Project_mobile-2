@@ -9,10 +9,11 @@ import MyNavigator from "./app/navigator/Navigation";
 import Profile from "./app/screen/Profile";
 import CourseInfo from "./app/screen/CourseInfo";
 import CourseAdmin from "./app/screen/CourseAdmin";
+import CourseCreate from "./app/screen/CourseCreate";
 
 
 export default function App() {
-  return <CourseInfo />;
+  return <MyNavigator />;
 }
 
 const styles = StyleSheet.create({
