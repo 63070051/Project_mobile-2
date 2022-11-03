@@ -13,7 +13,7 @@ import CourseCreate from "./app/screen/CourseCreate";
 
 
 export default function App() {
-  return <Profile />;
+  return <CourseCreate />;
 }
 
 const styles = StyleSheet.create({
