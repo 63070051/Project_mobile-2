@@ -35,7 +35,6 @@ router.post(
 
     try {
       let profile = req.file;
-      console.log(profile.path)
       let path_profile = profile.path.substring(6);
       let email = req.body.email;
       let password = req.body.password;

@@ -34,11 +34,12 @@ router.post(
       let teacher_id = req.body.teacherId;
       let title = req.body.title;
       let subtitle = req.body.subTitle;
+      let key = req.body.key;
       let img_subject = req.file;
       let path = img_subject.path.substring(6);
       const [course, field] = await conn.query(
-        "INSERT INTO course(teacher_id, title, subtitle, img) VALUES(?, ?, ?, ?)",
-        [teacher_id, title, subtitle, path]
+        "INSERT INTO course(teacher_id, title, subtitle, img, s_key) VALUES(?, ?, ?, ?, ?)",
+        [teacher_id, title, subtitle, path, key]
       );
       await conn.commit();
       return res.json("success");
@@ -59,7 +60,6 @@ router.get("/getSubject", async function (req, res, next) {
 
 router.post("/getSubjectStudent", async function (req, res, next) {
   let s_id = req.body.id;
-  console.log(s_id)
   try {
     const [subject, field] = await pool.query("SELECT * FROM s_course WHERE s_id = ?", [
       s_id
@@ -87,9 +87,17 @@ router.post("/enrollCourse", async function (req, res, next) {
 router.post("/DeleteCourse", async function (req, res, next) {
   let course_id = req.body.course_id
   try {
+    const [getOldImg, fields] = await pool.query(
+      "SELECT img from course WHERE course_id = ?",
+      [course_id]
+    );
     const [delCourse, field] = await pool.query("DELETE FROM course WHERE course_id = ?;",[
       course_id
     ]);
+    const [userInCourse, field1] = await pool.query("DELETE FROM s_course WHERE c_id = ?;",[
+      course_id
+    ]);
+    fs.unlink(("./static" + getOldImg[0].img), err => console.log(err)); 
     res.json("success");
   } catch (error) {
     res.json(error);
