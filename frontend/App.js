@@ -7,10 +7,10 @@ import Course from "./app/screen/Course";
 import Register from "./app/screen/Register";
 import MyNavigator from "./app/navigator/Navigation";
 import Profile from "./app/screen/Profile";
-import CourseInfo from "./app/screen/Courseinfo";
+import CourseInfo from "./app/screen/CourseInfo";
 import CourseAdmin from "./app/screen/CourseAdmin";
 export default function App() {
-  return <MyNavigator />;
+  return <CourseInfo />;
 }
 
 const styles = StyleSheet.create({
