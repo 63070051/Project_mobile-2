@@ -57,10 +57,40 @@ router.get("/getSubject", async function (req, res, next) {
   }
 });
 
-router.get("/getSubjectStudent", async function (req, res, next) {
+router.post("/getSubjectStudent", async function (req, res, next) {
+  let s_id = req.body.id;
+  console.log(s_id)
   try {
-    const [subject, field] = await pool.query("SELECT * FROM s_course");
-    res.json(subject[0]);
+    const [subject, field] = await pool.query("SELECT * FROM s_course WHERE s_id = ?", [
+      s_id
+    ]);
+    res.json(subject);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+
+router.post("/enrollCourse", async function (req, res, next) {
+  let id = req.body.id;
+  let course_id = req.body.course_id
+  try {
+    const [addCourse, field] = await pool.query("INSERT INTO s_course(c_id, s_id) VALUES(?, ?)",[
+      course_id, id
+    ]);
+    res.json("success");
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+router.post("/DeleteCourse", async function (req, res, next) {
+  let course_id = req.body.course_id
+  try {
+    const [delCourse, field] = await pool.query("DELETE FROM course WHERE course_id = ?;",[
+      course_id
+    ]);
+    res.json("success");
   } catch (error) {
     res.json(error);
   }
