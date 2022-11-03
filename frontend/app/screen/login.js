@@ -18,12 +18,25 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 function Login(props) {
+  if(props.login){
+    props.navigation.navigate("TabHome");
+  }
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   let TextError = null;
 
 
+  const getUser = async () =>{
+    let users = await AsyncStorage.getItem("@login");
+    if(users != undefined){
+      props.navigation.replace("TabHome");
+    }
+    // return JSON.parse(user);
+  }
+  useEffect(() =>{
+    getUser();
+  }, [])
   
   const SignIn = async () => {
     axios.post("http://localhost:3000/checkUser", {

@@ -19,25 +19,71 @@ import Chat from "../screen/Chat";
 import Course from "../screen/Course";
 import ManageRole from "../screen/ManageRole";
 import CourseCreate from "../screen/CourseCreate";
+import ChatPeople from "../screen/ChatPeople";
+import CourseInfo from "../screen/CourseInfo";
 import axios from "axios";
+import { LogBox } from "react-native";
+LogBox.ignoreLogs([
+  "AsyncStorage has been extracted from react-native core and will be removed in a future release",
+]);
+LogBox.ignoreLogs([
+  "Non-serializable values were found in the navigation state",
+]);
+LogBox.ignoreLogs([
+  "Warning: Can't perform a React state update on an unmounted component",
+]);
+
 
 const LoginNavigator = createNativeStackNavigator();
 const CourseNavigator = createNativeStackNavigator();
+const ChatNavigator = createNativeStackNavigator();
 // const FavNavigator = createNativeStackNavigator();
 // const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 // const FilterNavigator = createNativeStackNavigator();
 
+function ChatStack() {
+  return (
+    <ChatNavigator.Navigator>
+      <ChatNavigator.Screen name="Messages" component={Chat} />
+      <ChatNavigator.Screen
+        name="chatinfo"
+        component={ChatPeople}
+        options={({ route }) => ({
+          title: route.params.DATA.item.email,
+          headerBackTitleVisible: false,
+        })}
+      />
+    </ChatNavigator.Navigator>
+  );
+}
+
+
 function CourseStack() {
   return (
     <CourseNavigator.Navigator>
-      <CourseNavigator.Screen name="coursepage" component={Course} options={{
-        headerShown : false,
-        title : "Course"
-      }}/>
-      <CourseNavigator.Screen name="coursecreate" component={CourseCreate} options={{
-        title : "Create Course"
-      }}/>
+      <CourseNavigator.Screen
+        name="coursepage"
+        component={Course}
+        options={{
+          headerShown: false,
+          title: "Course",
+        }}
+      />
+      <CourseNavigator.Screen
+        name="courseinfo"
+        component={CourseInfo}
+        options={{
+          title: "Course Info",
+        }}
+      />
+      <CourseNavigator.Screen
+        name="coursecreate"
+        component={CourseCreate}
+        options={{
+          title: "Create Course",
+        }}
+      />
     </CourseNavigator.Navigator>
   );
 }
@@ -54,7 +100,6 @@ function TabNavigater() {
           })
           .then((response) => {
             setRole(response.data.role);
-            console.log(role);
           })
           .catch((err) => {
             console.log(err);
@@ -72,64 +117,6 @@ function TabNavigater() {
     checkRole();
   }, []);
 
-  if (role == "Admin") {
-    return (
-      <Tab.Navigator>
-        <Tab.Screen
-          name="Home"
-          component={Home}
-          options={{
-            headerShown: false,
-            tabBarIcon: ({ color, size }) => {
-              return <Ionicons name="home" size={size} color="black" />;
-            },
-          }}
-        />
-        <Tab.Screen
-          name="Course"
-          component={CourseStack}
-          options={{
-            headerShown: false,
-            tabBarIcon: ({ color, size }) => {
-              return <Entypo name="open-book" size={size} color="black" />;
-            },
-          }}
-        />
-        <Tab.Screen
-          name="Chat"
-          component={Chat}
-          options={{
-            headerShown: false,
-            tabBarIcon: ({ color, size }) => {
-              return <Ionicons name="chatbubble" size={size} color="black" />;
-            },
-          }}
-        />
-        <Tab.Screen
-          name="Manage"
-          component={ManageRole}
-          options={{
-            headerShown: false,
-            tabBarIcon: ({ color, size }) => {
-              return <Octicons name="gear" size={size} color="black" />;
-            },
-          }}
-        />
-        <Tab.Screen
-          name="Profile"
-          component={Profile}
-          options={{
-            headerShown: false,
-            tabBarIcon: ({ color, size }) => {
-              return (
-                <FontAwesome name="user-circle" size={size} color="black" />
-              );
-            },
-          }}
-        />
-      </Tab.Navigator>
-    );
-  }
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -154,7 +141,7 @@ function TabNavigater() {
       />
       <Tab.Screen
         name="Chat"
-        component={Chat}
+        component={ChatStack}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => {
@@ -162,6 +149,18 @@ function TabNavigater() {
           },
         }}
       />
+      {role == "Admin" && (
+        <Tab.Screen
+          name="Manage"
+          component={ManageRole}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => {
+              return <Octicons name="gear" size={size} color="black" />;
+            },
+          }}
+        />
+      )}
       <Tab.Screen
         name="Profile"
         component={Profile}
@@ -203,7 +202,7 @@ function LoginStackNavigator() {
     </LoginNavigator.Navigator>
   );
 }
-function MyNavigator() {
+function MyNavigator(props) {
   const [login, setLogin] = useState(false);
   const [user, setUser] = useState([]);
   const checkUser = async () => {
@@ -222,12 +221,7 @@ function MyNavigator() {
     }
   };
   let page_componet = <LoginStackNavigator />;
-  useEffect(() => {
-    checkUser();
-  }, []);
-  if (login) {
-    page_componet = <TabNavigater />;
-  }
+
   return <NavigationContainer>{page_componet}</NavigationContainer>;
 }
 

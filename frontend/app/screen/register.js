@@ -86,7 +86,7 @@ function Register(props) {
       .post("http://localhost:3000/confirmemail", { email: email })
       .then((response) => {
         if (response.data == "used") {
-          alert("Email is taken");
+          alert("Email is already taken");
         } else {
           setSecret(response.data);
         }

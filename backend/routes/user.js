@@ -33,13 +33,25 @@ router.get("/getUser", async function (req, res, next) {
     res.json(error);
   }
 });
+router.post("/getUserChat", async function (req, res, next) {
+  let id = req.body.id;
+  try {
+    const [allUser, field] = await pool.query("SELECT * FROM user WHERE user_id != ?", [
+      id
+    ]);
+    res.json(allUser);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 
 router.post("/getUserId", async function (req, res, next) {
   try {
-    let email = req.body.email;
+    let id = req.body.id;
     const [user, field] = await pool.query(
-      "SELECT * FROM user WHERE email = ?",
-      [email]
+      "SELECT * FROM user WHERE user_id = ?",
+      [id]
     );
     res.json(user[0]);
   } catch (error) {
@@ -47,8 +59,10 @@ router.post("/getUserId", async function (req, res, next) {
   }
 });
 
+
+
 router.post(
-  "/editProfile",
+  "/editProfile/img",
   upload.single("profile"),
   async function (req, res, next) {
     const conn = await pool.getConnection();
@@ -61,9 +75,34 @@ router.post(
         "SELECT img from user WHERE user_id = ?",
         [u_id]
       );
-      const [porfilepath, field] = await pool.query(
+      fs.unlink(("./static" + getOldImg[0].img), err => console.log(err)); 
+      const [profilepath, field] = await pool.query(
         "UPDATE user SET img = ? WHERE user_id = ?",
         [path, u_id]
+      );
+      const [getPath, field1] = await pool.query(
+        "SELECT img FROM user WHERE user_id = ?",
+        [u_id]
+      );
+      conn.commit();
+      res.json(getPath[0].img);
+    } catch (error) {
+      res.json(error);
+    }
+  }
+);
+
+router.post(
+  "/editProfile/password",
+  async function (req, res, next) {
+    const conn = await pool.getConnection();
+    await conn.beginTransaction();
+    try {
+      let u_id = req.body.id;
+      let password = req.body.password;
+      const [changePassword, field] = await pool.query(
+        "UPDATE user SET tokens = ? WHERE user_id = ?",
+        [md5(password), u_id]
       );
       conn.commit();
       res.json("success");

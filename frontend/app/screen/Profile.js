@@ -11,31 +11,56 @@ import {
 import * as React from "react";
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
+import md5 from "md5";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Foundation,
   MaterialCommunityIcons,
   SimpleLineIcons,
   MaterialIcons,
-  AntDesign
+  AntDesign,
 } from "@expo/vector-icons";
 
-function Profile() {
+function Profile(props) {
   const [checkinpass, setCheckinpass] = React.useState(false);
   const [checkpass, setCheckpass] = React.useState(false);
-  const [checkNewpass, setChecknewpass] = React.useState(false)
+  const [checkNewpass, setChecknewpass] = React.useState(false);
   const [oldPassword, setOldpass] = React.useState("");
   const [newPassword, setNewpass] = React.useState("");
   const [image, setImage] = React.useState(null);
   const [objectImg, setObjectImg] = React.useState([]);
   const [openReset, setOpenreset] = React.useState(false);
+  const [user, setUser] = React.useState([]);
+  const [token, setToken] = React.useState("");
+  const [path, setPath] = React.useState("");
+  const getUser = async () => {
+    let users = await AsyncStorage.getItem("@login");
+    axios
+      .post("http://localhost:3000/getUserId", {
+        id: JSON.parse(users).user_id,
+      })
+      .then((response) => {
+        setUser(response.data);
+        setToken(response.data.tokens);
+        setPath("http://localhost:3000" + response.data.img);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // return JSON.parse(user);
+  };
+
+  React.useEffect(() => {
+    getUser();
+  }, []);
   const checkResetpassword = () => {
-    let password = "1234";
-    if (!oldPassword){
-      setCheckinpass(true)
-    } else if (password != oldPassword) {
+    // console.log(token, md5(oldPassword))
+    if (!oldPassword) {
+      setCheckinpass(true);
+    } else if (token != md5(oldPassword)) {
       setCheckpass(true);
-    } else if(!newPassword) {
-      setChecknewpass(true)
+    } else if (!newPassword) {
+      setChecknewpass(true);
     } else {
       return Alert.alert(
         "Are your sure?",
@@ -45,9 +70,22 @@ function Profile() {
           {
             text: "Yes",
             onPress: () => {
-              setOpenreset(false)
-              setOldpass("")
-              setNewpass("")
+              setOpenreset(false);
+              setOldpass("");
+              setNewpass("");
+              axios
+                .post("http://localhost:3000/editProfile/password", {
+                  password: newPassword,
+                  id : user.user_id
+                })
+                .then((response) => {
+                  if (response.data == "success") {
+                    alert("Change password success");
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
             },
           },
           // The "No" button
@@ -59,30 +97,28 @@ function Profile() {
       );
     }
   };
-  const logout = () => {
-    return Alert.alert(
-      "Are your sure?",
-      "Are you to sure Logout?",
-      [
-        // The "Yes" button
-        {
-          text: "Yes",
-          onPress: () => {
-          },
+  const logout = (props) => {
+    return Alert.alert("Are your sure?", "Are you sure to Logout?", [
+      // The "Yes" button
+      {
+        text: "Yes",
+        onPress: async () => {
+          const value = await AsyncStorage.removeItem("@login");
+          props.navigation.replace("login");
         },
-        // The "No" button
-        // Does nothing but dismiss the dialog when tapped
-        {
-          text: "No",
-        },
-      ]
-    );
-  }
-  let profile_user_not_upload = (
-    <View style={[styles.box]}>
-      <Image source={require("../assets/user.png")} style={styles.image} />
-    </View>
-  );
+      },
+      // The "No" button
+      // Does nothing but dismiss the dialog when tapped
+      {
+        text: "No",
+      },
+    ]);
+  };
+  // let profile_user_not_upload = (
+  //   <View style={[styles.box]}>
+  //     <Image source={require("../assets/user.png")} style={styles.image} />
+  //   </View>
+  // );
   let reset_password = (
     <View>
       <TextInput
@@ -93,7 +129,7 @@ function Profile() {
         onChangeText={(pass) => {
           setOldpass(pass);
           setCheckpass(false);
-          setCheckinpass(false)
+          setCheckinpass(false);
         }}
       />
       {checkpass && (
@@ -113,7 +149,7 @@ function Profile() {
         autoCorrect={false}
         onChangeText={(pass) => {
           setNewpass(pass);
-          setChecknewpass(false)
+          setChecknewpass(false);
         }}
       />
       {checkNewpass && (
@@ -136,8 +172,8 @@ function Profile() {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            setOldpass("")
-            setNewpass("")
+            setOldpass("");
+            setNewpass("");
             setOpenreset(false);
             setCheckinpass(false);
             setChecknewpass(false);
@@ -164,13 +200,41 @@ function Profile() {
     </TouchableOpacity>
   );
   let confirm_addphoto = (
-    <TouchableOpacity
-      style={[styles.button, { flexDirection: "row" }]}
-    >
+    <TouchableOpacity style={[styles.button, { flexDirection: "row" }]} onPress={() => {updatePhoto()}}>
       <MaterialIcons name="add-photo-alternate" size={24} color="grey" />
-      <Text style={[{ marginLeft: 10 }, { color: "grey" }]}>Confirm to update photo</Text>
+      <Text style={[{ marginLeft: 10 }, { color: "grey" }]}>
+        Confirm to update photo
+      </Text>
     </TouchableOpacity>
   );
+
+  const updatePhoto = () => {
+    const data = new FormData();
+    const newImageUri = "file:///" + objectImg.uri.split("file:/").join("");
+    data.append("id", user.user_id);
+    data.append("profile", {
+      uri: newImageUri,
+      type: "image",
+      name: newImageUri.split("/").pop(),
+    });
+    axios
+      .post("http://localhost:3000/editProfile/img", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        if (response.data != "err") {
+          alert("Update profile success");
+          setImage(null)
+          setPath("http://localhost:3000" + response.data)
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   let remove_photo = (
     <TouchableOpacity
       onPress={() => setImage(null)}
@@ -215,7 +279,12 @@ function Profile() {
       <View style={styles.boxback}></View>
       <View style={styles.box}></View>
       <View style={styles.boxset}>
-        {!image && profile_user_not_upload}
+        {/* {!image && profile_user_not_upload} */}
+        {!image && path != "" && (
+          <View style={styles.box}>
+            <Image source={{ uri: path }} style={styles.image} />
+          </View>
+        )}
         {image && (
           <View style={styles.box}>
             <Image source={{ uri: image }} style={styles.image} />
@@ -223,7 +292,7 @@ function Profile() {
         )}
         <View style={{ height: 40 }}>
           <Text style={[{ fontSize: 17 }, { fontWeight: "700" }]}>
-            63070077@it.kmitl.ac.th
+            {user.email}
           </Text>
         </View>
         {image && confirm_addphoto}
@@ -233,7 +302,7 @@ function Profile() {
         {openReset && reset_password}
         <TouchableOpacity
           onPress={() => {
-            logout()
+            logout(props);
           }}
           style={[styles.button, { flexDirection: "row" }]}
         >
