@@ -167,6 +167,7 @@ function Register(props) {
           style={[styles.input, { width: "65%" }]}
           placeholder="Email"
           keyboardType="email-address"
+          autoCapitalize="none"
           onChangeText={(mail) => {
             setEmail(mail);
           }}
@@ -184,6 +185,7 @@ function Register(props) {
         <TextInput
           style={styles.input}
           placeholder="Secret Key"
+          autoCapitalize="none"
           onChangeText={(key) => {
             setKey(key);
           }}
@@ -192,6 +194,7 @@ function Register(props) {
       <View style={styles.inputcontainer}>
         <TextInput
           style={styles.input}
+          autoCapitalize='none'
           placeholder="Password"
           secureTextEntry={true}
           autoCorrect={false}
@@ -205,6 +208,7 @@ function Register(props) {
           style={styles.input}
           placeholder="Confirm Password"
           secureTextEntry={true}
+          autoCapitalize='none'
           autoCorrect={false}
           onChangeText={(pass) => {
             setConfirmpass(pass);

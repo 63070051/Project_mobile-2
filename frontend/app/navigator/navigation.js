@@ -71,9 +71,10 @@ function CourseStack() {
       <CourseNavigator.Screen
         name="courseinfo"
         component={CourseInfo}
-        options={{
-          title: "Course Info",
-        }}
+        options={({ route }) => ({
+          title: route.params.course.title,
+          headerBackTitleVisible: false,
+        })}
       />
       <CourseNavigator.Screen
         name="coursecreate"

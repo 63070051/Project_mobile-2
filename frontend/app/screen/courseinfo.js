@@ -29,16 +29,13 @@ function RenderCourseInfo(props) {
   );
 }
 
-function RenderVideo(props){
+function RenderVideo(props) {
   const [playing, setPlaying] = React.useState(false);
   const togglePlaying = () => {
     setPlaying((prev) => !prev);
   };
   const videoId = "dQw4w9WgXcQ";
-  return(
-    <Youtube height={160} width={250} play={playing} videoId={videoId} />
-  );
-
+  return <Youtube height={160} width={250} play={playing} videoId={videoId} />;
 }
 
 function RenderCourseOverView(props) {
@@ -50,11 +47,7 @@ function RenderCourseOverView(props) {
       <View style={styles.box}>
         <View style={styles.inside}>
           <Text style={styles.text}>{props.course_description}</Text>
-          {(props.videoId != "") &&(
-          <RenderVideo
-            videoId={props.videoId}
-          />
-          )}
+          {props.videoId != "" && <RenderVideo videoId={props.videoId} />}
           <Text style={styles.text}>{props.material}</Text>
           <View style={styles.material}>
             <Text style={styles.text}>{props.link}</Text>
@@ -66,13 +59,35 @@ function RenderCourseOverView(props) {
   );
 }
 
-function CourseInfo() {
+function CourseInfo({ route }) {
+  const [user, setUser] = React.useState(route.params.user);
+  const [course, setCourse] = React.useState(route.params.course);
+  const [member, setmember] = React.useState(0);
+  // console.log(user)
+
+  async function getMember() {
+    await axios
+    .post("http://localhost:3000/getMember", {
+      course_id: course.course_id,
+    })
+    .then((response) => {
+      // console.log(response.data)
+      setmember(response.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
+  React.useEffect(() => {
+    getMember();
+  }, []);
   return (
-    <ScrollView style={styles.scrollview}>
+    <ScrollView contentContainerStyle={{alignItems: 'center' , paddingBottom : 20}} style={[styles.scrollview]}>
       <RenderCourseInfo
-        name="Course Name"
-        description="Course Description"
-        member="Member"
+        name={course.title}
+        description={course.subtitle}
+        member={member}
       />
       <RenderCourseOverView
         week="1"
@@ -91,16 +106,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 10,
     marginTop: 20,
-    marginLeft: 50,
-    width: "75%",
+    // marginLeft: 50,
+    width: "90%",
 
     borderRadius: 10,
-    
   },
   scrollview: {
     flex: 1,
     backgroundColor: "#FFF8EA",
-    marginTop: 50,
+    // marginTop: 50,
   },
   logo: {
     width: 300,
@@ -136,10 +150,10 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
   },
-  text:{
+  text: {
     marginBottom: 10,
   },
-  material:{
+  material: {
     width: 250,
     backgroundColor: "#fff",
     shadowRadius: 10,
@@ -150,9 +164,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     alignItems: "center",
-    
   },
-
 });
 
 export default CourseInfo;

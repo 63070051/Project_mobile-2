@@ -104,4 +104,17 @@ router.post("/DeleteCourse", async function (req, res, next) {
   }
 });
 
+router.post("/getMember", async function (req, res, next) {
+  let course_id = req.body.course_id
+  try {
+    const [member, field] = await pool.query("SELECT * FROM s_course WHERE c_id = ?", [
+      course_id
+    ]);
+    res.json(member.length);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+
 module.exports = router;
