@@ -124,7 +124,7 @@ router.post("/createLesson", async function (req, res, next) {
   let course_id = req.body.course_id;
   let u_id = req.body.u_id;
   let lessonCourse = req.body.lesson;
-  console.log(course_id, lessonCourse, u_id)
+  console.log(course_id, lessonCourse, u_id);
   try {
     const [lesson, field] = await pool.query(
       "INSERT INTO lesson(lesson, c_id, u_id) VALUES(?, ?, ?)",
@@ -144,6 +144,36 @@ router.post("/getLesson", async function (req, res, next) {
       [course_id]
     );
     res.json(lesson);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+router.post("/getDescription", async function (req, res, next) {
+  let course_id = req.body.course_id;
+  try {
+    const [description, field] = await pool.query(
+      "SELECT * FROM dataLesson WHERE c_id = ?",
+      [course_id]
+    );
+    res.json(description);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+router.post("/createDescription", async function (req, res, next) {
+  let course_id = req.body.course_id;
+  let h_id = req.body.h_id;
+  let data = req.body.data;
+  let type = req.body.type;
+  let u_id = req.body.u_id;
+  try {
+    const [description, field] = await pool.query(
+      "INSERT INTO dataLesson(type, data, h_id, u_id, c_id) VALUES(?, ?, ?, ?, ?)",
+      [type, data, h_id, u_id, course_id]
+    );
+    res.json("success");
   } catch (error) {
     res.json(error);
   }
