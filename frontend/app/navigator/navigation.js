@@ -122,7 +122,6 @@ function TabNavigater() {
         name="Home"
         component={Home}
         options={{
-          headerShown: false,
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="home" size={size} color="black" />;
           },
@@ -132,7 +131,6 @@ function TabNavigater() {
         name="Course"
         component={CourseStack}
         options={{
-          headerShown: false,
           tabBarIcon: ({ color, size }) => {
             return <Entypo name="open-book" size={size} color="black" />;
           },
@@ -142,7 +140,7 @@ function TabNavigater() {
         name="Chat"
         component={ChatStack}
         options={{
-          headerShown: false,
+          headerShown : false,
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="chatbubble" size={size} color="black" />;
           },
@@ -153,7 +151,7 @@ function TabNavigater() {
           name="Manage"
           component={ManageRole}
           options={{
-            headerShown: false,
+
             tabBarIcon: ({ color, size }) => {
               return <Octicons name="gear" size={size} color="black" />;
             },
@@ -164,7 +162,6 @@ function TabNavigater() {
         name="Profile"
         component={Profile}
         options={{
-          headerShown: false,
           tabBarIcon: ({ color, size }) => {
             return <FontAwesome name="user-circle" size={size} color="black" />;
           },

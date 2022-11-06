@@ -61,23 +61,24 @@ router.get("/getSubject", async function (req, res, next) {
 router.post("/getSubjectStudent", async function (req, res, next) {
   let s_id = req.body.id;
   try {
-    const [subject, field] = await pool.query("SELECT * FROM s_course WHERE s_id = ?", [
-      s_id
-    ]);
+    const [subject, field] = await pool.query(
+      "SELECT * FROM s_course WHERE s_id = ?",
+      [s_id]
+    );
     res.json(subject);
   } catch (error) {
     res.json(error);
   }
 });
 
-
 router.post("/enrollCourse", async function (req, res, next) {
   let id = req.body.id;
-  let course_id = req.body.course_id
+  let course_id = req.body.course_id;
   try {
-    const [addCourse, field] = await pool.query("INSERT INTO s_course(c_id, s_id) VALUES(?, ?)",[
-      course_id, id
-    ]);
+    const [addCourse, field] = await pool.query(
+      "INSERT INTO s_course(c_id, s_id) VALUES(?, ?)",
+      [course_id, id]
+    );
     res.json("success");
   } catch (error) {
     res.json(error);
@@ -85,19 +86,21 @@ router.post("/enrollCourse", async function (req, res, next) {
 });
 
 router.post("/DeleteCourse", async function (req, res, next) {
-  let course_id = req.body.course_id
+  let course_id = req.body.course_id;
   try {
     const [getOldImg, fields] = await pool.query(
       "SELECT img from course WHERE course_id = ?",
       [course_id]
     );
-    const [delCourse, field] = await pool.query("DELETE FROM course WHERE course_id = ?;",[
-      course_id
-    ]);
-    const [userInCourse, field1] = await pool.query("DELETE FROM s_course WHERE c_id = ?;",[
-      course_id
-    ]);
-    fs.unlink(("./static" + getOldImg[0].img), err => console.log(err)); 
+    const [delCourse, field] = await pool.query(
+      "DELETE FROM course WHERE course_id = ?;",
+      [course_id]
+    );
+    const [userInCourse, field1] = await pool.query(
+      "DELETE FROM s_course WHERE c_id = ?;",
+      [course_id]
+    );
+    fs.unlink("./static" + getOldImg[0].img, (err) => console.log(err));
     res.json("success");
   } catch (error) {
     res.json(error);
@@ -105,16 +108,45 @@ router.post("/DeleteCourse", async function (req, res, next) {
 });
 
 router.post("/getMember", async function (req, res, next) {
-  let course_id = req.body.course_id
+  let course_id = req.body.course_id;
   try {
-    const [member, field] = await pool.query("SELECT * FROM s_course WHERE c_id = ?", [
-      course_id
-    ]);
+    const [member, field] = await pool.query(
+      "SELECT * FROM s_course WHERE c_id = ?",
+      [course_id]
+    );
     res.json(member.length);
   } catch (error) {
     res.json(error);
   }
 });
 
+router.post("/createLesson", async function (req, res, next) {
+  let course_id = req.body.course_id;
+  let u_id = req.body.u_id;
+  let lessonCourse = req.body.lesson;
+  console.log(course_id, lessonCourse, u_id)
+  try {
+    const [lesson, field] = await pool.query(
+      "INSERT INTO lesson(lesson, c_id, u_id) VALUES(?, ?, ?)",
+      [lessonCourse, course_id, u_id]
+    );
+    res.json("success");
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+router.post("/getLesson", async function (req, res, next) {
+  let course_id = req.body.course_id;
+  try {
+    const [lesson, field] = await pool.query(
+      "SELECT * FROM lesson WHERE c_id = ?",
+      [course_id]
+    );
+    res.json(lesson);
+  } catch (error) {
+    res.json(error);
+  }
+});
 
 module.exports = router;
