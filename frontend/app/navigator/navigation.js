@@ -22,6 +22,7 @@ import CourseCreate from "../screen/CourseCreate";
 import ChatPeople from "../screen/ChatPeople";
 import CourseInfo from "../screen/Courseinfo";
 import axios from "axios";
+import Path from "../../path";
 import { LogBox } from "react-native";
 LogBox.ignoreLogs([
   "AsyncStorage has been extracted from react-native core and will be removed in a future release",
@@ -43,7 +44,7 @@ const Tab = createBottomTabNavigator();
 
 function ChatStack() {
   return (
-    <ChatNavigator.Navigator>
+    <ChatNavigator.Navigator initialRouteName="Messages">
       <ChatNavigator.Screen name="Messages" component={Chat} />
       <ChatNavigator.Screen
         name="chatinfo"
@@ -94,7 +95,7 @@ function TabNavigater() {
       const value = await AsyncStorage.getItem("@login");
       if (value !== null) {
         axios
-          .post("http://localhost:3000/getUserId", {
+          .post(`${Path}/getUserId`, {
             id: JSON.parse(value).user_id,
           })
           .then((response) => {
@@ -117,7 +118,9 @@ function TabNavigater() {
   }, []);
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+    
+    >
       <Tab.Screen
         name="Home"
         component={Home}
@@ -173,7 +176,7 @@ function TabNavigater() {
 
 function LoginStackNavigator() {
   return (
-    <LoginNavigator.Navigator>
+    <LoginNavigator.Navigator initialRouteName="login">
       <LoginNavigator.Screen
         name="login"
         component={Login}
