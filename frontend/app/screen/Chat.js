@@ -24,6 +24,7 @@ import {
   TextSection,
 } from "../styles/chat";
 import SelectDropdown from "react-native-select-dropdown";
+import Path from "../../path";
 
 
 function Chat(props) {
@@ -63,13 +64,13 @@ function Chat(props) {
   const getUser = async () => {
     let users = await AsyncStorage.getItem("@login");
     axios
-      .post("http://localhost:3000/getUserId", {
+      .post(`${Path}/getUserId`, {
         id: JSON.parse(users).user_id,
       })
       .then((response) => {
         setUser(response.data);
         axios
-          .post("http://localhost:3000/getUserChat", {
+          .post(`${Path}/getUserChat`, {
             id: response.data.user_id,
           })
           .then((response) => {
@@ -93,7 +94,7 @@ function Chat(props) {
     }
     return (
       // <View style={[styles.boxchat, check ? styles.boxeven : styles.boxodd]}>
-      //   <Image style={styles.profile} source={{uri : "http://localhost:3000" + props.item.img}}/>
+      //   <Image style={styles.profile} source={{uri : "${Path}" + props.item.img}}/>
       //   <Text style={{fontSize : 20, paddingLeft : 12, fontWeight : "700"}}>
       //     {props.item.email}
       //   </Text>
@@ -106,7 +107,7 @@ function Chat(props) {
         <UserInfo>
           <UserImgWrapper>
             <UserImg
-              source={{ uri: "http://localhost:3000" + itemData.item.img }}
+              source={{ uri: `${Path}` + itemData.item.img }}
             />
           </UserImgWrapper>
           <TextSection>

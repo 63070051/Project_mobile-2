@@ -14,7 +14,7 @@ import { AntDesign, Zocial, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { launchImageLibrary } from "react-native-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
-
+import Path from "../../path";
 const test = async () => {
   try {
     const value = await AsyncStorage.getItem("@login");
@@ -64,7 +64,7 @@ function Register(props) {
         type: "image",
         name: newImageUri.split("/").pop(),
       });
-      axios.post("http://localhost:3000/register/account", data, {
+      axios.post(`${Path}/register/account`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -83,7 +83,7 @@ function Register(props) {
 
   const sendSecretCode = () => {
     axios
-      .post("http://localhost:3000/confirmemail", { email: email })
+      .post(`${Path}/confirmemail`, { email: email })
       .then((response) => {
         if (response.data == "used") {
           alert("Email is already taken");

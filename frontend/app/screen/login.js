@@ -10,7 +10,7 @@ import {
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import Path from "../../path";
 
 
 
@@ -39,7 +39,7 @@ function Login(props) {
   }, [])
   
   const SignIn = async () => {
-    axios.post("http://localhost:3000/checkUser", {
+    axios.post(`${Path}/checkUser`, {
       email : email,
       password : password
     })

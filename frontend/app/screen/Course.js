@@ -20,6 +20,7 @@ import {
 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TextInput } from "react-native-gesture-handler";
+import Path from "../../path";
 
 function Course(props) {
   const [allCourse, setAllCourse] = useState([]);
@@ -34,7 +35,7 @@ function Course(props) {
     let users = await AsyncStorage.getItem("@login");
     let s_id;
     await axios
-      .post("http://localhost:3000/getUserId", {
+      .post(`${Path}/getUserId`, {
         id: JSON.parse(users).user_id,
       })
       .then((response) => {
@@ -46,7 +47,7 @@ function Course(props) {
       });
     // return JSON.parse(user);
     await axios
-      .get(`http://localhost:3000/getSubject`)
+      .get(`${Path}/getSubject`)
       .then((response) => {
         setAllCourse(response.data);
         setBackUpCourse(response.data);
@@ -55,7 +56,7 @@ function Course(props) {
         console.log(err);
       });
     await axios
-      .post("http://localhost:3000/getSubjectStudent", { id: s_id })
+      .post(`${Path}/getSubjectStudent`, { id: s_id })
       .then((response) => {
         let loopcourse = [];
         response.data.forEach((value) => {
@@ -101,7 +102,7 @@ function Course(props) {
   async function AddCourse() {
     if (secretkey == textKey) {
       await axios
-        .post("http://localhost:3000/enrollCourse", {
+        .post(`${Path}/enrollCourse`, {
           id: user.user_id,
           course_id: selectCourse,
         })
@@ -121,7 +122,7 @@ function Course(props) {
   }
   async function DeleteCourse(course_id) {
     await axios
-      .post("http://localhost:3000/DeleteCourse", {
+      .post(`${Path}/DeleteCourse`, {
         course_id: course_id,
       })
       .then((response) => {
@@ -138,7 +139,7 @@ function Course(props) {
   function RenderCrouse(props) {
     let img = "";
     if (props.img) {
-      img = "http://localhost:3000" + props.img;
+      img = `${Path}` + props.img;
     }
     console.log();
     return (

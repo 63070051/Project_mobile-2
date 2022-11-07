@@ -10,9 +10,9 @@ import {
 import { TextInput } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
+import Path from "../../path";
 
 function CourseCreate({route}) {
-    console.log(route)
   const [CourseName, setCourseName] = React.useState("");
   const [CourseSubTitle, setCourseSubTitle] = React.useState("");
   const [CourseKey, setCourseKey] = React.useState("");
@@ -58,7 +58,7 @@ function CourseCreate({route}) {
       name: newImageUri.split("/").pop(),
     });
     await axios
-      .post("http://localhost:3000/addSubject", data, {
+      .post(`${Path}/addSubject`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

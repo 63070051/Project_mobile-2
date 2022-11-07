@@ -8,7 +8,7 @@ import {
   Modal,
   TextInput,
   Pressable,
-  Linking
+  Linking,
 } from "react-native";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -17,6 +17,7 @@ import SelectDropdown from "react-native-select-dropdown";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Youtube from "react-native-youtube-iframe";
 import { TEST_ID } from "react-native-gifted-chat";
+import Path from "../../path";
 
 function RenderCourseInfo(props) {
   return (
@@ -40,21 +41,31 @@ function RenderVideo(props) {
   const togglePlaying = () => {
     setPlaying((prev) => !prev);
   };
-  return <Youtube height={200} width={350} play={playing} videoId={props.videoId} />;
+  return (
+    <Youtube height={200} width={350} play={playing} videoId={props.videoId} />
+  );
 }
 
-function RenderTitle(props){
-  return (<Text style={{fontSize : 24, fontWeight : "bold"}}>{props.title}</Text>);
+function RenderTitle(props) {
+  return (
+    <Text style={{ fontSize: 24, fontWeight: "bold" }}>{props.title}</Text>
+  );
 }
 
-function RenderText(props){
-  return (<Text style={{fontSize : 16, fontWeight : "400"}}>{props.text}</Text>);
+function RenderText(props) {
+  return <Text style={{ fontSize: 16, fontWeight: "400" }}>{props.text}</Text>;
 }
 
-function RenderLink(props){
-  return (<Text style={{fontSize : 16, fontWeight : "400", color : "blue"}} onPress={() => Linking.openURL(`${props.link}`)}>{props.link}</Text>);
+function RenderLink(props) {
+  return (
+    <Text
+      style={{ fontSize: 16, fontWeight: "400", color: "blue" }}
+      onPress={() => Linking.openURL(`${props.link}`)}
+    >
+      {props.link}
+    </Text>
+  );
 }
-
 
 function CourseInfo({ route }) {
   const [user, setUser] = useState(route.params.user);
@@ -69,6 +80,7 @@ function CourseInfo({ route }) {
     useState(false);
   const [modalVisibleCreateDescription, setModalVisibleCreateDescription] =
     useState(false);
+  const [material, setMaterial] = useState(false);
   const [allLesson, setAllLesson] = useState([]);
   const type = ["Youtube", "Text", "Title", "Link"];
   // console.log(user)
@@ -98,26 +110,46 @@ function CourseInfo({ route }) {
         </View>
         <View style={styles.box}>
           <View style={styles.inside}>
-            {allDescription && allDescription.map((value) => {
-              if(value.type == "Youtube" && props.value.h_id == value.h_id){
-                return (<RenderVideo key={value.d_id} videoId={value.data.substring(32)} />);
-              }
-              else if(value.type == "Title" && props.value.h_id == value.h_id){
-                return (<RenderTitle key={value.d_id} title={value.data} />);
-              }
-              else if(value.type == "Text" && props.value.h_id == value.h_id){
-                return (<RenderText key={value.d_id} text={value.data} />);
-              }
-              else if(value.type == "Link" && props.value.h_id == value.h_id){
-                return (<RenderLink key={value.d_id} link={value.data} />);
-              }
-            })}
-            {/* {props.videoId != "" && <RenderVideo videoId={props.videoId} />}
-            <Text style={styles.text}>{props.material}</Text>
-            <View style={styles.material}>
-              <Text style={styles.text}>{props.link}</Text>
-            </View>
-            <Button title={"Upload"} /> */}
+            {allDescription &&
+              allDescription.map((value) => {
+                if (value.type == "Youtube" && props.value.h_id == value.h_id) {
+                  return (
+                    <RenderVideo
+                      key={value.d_id}
+                      videoId={value.data.substring(32)}
+                    />
+                  );
+                } else if (
+                  value.type == "Title" &&
+                  props.value.h_id == value.h_id
+                ) {
+                  return <RenderTitle key={value.d_id} title={value.data} />;
+                } else if (
+                  value.type == "Text" &&
+                  props.value.h_id == value.h_id
+                ) {
+                  return <RenderText key={value.d_id} text={value.data} />;
+                } else if (
+                  value.type == "Link" &&
+                  props.value.h_id == value.h_id
+                ) {
+                  return <RenderLink key={value.d_id} link={value.data} />;
+                }
+              })}
+            <TouchableOpacity
+              style={styles.material}
+              onPress={() => {
+                setLessonId(props.value.h_id);
+                setMaterial(!material);
+              }}
+            >
+              <Text style={styles.text}>{props.material}</Text>
+            </TouchableOpacity>
+            {material && props.value.h_id == lessonId && (
+              <View>
+                <Text>dffdsfssfs</Text>
+              </View>
+            )}
           </View>
         </View>
       </View>
@@ -126,7 +158,7 @@ function CourseInfo({ route }) {
   async function getMember() {
     let users = await AsyncStorage.getItem("@login");
     await axios
-      .post("http://localhost:3000/getMember", {
+      .post(`${Path}/getMember`, {
         course_id: course.course_id,
       })
       .then((response) => {
@@ -137,7 +169,7 @@ function CourseInfo({ route }) {
         console.log(err);
       });
     await axios
-      .post("http://localhost:3000/getUserId", {
+      .post(`${Path}/getUserId`, {
         id: JSON.parse(users).user_id,
       })
       .then((response) => {
@@ -150,7 +182,7 @@ function CourseInfo({ route }) {
 
   async function getLesson() {
     await axios
-      .post("http://localhost:3000/getLesson", {
+      .post(`${Path}/getLesson`, {
         course_id: course.course_id,
       })
       .then((response) => {
@@ -163,7 +195,7 @@ function CourseInfo({ route }) {
   }
   async function getDesciption() {
     await axios
-      .post("http://localhost:3000/getDescription", {
+      .post(`${Path}/getDescription`, {
         course_id: course.course_id,
       })
       .then((response) => {
@@ -182,7 +214,7 @@ function CourseInfo({ route }) {
   }, []);
   async function CreateLesson() {
     await axios
-      .post("http://localhost:3000/createLesson", {
+      .post(`${Path}/createLesson`, {
         lesson: lesson,
         course_id: course.course_id,
         u_id: user.user_id,
@@ -202,7 +234,7 @@ function CourseInfo({ route }) {
 
   async function createDescription() {
     await axios
-      .post("http://localhost:3000/createDescription", {
+      .post(`${Path}/createDescription`, {
         type: selectType,
         data: description,
         course_id: course.course_id,
