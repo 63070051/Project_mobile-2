@@ -69,7 +69,7 @@ function Login(props) {
       </View>
       <View style={styles.box}>
         <View style={styles.TextInput}>
-          <Text style={styles.text}>Email</Text>
+          {/* <Text style={styles.text}>Email</Text> */}
           <TextInput
             style={styles.input}
             placeholder="Email"
@@ -77,13 +77,16 @@ function Login(props) {
           />
         </View>
         <View style={styles.TextInput}>
-          <Text style={styles.text}>Password</Text>
+          {/* <Text style={styles.text}>Password</Text> */}
           <TextInput
             style={styles.input}
-            placeholder="*************"
+            placeholder="password"
             secureTextEntry={true}
             onChangeText={(password) => setPassword(password)}
           />
+          <TouchableOpacity style={{marginBottom: 5}}>
+            <Text style={{fontSize : 13, color: "#ffbA00"}}>Forgot password?</Text>
+          </TouchableOpacity>
         </View>
         <View>{TextError}</View>
         <TouchableOpacity
@@ -119,21 +122,24 @@ const styles = StyleSheet.create({
   },
   TextInput: {
     justifyContent: "flex-start",
+    marginBottom: 5
   },
   input: {
     width: 330,
-    borderRadius: 10,
-    padding: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: -2,
-      height: 4,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 5,
-    backgroundColor: "white",
+    // borderRadius: 6,
+    padding: 13,
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: -2,
+    //   height: 4,
+    // },
+    // shadowOpacity: 0.05,
+    // shadowRadius: 3,
+    // elevation: 5,
+    // backgroundColor: "white",
     marginVertical: 9,
+    borderColor: "darkgrey",
+    borderBottomWidth: 1
   },
   button: {
     width: 330,
@@ -146,7 +152,7 @@ const styles = StyleSheet.create({
       width: -2,
       height: 4,
     },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.05,
     shadowRadius: 3,
     elevation: 5,
     marginVertical: 9,
@@ -157,7 +163,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   box: {
+    marginTop: 20,
     alignSelf: "center",
+    backgroundColor: "white",
+    paddingHorizontal: 25,
+    paddingBottom: 15,
+    paddingTop: 10,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: -2,
+      height: 4,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 5,
+    marginVertical: 9,
   },
   logo: {
     width: 300,

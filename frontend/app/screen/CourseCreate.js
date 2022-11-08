@@ -10,11 +10,8 @@ import {
 import { TextInput } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
-<<<<<<< HEAD
 import { Entypo } from '@expo/vector-icons';
-=======
 import Path from "../../path";
->>>>>>> ab0f12f96692248f0bc1f88f1a38a2f603d06a3e
 
 function CourseCreate({route}) {
   const [CourseName, setCourseName] = React.useState("");
@@ -79,7 +76,10 @@ function CourseCreate({route}) {
   }
   const element = <TextInput.Icon name="lock-outline" />
   return (
-    <View style={styles.container}>
+    <ScrollView 
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: 30 , alignItems: "center"}}
+    >
         <View style={styles.box}>
             <Text style={styles.text_header}>Create Course</Text>
         </View>
@@ -153,14 +153,13 @@ function CourseCreate({route}) {
             <Text style={{ color: "white" }}>Create Course</Text>
             </TouchableOpacity>
         </View>
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFF8EA",
-    alignItems: "center",
   },
   text_header: {
     fontSize: 30,
@@ -174,7 +173,7 @@ const styles = StyleSheet.create({
   box: {
     width: "100%",
     alignItems: "center",
-    paddingTop: 50,
+    paddingTop: 40,
     backgroundColor: "#FF9A00",
     height: 250,
     position: "absolute"
