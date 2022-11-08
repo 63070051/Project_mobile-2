@@ -8,17 +8,12 @@ import {
   TextInput,
 } from "react-native";
 import { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-
-
-
-
-
+import Path from "../../path";
 
 function Login(props) {
-  if(props.login){
+  if (props.login) {
     props.navigation.navigate("TabHome");
   }
   const [email, setEmail] = useState("");
@@ -26,47 +21,51 @@ function Login(props) {
   const [error, setError] = useState(false);
   let TextError = null;
 
-
-  const getUser = async () =>{
+  const getUser = async () => {
     let users = await AsyncStorage.getItem("@login");
-    if(users != undefined){
+    if (users != undefined) {
       props.navigation.replace("TabHome");
     }
     // return JSON.parse(user);
-  }
-  useEffect(() =>{
+  };
+  useEffect(() => {
     getUser();
-  }, [])
-  
+  }, []);
+
   const SignIn = async () => {
-    axios.post("http://localhost:3000/checkUser", {
-      email : email,
-      password : password
-    })
-    .then((response) => {
-      if(response.data != "error login"){
-        setError(false);
-        AsyncStorage.setItem("@login" , JSON.stringify(response.data));
-        {props.navigation.replace("TabHome", {user : response.data})}
-      }
-      else{
-        setError(true);
-      }
-    })
+    axios
+      .post(`${Path}/checkUser`, {
+        email: email,
+        password: password,
+      })
+      .then((response) => {
+        if (response.data != "error login") {
+          setError(false);
+          AsyncStorage.setItem("@login", JSON.stringify(response.data));
+          {
+            props.navigation.replace("TabHome", { user: response.data });
+          }
+        } else {
+          setError(true);
+        }
+      });
   };
 
-
-  if(error){
+  if (error) {
     TextError = (
-        <Text style={{color : "red", marginBottom : 10, fontSize : 15}}>The username or password is incorrect</Text>
+      <Text style={{ color: "red", marginBottom: 10, fontSize: 15 }}>
+        The username or password is incorrect
+      </Text>
     );
   }
-
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.logocontainer}>
-        <Image style={styles.logo} source={require("../assets/logo_login.png")} />
+        <Image
+          style={styles.logo}
+          source={require("../assets/logo_login.png")}
+        />
       </View>
       <View style={styles.box}>
         <View style={styles.TextInput}>
@@ -86,17 +85,22 @@ function Login(props) {
             onChangeText={(password) => setPassword(password)}
           />
         </View>
-          <View>{TextError}</View>
+        <View>{TextError}</View>
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
             SignIn();
           }}
         >
-          <Text style={{color: "white"}}>Sign in</Text>
+          <Text style={{ color: "white" }}>Sign in</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => {props.navigation.navigate("register")}}>
-          <Text style={{color: "white"}}>Sign up</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            props.navigation.navigate("register");
+          }}
+        >
+          <Text style={{ color: "white" }}>Sign up</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.countContainer}>
@@ -107,7 +111,7 @@ function Login(props) {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor : "#FFF8EA",
+    backgroundColor: "#FFF8EA",
     paddingTop: 60,
   },
   text: {
@@ -122,14 +126,14 @@ const styles = StyleSheet.create({
     padding: 10,
     shadowColor: "#000",
     shadowOffset: {
-        width: -2,
-        height: 4,
+      width: -2,
+      height: 4,
     },
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 5,
     backgroundColor: "white",
-    marginVertical: 9
+    marginVertical: 9,
   },
   button: {
     width: 330,
@@ -145,15 +149,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 5,
-    marginVertical: 9
+    marginVertical: 9,
   },
   countContainer: {
     alignItems: "center",
     padding: 10,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   box: {
-    alignSelf: "center"
+    alignSelf: "center",
   },
   logo: {
     width: 300,

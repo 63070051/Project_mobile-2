@@ -10,10 +10,13 @@ import {
 import { TextInput } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
+<<<<<<< HEAD
 import { Entypo } from '@expo/vector-icons';
+=======
+import Path from "../../path";
+>>>>>>> ab0f12f96692248f0bc1f88f1a38a2f603d06a3e
 
 function CourseCreate({route}) {
-    console.log(route)
   const [CourseName, setCourseName] = React.useState("");
   const [CourseSubTitle, setCourseSubTitle] = React.useState("");
   const [CourseKey, setCourseKey] = React.useState("");
@@ -57,7 +60,7 @@ function CourseCreate({route}) {
       name: newImageUri.split("/").pop(),
     });
     await axios
-      .post("http://localhost:3000/addSubject", data, {
+      .post(`${Path}/addSubject`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

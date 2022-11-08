@@ -20,6 +20,7 @@ import {
   MaterialIcons,
   AntDesign,
 } from "@expo/vector-icons";
+import Path from "../../path";
 
 function Profile(props) {
   const [checkinpass, setCheckinpass] = React.useState(false);
@@ -36,13 +37,13 @@ function Profile(props) {
   const getUser = async () => {
     let users = await AsyncStorage.getItem("@login");
     axios
-      .post("http://localhost:3000/getUserId", {
+      .post(`${Path}/getUserId`, {
         id: JSON.parse(users).user_id,
       })
       .then((response) => {
         setUser(response.data);
         setToken(response.data.tokens);
-        setPath("http://localhost:3000" + response.data.img);
+        setPath(`${Path}` + response.data.img);
       })
       .catch((err) => {
         console.log(err);
@@ -74,7 +75,7 @@ function Profile(props) {
               setOldpass("");
               setNewpass("");
               axios
-                .post("http://localhost:3000/editProfile/password", {
+                .post(`${Path}/editProfile/password`, {
                   password: newPassword,
                   id : user.user_id
                 })
@@ -218,7 +219,7 @@ function Profile(props) {
       name: newImageUri.split("/").pop(),
     });
     axios
-      .post("http://localhost:3000/editProfile/img", data, {
+      .post(`${Path}/editProfile/img`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -227,7 +228,7 @@ function Profile(props) {
         if (response.data != "err") {
           alert("Update profile success");
           setImage(null)
-          setPath("http://localhost:3000" + response.data)
+          setPath(`${Path}` + response.data)
         }
       })
       .catch((err) => {

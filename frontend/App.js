@@ -10,9 +10,14 @@ import Profile from "./app/screen/Profile";
 import CourseInfo from "./app/screen/CourseInfo";
 import CourseAdmin from "./app/screen/CourseAdmin";
 import CourseCreate from "./app/screen/CourseCreate";
+import CreateLesson from "./app/screen/CreateLesson"
 
 export default function App() {
+<<<<<<< HEAD
   return <CourseCreate />;
+=======
+  return <CreateLesson />;
+>>>>>>> ab0f12f96692248f0bc1f88f1a38a2f603d06a3e
 }
 
 const styles = StyleSheet.create({

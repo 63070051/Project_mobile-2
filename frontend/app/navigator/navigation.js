@@ -22,6 +22,7 @@ import CourseCreate from "../screen/CourseCreate";
 import ChatPeople from "../screen/ChatPeople";
 import CourseInfo from "../screen/CourseInfo";
 import axios from "axios";
+import Path from "../../path";
 import { LogBox } from "react-native";
 LogBox.ignoreLogs([
   "AsyncStorage has been extracted from react-native core and will be removed in a future release",
@@ -43,7 +44,7 @@ const Tab = createBottomTabNavigator();
 
 function ChatStack() {
   return (
-    <ChatNavigator.Navigator>
+    <ChatNavigator.Navigator initialRouteName="Messages">
       <ChatNavigator.Screen name="Messages" component={Chat} />
       <ChatNavigator.Screen
         name="chatinfo"
@@ -71,9 +72,10 @@ function CourseStack() {
       <CourseNavigator.Screen
         name="courseinfo"
         component={CourseInfo}
-        options={{
-          title: "Course Info",
-        }}
+        options={({ route }) => ({
+          title: route.params.course.title,
+          headerBackTitleVisible: false,
+        })}
       />
       <CourseNavigator.Screen
         name="coursecreate"
@@ -93,7 +95,7 @@ function TabNavigater() {
       const value = await AsyncStorage.getItem("@login");
       if (value !== null) {
         axios
-          .post("http://localhost:3000/getUserId", {
+          .post(`${Path}/getUserId`, {
             id: JSON.parse(value).user_id,
           })
           .then((response) => {
@@ -116,12 +118,13 @@ function TabNavigater() {
   }, []);
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+    
+    >
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
-          headerShown: false,
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="home" size={size} color="black" />;
           },
@@ -131,7 +134,6 @@ function TabNavigater() {
         name="Course"
         component={CourseStack}
         options={{
-          headerShown: false,
           tabBarIcon: ({ color, size }) => {
             return <Entypo name="open-book" size={size} color="black" />;
           },
@@ -141,7 +143,7 @@ function TabNavigater() {
         name="Chat"
         component={ChatStack}
         options={{
-          headerShown: false,
+          headerShown : false,
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="chatbubble" size={size} color="black" />;
           },
@@ -152,7 +154,7 @@ function TabNavigater() {
           name="Manage"
           component={ManageRole}
           options={{
-            headerShown: false,
+
             tabBarIcon: ({ color, size }) => {
               return <Octicons name="gear" size={size} color="black" />;
             },
@@ -163,7 +165,6 @@ function TabNavigater() {
         name="Profile"
         component={Profile}
         options={{
-          headerShown: false,
           tabBarIcon: ({ color, size }) => {
             return <FontAwesome name="user-circle" size={size} color="black" />;
           },
@@ -175,7 +176,7 @@ function TabNavigater() {
 
 function LoginStackNavigator() {
   return (
-    <LoginNavigator.Navigator>
+    <LoginNavigator.Navigator initialRouteName="login">
       <LoginNavigator.Screen
         name="login"
         component={Login}

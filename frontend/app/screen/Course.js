@@ -8,7 +8,7 @@ import {
   FlatList,
   Modal,
   Pressable,
-  Alert
+  Alert,
 } from "react-native";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -20,11 +20,13 @@ import {
 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TextInput } from "react-native-gesture-handler";
+import Path from "../../path";
 
 function Course(props) {
   const [allCourse, setAllCourse] = useState([]);
   const [user, setUser] = useState([]);
   const [course, setCourse] = useState([]);
+  const [backUpCourse, setBackUpCourse] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [secretkey, setSecretKey] = useState("");
   const [textKey, setTextKey] = useState("");
@@ -33,7 +35,7 @@ function Course(props) {
     let users = await AsyncStorage.getItem("@login");
     let s_id;
     await axios
-      .post("http://localhost:3000/getUserId", {
+      .post(`${Path}/getUserId`, {
         id: JSON.parse(users).user_id,
       })
       .then((response) => {
@@ -45,15 +47,16 @@ function Course(props) {
       });
     // return JSON.parse(user);
     await axios
-      .get(`http://localhost:3000/getSubject`)
+      .get(`${Path}/getSubject`)
       .then((response) => {
         setAllCourse(response.data);
+        setBackUpCourse(response.data);
       })
       .catch((err) => {
         console.log(err);
       });
     await axios
-      .post("http://localhost:3000/getSubjectStudent", { id: s_id })
+      .post(`${Path}/getSubjectStudent`, { id: s_id })
       .then((response) => {
         let loopcourse = [];
         response.data.forEach((value) => {
@@ -69,6 +72,16 @@ function Course(props) {
   useEffect(() => {
     getUser();
   }, []);
+
+
+  async function myCourse(){
+    let filter = allCourse.filter((value) =>{
+      if(course.indexOf(value.course_id) > -1){
+        return value;
+      }
+    });
+    setAllCourse(filter);
+  }
 
   const confirmDel = (id) => {
     return Alert.alert("Are your sure?", "Are you sure to Delete course?", [
@@ -89,7 +102,7 @@ function Course(props) {
   async function AddCourse() {
     if (secretkey == textKey) {
       await axios
-        .post("http://localhost:3000/enrollCourse", {
+        .post(`${Path}/enrollCourse`, {
           id: user.user_id,
           course_id: selectCourse,
         })
@@ -109,7 +122,7 @@ function Course(props) {
   }
   async function DeleteCourse(course_id) {
     await axios
-      .post("http://localhost:3000/DeleteCourse", {
+      .post(`${Path}/DeleteCourse`, {
         course_id: course_id,
       })
       .then((response) => {
@@ -126,7 +139,7 @@ function Course(props) {
   function RenderCrouse(props) {
     let img = "";
     if (props.img) {
-      img = "http://localhost:3000" + props.img;
+      img = `${Path}` + props.img;
     }
     console.log();
     return (
@@ -178,17 +191,27 @@ function Course(props) {
         )}
         {(props.role == "Teacher" || props.role == "Admin") && (
           <View style={styles.buttoncontainer1}>
-            <TouchableOpacity style={styles.editcontainer}>
-              <AntDesign name="edit" size={30} color="black" />
-            </TouchableOpacity>
             <TouchableOpacity
-              style={styles.deletecontainer}
+              style={[styles.enterclassbutton, { width: "60%" }]}
               onPress={() => {
-                confirmDel(props.id);
+                props.courseInfo();
               }}
             >
-              <MaterialCommunityIcons name="delete" size={30} color="red" />
+              <Ionicons name="ios-enter-outline" size={30} color="black" />
             </TouchableOpacity>
+            <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity style={styles.editcontainer}>
+                <AntDesign name="edit" size={30} color="black" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.deletecontainer}
+                onPress={() => {
+                  confirmDel(props.id);
+                }}
+              >
+                <MaterialCommunityIcons name="delete" size={30} color="red" />
+              </TouchableOpacity>
+            </View>
           </View>
         )}
       </View>
@@ -261,6 +284,18 @@ function Course(props) {
         {user.role == "Student" && (
           <View style={styles.header}>
             <Text style={styles.text_header}>Course</Text>
+            <View style={{ flexDirection: "row" , marginTop : 10}}>
+              <TouchableOpacity style={{marginRight : 20}} onPress={() =>{
+                setAllCourse(backUpCourse);
+              }}>
+                <Text style={{fontSize : 20, fontWeight : "500"}}>ALL COURSE</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() =>{
+                myCourse();
+              }}>
+                <Text style={{fontSize : 20, fontWeight : "500"}}>MY COURSE</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
         {(user.role == "Teacher" || user.role == "Admin") && (
@@ -291,7 +326,10 @@ function Course(props) {
               role={user.role}
               secretkey={value.s_key}
               courseInfo={() => {
-                props.navigation.navigate("courseinfo");
+                props.navigation.navigate("courseinfo", {
+                  course: value,
+                  user: user,
+                });
               }}
             />
           );
@@ -364,18 +402,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffd7a8",
     padding: 5,
     width: "100%",
-    justifyContent: "center",
+    justifyContent: "space-between",
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
   },
   editcontainer: {
     marginTop: 10,
     marginBottom: 10,
-    marginRight: 150,
+    marginRight: 20,
   },
   deletecontainer: {
     marginTop: 10,
     marginBottom: 10,
+    paddingRight: 5,
   },
   header1: {
     marginTop: 50,

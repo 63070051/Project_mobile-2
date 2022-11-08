@@ -11,12 +11,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { FlatList } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
-
+import Path from "../../path";
 const role = ["Student", "Teacher", "Student"];
 
 
 const changeDataBaseRole = (id, role) => {
-  axios.post('http://localhost:3000/updateRole', {
+  axios.post(`${Path}/updateRole`, {
     id : id,
     role : role
   }).then((response) =>{
@@ -74,7 +74,7 @@ function ManageRole() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/getUser")
+      .get(`${Path}/getUser`)
       .then((response) => {
         // setAllUser(response.data);
         setAllUser(response.data);

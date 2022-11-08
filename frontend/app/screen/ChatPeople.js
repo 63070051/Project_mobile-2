@@ -18,6 +18,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GiftedChat, Send, Bubble } from "react-native-gifted-chat";
 import { db } from "../../firebase";
+import Path from "../../path";
 
 function ChatPeople({ route }) {
   const [messages, setMessages] = useState([]);
@@ -105,7 +106,7 @@ function ChatPeople({ route }) {
       user={{
         _id: users.user_id,
         email: users.email,
-        avatar: "http://localhost:3000" + users.img,
+        avatar: `${Path}` + users.img,
         _target: target_id,
         room: docId,
       }}

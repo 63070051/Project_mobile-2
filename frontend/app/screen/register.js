@@ -14,7 +14,7 @@ import { AntDesign, Zocial, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { launchImageLibrary } from "react-native-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
-
+import Path from "../../path";
 const test = async () => {
   try {
     const value = await AsyncStorage.getItem("@login");
@@ -64,7 +64,7 @@ function Register(props) {
         type: "image",
         name: newImageUri.split("/").pop(),
       });
-      axios.post("http://localhost:3000/register/account", data, {
+      axios.post(`${Path}/register/account`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -83,7 +83,7 @@ function Register(props) {
 
   const sendSecretCode = () => {
     axios
-      .post("http://localhost:3000/confirmemail", { email: email })
+      .post(`${Path}/confirmemail`, { email: email })
       .then((response) => {
         if (response.data == "used") {
           alert("Email is already taken");
@@ -167,6 +167,7 @@ function Register(props) {
           style={[styles.input, { width: "65%" }]}
           placeholder="Email"
           keyboardType="email-address"
+          autoCapitalize="none"
           onChangeText={(mail) => {
             setEmail(mail);
           }}
@@ -184,6 +185,7 @@ function Register(props) {
         <TextInput
           style={styles.input}
           placeholder="Secret Key"
+          autoCapitalize="none"
           onChangeText={(key) => {
             setKey(key);
           }}
@@ -192,6 +194,7 @@ function Register(props) {
       <View style={styles.inputcontainer}>
         <TextInput
           style={styles.input}
+          autoCapitalize='none'
           placeholder="Password"
           secureTextEntry={true}
           autoCorrect={false}
@@ -205,6 +208,7 @@ function Register(props) {
           style={styles.input}
           placeholder="Confirm Password"
           secureTextEntry={true}
+          autoCapitalize='none'
           autoCorrect={false}
           onChangeText={(pass) => {
             setConfirmpass(pass);
