@@ -10,9 +10,10 @@ import Profile from "./app/screen/Profile";
 import CourseInfo from "./app/screen/Courseinfo";
 import CourseAdmin from "./app/screen/CourseAdmin";
 import CourseCreate from "./app/screen/CourseCreate";
+import CreateLesson from "./app/screen/CreateLesson"
 
 export default function App() {
-  return <MyNavigator />;
+  return <CreateLesson />;
 }
 
 const styles = StyleSheet.create({
