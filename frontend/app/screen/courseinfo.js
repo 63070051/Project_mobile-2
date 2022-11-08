@@ -9,13 +9,22 @@ import {
   TextInput,
   Pressable,
   Linking,
+  Alert,
+  useWindowDimensions,
 } from "react-native";
+import {
+  AntDesign,
+  Entypo,
+  MaterialCommunityIcons,
+  Ionicons,
+} from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Button } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Youtube from "react-native-youtube-iframe";
+import RenderHtml from "react-native-render-html";
 import { TEST_ID } from "react-native-gifted-chat";
 import Path from "../../path";
 
@@ -42,49 +51,47 @@ function RenderVideo(props) {
     setPlaying((prev) => !prev);
   };
   return (
-    <Youtube height={200} width={350} play={playing} videoId={props.videoId} />
+    <Youtube height={200} width={props.width} play={playing} videoId={props.videoId} />
   );
 }
 
-function RenderTitle(props) {
-  return (
-    <Text style={{ fontSize: 24, fontWeight: "bold" }}>{props.title}</Text>
-  );
-}
+// function RenderTitle(props) {
+//   return (
+//     <Text style={{ fontSize: 24, fontWeight: "bold" }}>{props.title}</Text>
+//   );
+// }
 
-function RenderText(props) {
-  return <Text style={{ fontSize: 16, fontWeight: "400" }}>{props.text}</Text>;
-}
+// function RenderText(props) {
+//   return <Text style={{ fontSize: 16, fontWeight: "400" }}>{props.text}</Text>;
+// }
 
-function RenderLink(props) {
-  return (
-    <Text
-      style={{ fontSize: 16, fontWeight: "400", color: "blue" }}
-      onPress={() => Linking.openURL(`${props.link}`)}
-    >
-      {props.link}
-    </Text>
-  );
-}
+// function RenderLink(props) {
+//   return (
+//     <Text
+//       style={{ fontSize: 16, fontWeight: "400", color: "blue" }}
+//       onPress={() => Linking.openURL(`${props.link}`)}
+//     >
+//       {props.link}
+//     </Text>
+//   );
+// }
 
 function CourseInfo({ route }) {
   const [user, setUser] = useState(route.params.user);
   const [course, setCourse] = useState(route.params.course);
   const [member, setmember] = useState(0);
+  const { width } = useWindowDimensions();
   const [lesson, setLesson] = useState("");
   const [description, setDescription] = useState("");
   const [allDescription, setAllDescription] = useState([]);
   const [selectType, setSelectType] = useState("");
   const [lessonId, setLessonId] = useState("");
-  const [modalVisibleCreateLesson, setModalVisibleCreateLesson] =
-    useState(false);
   const [modalVisibleCreateDescription, setModalVisibleCreateDescription] =
     useState(false);
   const [material, setMaterial] = useState(false);
   const [allLesson, setAllLesson] = useState([]);
-  const type = ["Youtube", "Text", "Title", "Link"];
-  // console.log(user)
-
+  const type = ["Youtube"];
+  // console.log(width)
   function RenderCourseOverView(props) {
     return (
       <View style={styles.container}>
@@ -93,12 +100,13 @@ function CourseInfo({ route }) {
         </View>
         <View
           style={{
-            padding: 10,
+            paddingHorizontal: 10,
+            paddingTop: 10,
             flexDirection: "row",
             justifyContent: "space-between",
           }}
         >
-          <Text style={{ fontSize: 16 }}>{props.course_description}</Text>
+          <Text style={{ fontSize: 12 }}>{props.course_description}</Text>
           <TouchableOpacity
             onPress={() => {
               setModalVisibleCreateDescription(!modalVisibleCreateDescription);
@@ -110,33 +118,19 @@ function CourseInfo({ route }) {
         </View>
         <View style={styles.box}>
           <View style={styles.inside}>
+            <RenderHtml contentWidth={width} source={{ html: props.data }} />
             {allDescription &&
               allDescription.map((value) => {
-                if (value.type == "Youtube" && props.value.h_id == value.h_id) {
+                if (props.value.h_id == value.h_id) {
                   return (
                     <RenderVideo
                       key={value.d_id}
                       videoId={value.data.substring(32)}
                     />
                   );
-                } else if (
-                  value.type == "Title" &&
-                  props.value.h_id == value.h_id
-                ) {
-                  return <RenderTitle key={value.d_id} title={value.data} />;
-                } else if (
-                  value.type == "Text" &&
-                  props.value.h_id == value.h_id
-                ) {
-                  return <RenderText key={value.d_id} text={value.data} />;
-                } else if (
-                  value.type == "Link" &&
-                  props.value.h_id == value.h_id
-                ) {
-                  return <RenderLink key={value.d_id} link={value.data} />;
                 }
               })}
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.material}
               onPress={() => {
                 setLessonId(props.value.h_id);
@@ -149,11 +143,64 @@ function CourseInfo({ route }) {
               <View>
                 <Text>dffdsfssfs</Text>
               </View>
-            )}
+            )} */}
           </View>
+        </View>
+        <View style={[styles.buttoncontainer1, { paddingHorizontal: 20 }]}>
+          <TouchableOpacity style={[styles.editcontainer ,{flex : 0.5, width : "50%", alignItems : "center"}]} onPress={()=>[
+            route.params.router.navigate("EditLesson", {
+              course: course,
+              user: user,
+              router: route.params.router,
+              data : props.data,
+              lesson : props.lesson,
+              h_id : props.value.h_id
+            })
+          ]}>
+            <AntDesign name="edit" size={30} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.deletecontainer, {flex : 0.5, width : "50%", alignItems : "center"}]}
+            onPress={() => {
+              confirmDel(props.value.h_id);
+            }}
+          >
+            <MaterialCommunityIcons name="delete" size={30} color="red" />
+          </TouchableOpacity>
         </View>
       </View>
     );
+  }
+  const confirmDel = (id) => {
+    return Alert.alert("Are your sure?", "Are you sure to Delete lesson?", [
+      // The "Yes" button
+      {
+        text: "Yes",
+        onPress: async () => {
+          DeleteLesson(id);
+        },
+      },
+      // The "No" button
+      // Does nothing but dismiss the dialog when tapped
+      {
+        text: "No",
+      },
+    ]);
+  };
+  async function DeleteLesson(lesson_id) {
+    await axios
+      .post(`${Path}/DeleteLesson`, {
+        lesson_id: lesson_id,
+      })
+      .then((response) => {
+        if (response.data == "success") {
+          getLesson();
+          alert("Delete success");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   async function getMember() {
     let users = await AsyncStorage.getItem("@login");
@@ -207,31 +254,6 @@ function CourseInfo({ route }) {
       });
   }
 
-  useEffect(() => {
-    getMember();
-    getLesson();
-    getDesciption();
-  }, []);
-  async function CreateLesson() {
-    await axios
-      .post(`${Path}/createLesson`, {
-        lesson: lesson,
-        course_id: course.course_id,
-        u_id: user.user_id,
-      })
-      .then((response) => {
-        if (response.data == "success") {
-          getLesson();
-          alert("success");
-          setModalVisibleCreateLesson(!modalVisibleCreateLesson);
-        }
-        // console.log(response.data)
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
   async function createDescription() {
     await axios
       .post(`${Path}/createDescription`, {
@@ -255,6 +277,12 @@ function CourseInfo({ route }) {
       });
   }
 
+  useEffect(() => {
+    getMember();
+    getLesson();
+    getDesciption();
+  }, []);
+
   return (
     <ScrollView
       contentContainerStyle={{ alignItems: "center", paddingBottom: 20 }}
@@ -265,61 +293,6 @@ function CourseInfo({ route }) {
         description={course.subtitle}
         member={member}
       />
-
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={modalVisibleCreateLesson}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisibleCreateLesson(!modalVisibleCreateLesson);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Create Lesson</Text>
-              <TextInput
-                onChangeText={(text) => setLesson(text)}
-                style={[styles.input, { width: "90%" }]}
-                placeholder="Please Input"
-              />
-              <View
-                style={{
-                  flexDirection: "row",
-                  width: "100%",
-                  justifyContent: "center",
-                }}
-              >
-                <Pressable
-                  style={[
-                    styles.button,
-                    styles.buttonClose,
-                    { marginLeft: 5, marginRight: 5 },
-                  ]}
-                  onPress={() =>
-                    setModalVisibleCreateLesson(!modalVisibleCreateLesson)
-                  }
-                >
-                  <Text style={styles.textStyle}>Cancel</Text>
-                </Pressable>
-                <Pressable
-                  style={[
-                    styles.button,
-                    styles.buttonConfirm,
-                    { marginRight: 5, marginLeft: 5 },
-                  ]}
-                  onPress={() => {
-                    CreateLesson();
-                  }}
-                >
-                  <Text style={styles.textStyle}>Create</Text>
-                </Pressable>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      </View>
 
       <View style={styles.centeredView}>
         <Modal
@@ -338,7 +311,7 @@ function CourseInfo({ route }) {
                 <SelectDropdown
                   data={type}
                   dropdownStyle={[styles.dropdown]}
-                  // defaultButtonText={props.role}
+                  defaultButtonText={"Youtube"}
                   buttonStyle={styles.button}
                   onSelect={(selectedItem, index) => {
                     {
@@ -363,7 +336,7 @@ function CourseInfo({ route }) {
                     selectType == "Text" ? styles.textArea : styles.input,
                     { width: "100%", marginTop: 10 },
                   ]}
-                  placeholder="Please Input"
+                  placeholder="Please Input Link Youtube"
                 />
               </View>
               <View
@@ -416,7 +389,11 @@ function CourseInfo({ route }) {
         <Text style={{ fontSize: 24, fontWeight: "500" }}>Create Lesson</Text>
         <TouchableOpacity
           onPress={() => {
-            setModalVisibleCreateLesson(!modalVisibleCreateLesson);
+            route.params.router.navigate("createLesson", {
+              course: course,
+              user: user,
+              router: route.params.router,
+            });
           }}
         >
           <Text style={{ fontSize: 24, fontWeight: "500" }}>+</Text>
@@ -427,9 +404,11 @@ function CourseInfo({ route }) {
           <RenderCourseOverView
             key={value.h_id}
             lesson={value.lesson}
-            course_description="Course Description"
+            data={value.data}
+            course_description="Description"
             material="Material"
             value={value}
+            width={width}
           />
         );
       })}
@@ -471,8 +450,8 @@ const styles = StyleSheet.create({
   },
 
   box: {
-    padding: 10,
-    marginTop: 10,
+    paddingHorizontal: 10,
+    // marginTop: 10,
   },
 
   header2: {
@@ -487,7 +466,8 @@ const styles = StyleSheet.create({
   },
   inside: {
     width: "100%",
-    alignItems: "center",
+    // alignItems: "center",
+    padding: 10,
   },
   text: {
     marginBottom: 10,
@@ -569,6 +549,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     marginBottom: 10,
+  },
+  buttoncontainer1: {
+    flexDirection: "row",
+    flex : 1,
+    backgroundColor: "#ffd7a8",
+    padding: 5,
+    // width: "100%",
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+  },
+  editcontainer: {
+    marginTop: 10,
+    marginBottom: 10,
+    marginRight: 20,
+  },
+  deletecontainer: {
+    marginTop: 10,
+    marginBottom: 10,
+    paddingRight: 5,
   },
 });
 

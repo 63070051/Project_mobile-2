@@ -20,19 +20,14 @@ import Course from "../screen/Course";
 import ManageRole from "../screen/ManageRole";
 import CourseCreate from "../screen/CourseCreate";
 import ChatPeople from "../screen/ChatPeople";
-import CourseInfo from "../screen/CourseInfo";
+import CourseInfo from "../screen/Courseinfo";
+import CreateLesson from "../screen/CreateLesson";
 import axios from "axios";
 import Path from "../../path";
+import EditLesson from "../screen/EditLesson";
 import { LogBox } from "react-native";
-LogBox.ignoreLogs([
-  "AsyncStorage has been extracted from react-native core and will be removed in a future release",
-]);
-LogBox.ignoreLogs([
-  "Non-serializable values were found in the navigation state",
-]);
-LogBox.ignoreLogs([
-  "Warning: Can't perform a React state update on an unmounted component",
-]);
+LogBox.ignoreAllLogs();
+
 
 const LoginNavigator = createNativeStackNavigator();
 const CourseNavigator = createNativeStackNavigator();
@@ -65,7 +60,6 @@ function CourseStack() {
         name="coursepage"
         component={Course}
         options={{
-          headerShown: false,
           title: "Course",
         }}
       />
@@ -78,10 +72,25 @@ function CourseStack() {
         })}
       />
       <CourseNavigator.Screen
+        name="createLesson"
+        component={CreateLesson}
+        options={{
+          title: "Create Lesson",
+          headerBackTitleVisible: false,
+        }}
+      />
+      <CourseNavigator.Screen
         name="coursecreate"
         component={CourseCreate}
         options={{
           title: "Create Course",
+        }}
+      />
+      <CourseNavigator.Screen
+        name="EditLesson"
+        component={EditLesson}
+        options={{
+          title: "Edit Lesson",
         }}
       />
     </CourseNavigator.Navigator>
@@ -118,9 +127,7 @@ function TabNavigater() {
   }, []);
 
   return (
-    <Tab.Navigator
-    
-    >
+    <Tab.Navigator>
       <Tab.Screen
         name="Home"
         component={Home}
@@ -134,6 +141,7 @@ function TabNavigater() {
         name="Course"
         component={CourseStack}
         options={{
+          headerShown : false,
           tabBarIcon: ({ color, size }) => {
             return <Entypo name="open-book" size={size} color="black" />;
           },
@@ -143,7 +151,7 @@ function TabNavigater() {
         name="Chat"
         component={ChatStack}
         options={{
-          headerShown : false,
+          headerShown: false,
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="chatbubble" size={size} color="black" />;
           },
@@ -154,7 +162,6 @@ function TabNavigater() {
           name="Manage"
           component={ManageRole}
           options={{
-
             tabBarIcon: ({ color, size }) => {
               return <Octicons name="gear" size={size} color="black" />;
             },

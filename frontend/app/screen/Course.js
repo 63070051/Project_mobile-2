@@ -141,7 +141,6 @@ function Course(props) {
     if (props.img) {
       img = `${Path}` + props.img;
     }
-    console.log();
     return (
       <View style={[styles.box]}>
         <View style={styles.inside}>
@@ -190,16 +189,16 @@ function Course(props) {
           </View>
         )}
         {(props.role == "Teacher" || props.role == "Admin") && (
-          <View style={styles.buttoncontainer1}>
+          <View style={[styles.buttoncontainer1, {paddingHorizontal : 20}]}>
             <TouchableOpacity
-              style={[styles.enterclassbutton, { width: "60%" }]}
+              style={[styles.enterclassbutton]}
               onPress={() => {
                 props.courseInfo();
               }}
             >
               <Ionicons name="ios-enter-outline" size={30} color="black" />
             </TouchableOpacity>
-            <View style={{ flexDirection: "row" }}>
+
               <TouchableOpacity style={styles.editcontainer}>
                 <AntDesign name="edit" size={30} color="black" />
               </TouchableOpacity>
@@ -211,7 +210,6 @@ function Course(props) {
               >
                 <MaterialCommunityIcons name="delete" size={30} color="red" />
               </TouchableOpacity>
-            </View>
           </View>
         )}
       </View>
@@ -329,6 +327,7 @@ function Course(props) {
                 props.navigation.navigate("courseinfo", {
                   course: value,
                   user: user,
+                  router : props.navigation
                 });
               }}
             />

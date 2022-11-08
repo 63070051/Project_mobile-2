@@ -107,6 +107,19 @@ router.post("/DeleteCourse", async function (req, res, next) {
   }
 });
 
+router.post("/DeleteLesson", async function (req, res, next) {
+  let lesson_id = req.body.lesson_id;
+  try {
+    const [delLesson, field] = await pool.query(
+      "DELETE FROM lesson WHERE h_id = ?;",
+      [lesson_id]
+    );
+    res.json("success");
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 router.post("/getMember", async function (req, res, next) {
   let course_id = req.body.course_id;
   try {
@@ -123,12 +136,12 @@ router.post("/getMember", async function (req, res, next) {
 router.post("/createLesson", async function (req, res, next) {
   let course_id = req.body.course_id;
   let u_id = req.body.u_id;
+  let data = req.body.data;
   let lessonCourse = req.body.lesson;
-  console.log(course_id, lessonCourse, u_id);
   try {
     const [lesson, field] = await pool.query(
-      "INSERT INTO lesson(lesson, c_id, u_id) VALUES(?, ?, ?)",
-      [lessonCourse, course_id, u_id]
+      "INSERT INTO lesson(lesson, data, c_id, u_id) VALUES(?, ?, ?, ?)",
+      [lessonCourse, data, course_id, u_id]
     );
     res.json("success");
   } catch (error) {
@@ -176,6 +189,23 @@ router.post("/createDescription", async function (req, res, next) {
     res.json("success");
   } catch (error) {
     res.json(error);
+  }
+});
+
+router.post("/EditLesson", async function (req, res, next) {
+  let course_id = req.body.course_id;
+  let u_id = req.body.u_id;
+  let data = req.body.data;
+  let lessonCourse = req.body.lesson;
+  let h_id = req.body.h_id
+  try {
+    const [lesson, field] = await pool.query(
+      "UPDATE lesson SET lesson = ?, data = ?, c_id = ?, u_id = ? WHERE h_id = 7",
+      [lessonCourse, data, course_id, u_id, h_id]
+    );
+    res.json("success");
+  } catch (error) {
+    next(error);
   }
 });
 

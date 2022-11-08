@@ -18,12 +18,12 @@ import RenderHtml from "react-native-render-html";
 import Path from "../../path";
 import axios from "axios";
 
-function CreateLesson({ route }) {
+function EditLesson({ route }) {
   const richText = useRef();
   const [user, setUser] = useState(route.params.user);
   const [course, setCourse] = useState(route.params.course);
-  const [descHTML, setDescHTML] = useState("");
-  const [lesson, setLesson] = useState("");
+  const [descHTML, setDescHTML] = useState(route.params.data);
+  const [lesson, setLesson] = useState(route.params.lesson);
   const [showDescError, setShowDescError] = useState(false);
   const { width } = useWindowDimensions();
   const richTextHandle = (descriptionText) => {
@@ -44,7 +44,8 @@ function CreateLesson({ route }) {
       setShowDescError(true);
     } else {
       await axios
-        .post(`${Path}/createLesson`, {
+        .post(`${Path}/EditLesson`, {
+          h_id : route.params.h_id,
           course_id: course.course_id,
           u_id: user.user_id,
           lesson: lesson,
@@ -52,7 +53,7 @@ function CreateLesson({ route }) {
         })
         .then((response) => {
           if (response.data == "success") {
-            alert("Create Lesson Success");
+            alert("Update Lesson Success");
             route.params.router.replace("courseinfo", {
               course: course,
               user: user,
@@ -79,6 +80,7 @@ function CreateLesson({ route }) {
           </Text>
           <TextInput
             style={styles.textinput}
+            defaultValue={lesson}
             onChangeText={(text) => {
               setLesson(text);
             }}
@@ -96,6 +98,7 @@ function CreateLesson({ route }) {
             <RichEditor
               ref={richText}
               onChange={richTextHandle}
+              initialContentHTML={route.params.data}
               placeholder="Description :)"
               androidHardwareAccelerationDisabled={true}
               style={styles.richTextEditorStyle}
@@ -251,4 +254,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateLesson;
+export default EditLesson;
