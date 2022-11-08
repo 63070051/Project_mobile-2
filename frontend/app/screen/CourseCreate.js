@@ -10,6 +10,7 @@ import {
 import { TextInput } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
+import { Entypo } from '@expo/vector-icons';
 import Path from "../../path";
 
 function CourseCreate({route}) {
@@ -20,12 +21,10 @@ function CourseCreate({route}) {
   const [image, setImage] = React.useState(null);
 
   let Subject_not_upload = (
-    <View style={styles.inputcontainer}>
-      <Image
-        source={require("../assets/noimg.png")}
-        style={{ width: 300, height: 200, borderRadius: 10 }}
-      />
-    </View>
+    <Image
+    source={require("../assets/noimg.png")}
+    style={{ width: 300, height: 200, borderRadius: 10, borderRadius: 10, }}
+    />
   );
 
   const pickImage = async () => {
@@ -75,103 +74,96 @@ function CourseCreate({route}) {
         console.log(err);
       });
   }
-
+  const element = <TextInput.Icon name="lock-outline" />
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <ScrollView 
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: 30 , alignItems: "center"}}
+    >
         <View style={styles.box}>
-          <Text style={styles.text_header}>Create Course</Text>
-          <View style={styles.inside}>
+            <Text style={styles.text_header}>Create Course</Text>
+        </View>
+        <View style={styles.inside}>
             <View style={styles.inputcontainer}>
-              {!image && Subject_not_upload}
-              {image && (
-                <>
-                  <Image
-                    source={{ uri: image }}
-                    style={{
-                      width: 300,
-                      height: 200,
-                      borderRadius: 10,
-                      marginBottom: 20,
-                    }}
-                  />
-                </>
-              )}
-              <View
-                style={{
-                  flexDirection: "row",
-                  width: "75%",
-                  justifyContent: "center",
-                }}
-              >
+                <View style={styles.inputcontainer}>
+                    {!image && Subject_not_upload}
+                    {image && (
+                        <>
+                        <Image
+                            source={{ uri: image }}
+                            style={{
+                            width: 300,
+                            height: 200,
+                            borderRadius: 10,
+                            }}
+                        />
+                        </>
+                    )}
+                </View>
                 <TouchableOpacity
-                  onPress={pickImage}
-                  style={[
+                onPress={pickImage}
+                style={[
                     styles.buttonpho,
-                    { backgroundColor: "royalblue", marginRight: 10 },
-                  ]}
+                    { backgroundColor: "royalblue", marginBottom: 20},
+                ]}
                 >
-                  <Text style={{ color: "white" }}>Upload Photo</Text>
+                    <Text style={{ color: "white" }}>Upload Photo</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => setImage(null)}
-                  style={[
+                onPress={() => setImage(null)}
+                style={[
                     styles.buttonpho,
                     image ? styles.rered : styles.regray,
-                  ]}
+                ]}
                 >
-                  <Text style={{ color: "white" }}>Remove Photo</Text>
+                    <Text style={{ color: "white" }}>Remove Photo</Text>
                 </TouchableOpacity>
-              </View>
             </View>
-            <Text style={styles.text}>Course Name</Text>
+            {/* <Text style={styles.text}>Course Name</Text> */}
             <TextInput
-              placeholder="Course Title"
-              onChangeText={(title) => {
+            placeholder="Course Title"
+            onChangeText={(title) => {
                 setCourseName(title);
-              }}
-              style={styles.textinput}
+            }}
+            style={styles.textinput}
             />
-            <Text style={styles.text}>Sub title</Text>
+            {/* <Text style={styles.text}>Sub title</Text> */}
             <TextInput
-              placeholder="Course Subtitle"
-              onChangeText={(subtitle) => {
+            placeholder="Course Subtitle"
+            onChangeText={(subtitle) => {
                 setCourseSubTitle(subtitle);
-              }}
-              style={styles.textinput}
+            }}
+            style={styles.textinput}
             />
-            <Text style={styles.text}>Enroll Key</Text>
+            {/* <Text style={styles.text}>Enroll Key</Text> */}
             <TextInput
-              placeholder="Course Key"
-              onChangeText={(key) => {
+            placeholder="Course Key"
+            onChangeText={(key) => {
                 setCourseKey(key);
-              }}
-              style={styles.textinput}
+            }}
+            style={styles.textinput}
             />
             <TouchableOpacity
-              onPress={() => createCourse()}
-              style={{
-                backgroundColor: "lightgreen",
-                padding: 10,
-                borderRadius: 10,
-              }}
+            onPress={() => createCourse()}
+            style={[
+                styles.buttonpho,{
+                backgroundColor: "orange",
+            }]}
             >
-              <Text style={{ color: "gray" }}>CreateCourse</Text>
+            <Text style={{ color: "white" }}>Create Course</Text>
             </TouchableOpacity>
-          </View>
         </View>
-      </View>
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFF8EA",
-    alignItems: "center",
   },
   text_header: {
     fontSize: 30,
+    fontWeight: "600"
   },
   header: {
     // marginTop: 50,
@@ -180,45 +172,54 @@ const styles = StyleSheet.create({
   },
   box: {
     width: "100%",
-    padding: 10,
-    marginTop: 20,
-    backgroundColor: "#FF9A00",
-    borderRadius: 10,
-    justifyContent: "center",
     alignItems: "center",
-    borderRadius: 10,
+    paddingTop: 40,
+    backgroundColor: "#FF9A00",
+    height: 250,
+    position: "absolute"
   },
   inside: {
-    marginTop: 20,
-    width: "100%",
-    padding: 10,
+    marginTop: 120,
+    width: "90%",
+    padding: 20,
     flexDirection: "column",
     alignItems: "center",
-    backgroundColor: "#ffaa6e",
-    borderRadius: 10,
+    backgroundColor: "white",
+    borderRadius: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: -2,
+      height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
   },
   textinput: {
-    backgroundColor: "#fff",
     marginTop: 10,
     marginBottom: 20,
-    width: "80%",
+    width: "100%",
     padding: 10,
-    height: 30,
+    // height: 30,
     borderRadius: 5,
+    borderBottomWidth: 1,
+    borderColor: "darkgray"
   },
   text: {
     fontSize: 20,
   },
   inputcontainer: {
+    width: "100%",
     alignItems: "center",
     marginBottom: 20,
     justifyContent: "center",
   },
   buttonpho: {
+    width: "100%",
     backgroundColor: "#FF9A00",
     alignItems: "center",
     padding: 13,
-    borderRadius: 10,
+    borderRadius: 5,
     shadowColor: "#000",
     shadowOffset: {
       width: -2,

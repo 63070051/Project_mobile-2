@@ -20,7 +20,7 @@ import Course from "../screen/Course";
 import ManageRole from "../screen/ManageRole";
 import CourseCreate from "../screen/CourseCreate";
 import ChatPeople from "../screen/ChatPeople";
-import CourseInfo from "../screen/Courseinfo";
+import CourseInfo from "../screen/CourseInfo";
 import axios from "axios";
 import Path from "../../path";
 import { LogBox } from "react-native";

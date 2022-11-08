@@ -123,105 +123,99 @@ function Register(props) {
 
   return (
     <ScrollView
-      contentContainerStyle={{ paddingBottom: 60 }}
+      contentContainerStyle={{ paddingBottom: 30 }}
       style={styles.container}
     >
       <Image
         source={require("../assets/newLogo.png")}
         style={styles.logo}
       ></Image>
-      {!image && profile_user_not_upload}
-      <View style={styles.inputcontainer}>
-        {image && (
-          <>
-            <Image
-              source={{ uri: image }}
-              style={{ width: 150, height: 150, borderRadius: 999 }}
-            />
-          </>
-        )}
-        <View
-          style={{
-            flexDirection: "row",
-            width: "75%",
-            justifyContent: "space-between",
-          }}
-        >
+      <View style={styles.box}>
+        {!image && profile_user_not_upload}
+        <View style={styles.inputcontainer}>
+          {image && (
+            <>
+              <Image
+                source={{ uri: image }}
+                style={{ width: 150, height: 150, borderRadius: 999 }}
+              />
+            </>
+          )}
           <TouchableOpacity
             onPress={pickImage}
-            style={[styles.buttonpho, { backgroundColor: "royalblue" }]}
+            style={[styles.button, { backgroundColor: "royalblue" }, {marginBottom: 20}]}
           >
             <Text style={{ color: "white" }}>Upload Photo</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => setImage(null)}
-            style={[styles.buttonpho, { backgroundColor: "darkgray" }]}
+            style={[styles.button, { backgroundColor: "darkgray" }]}
           >
             <Text style={{ color: "white" }}>Remove Photo</Text>
           </TouchableOpacity>
         </View>
-      </View>
-      <View style={[styles.inputcontainer, { flexDirection: "row" , justifyContent : "space-between"}]}>
-        {/* <Zocial name="email" size={24} color="black" /> */}
-        <TextInput
-          style={[styles.input, { width: "65%" }]}
-          placeholder="Email"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          onChangeText={(mail) => {
-            setEmail(mail);
-          }}
-        />
-        <TouchableOpacity
-          style={[styles.button_send, { width: "30%"}]}
-          onPress={() => {
-            sendSecretCode();
-          }}
-        >
-          <Text style={{ color: "white" }}>Send</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.inputcontainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Secret Key"
-          autoCapitalize="none"
-          onChangeText={(key) => {
-            setKey(key);
-          }}
-        />
-      </View>
-      <View style={styles.inputcontainer}>
-        <TextInput
-          style={styles.input}
-          autoCapitalize='none'
-          placeholder="Password"
-          secureTextEntry={true}
-          autoCorrect={false}
-          onChangeText={(pass) => {
-            setPassword(pass);
-          }}
-        />
-      </View>
-      <View style={styles.inputcontainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Confirm Password"
-          secureTextEntry={true}
-          autoCapitalize='none'
-          autoCorrect={false}
-          onChangeText={(pass) => {
-            setConfirmpass(pass);
-          }}
-        />
-        {checkpass ? (
-          <Text style={{ color: "red" , marginTop : 5}}>Password not match</Text>
-        ) : null}
-      </View>
-      <View style={styles.inputcontainer}>
-        <TouchableOpacity style={styles.button} onPress={checkHandle}>
-          <Text style={{ color: "white" }}>Sign up</Text>
-        </TouchableOpacity>
+        <View style={[styles.inputcontainer, { flexDirection: "row" , justifyContent : "space-between"}]}>
+          {/* <Zocial name="email" size={24} color="black" /> */}
+          <TextInput
+            style={[styles.input, { width: "65%" }]}
+            placeholder="Email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            onChangeText={(mail) => {
+              setEmail(mail);
+            }}
+          />
+          <TouchableOpacity
+            style={[styles.button_send, { width: "30%"}]}
+            onPress={() => {
+              sendSecretCode();
+            }}
+          >
+            <Text style={{ color: "white" }}>Send</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.inputcontainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Secret Key"
+            autoCapitalize="none"
+            onChangeText={(key) => {
+              setKey(key);
+            }}
+          />
+        </View>
+        <View style={styles.inputcontainer}>
+          <TextInput
+            style={styles.input}
+            autoCapitalize='none'
+            placeholder="Password"
+            secureTextEntry={true}
+            autoCorrect={false}
+            onChangeText={(pass) => {
+              setPassword(pass);
+            }}
+          />
+        </View>
+        <View style={styles.inputcontainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Confirm Password"
+            secureTextEntry={true}
+            autoCapitalize='none'
+            autoCorrect={false}
+            onChangeText={(pass) => {
+              setConfirmpass(pass);
+            }}
+          />
+          {checkpass ? (
+            <Text style={{ color: "red" , marginTop : 5}}>Password not match</Text>
+          ) : null}
+        </View>
+        <View style={[styles.inputcontainer, {marginBottom: 0}]}>
+          <TouchableOpacity style={styles.button} onPress={checkHandle}>
+            <Text style={{ color: "white" }}>Sign up</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );
@@ -230,8 +224,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFF8EA",
     paddingTop: 30,
-    paddingLeft : 50,
-    paddingRight : 50,
+    paddingHorizontal : 25,
     flex: 1,
   },
   inputcontainer: {
@@ -241,55 +234,13 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "100%",
-    borderRadius: 10,
-    padding: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: -2,
-      height: 4,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 5,
+    padding: 13,
+    borderBottomWidth: 1,
+    borderColor: "darkgrey",
     backgroundColor: "white",
   },
   button: {
     width: "100%",
-    backgroundColor: "#FF9A00",
-    alignItems: "center",
-    padding: 10,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: -2,
-      height: 4,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 5,
-  },
-  button_send: {
-    width: "100%",
-    backgroundColor: "#FF9A00",
-    alignItems: "center",
-    padding: 10,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: -2,
-      height: 4,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 5,
-  },
-  logo: {
-    alignSelf: "center",
-    width: 180,
-    height: 80,
-    marginBottom: 30,
-  },
-  buttonpho: {
     backgroundColor: "#FF9A00",
     alignItems: "center",
     padding: 13,
@@ -299,9 +250,44 @@ const styles = StyleSheet.create({
       width: -2,
       height: 4,
     },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.05,
     shadowRadius: 3,
     elevation: 5,
   },
+  button_send: {
+    width: "100%",
+    backgroundColor: "#FF9A00",
+    alignItems: "center",
+    padding: 13,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: -2,
+      height: 4,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  logo: {
+    alignSelf: "center",
+    width: 180,
+    height: 80,
+    marginBottom: 30,
+  },
+  box: {
+    backgroundColor: "white",
+    padding: 25,
+    borderRadius: 15,
+    marginBottom: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: -2,
+      height: 4,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 5,
+  }
 });
 export default Register;
