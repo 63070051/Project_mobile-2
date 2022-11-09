@@ -25,6 +25,7 @@ import CreateLesson from "../screen/CreateLesson";
 import axios from "axios";
 import Path from "../../path";
 import EditLesson from "../screen/EditLesson";
+import EditCourse from "../screen/EditCourse";
 import { LogBox } from "react-native";
 LogBox.ignoreAllLogs();
 
@@ -84,6 +85,13 @@ function CourseStack() {
         component={CourseCreate}
         options={{
           title: "Create Course",
+        }}
+      />
+      <CourseNavigator.Screen
+        name="Editcourse"
+        component={EditCourse}
+        options={{
+          title: "Edit Course",
         }}
       />
       <CourseNavigator.Screen

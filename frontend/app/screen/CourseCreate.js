@@ -74,7 +74,6 @@ function CourseCreate({route}) {
         console.log(err);
       });
   }
-  const element = <TextInput.Icon name="lock-outline" />
   return (
     <ScrollView 
       style={styles.container}
@@ -129,6 +128,7 @@ function CourseCreate({route}) {
             />
             {/* <Text style={styles.text}>Sub title</Text> */}
             <TextInput
+            multiline={true}
             placeholder="Course Subtitle"
             onChangeText={(subtitle) => {
                 setCourseSubTitle(subtitle);

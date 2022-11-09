@@ -73,10 +73,9 @@ function Course(props) {
     getUser();
   }, []);
 
-
-  async function myCourse(){
-    let filter = allCourse.filter((value) =>{
-      if(course.indexOf(value.course_id) > -1){
+  async function myCourse() {
+    let filter = allCourse.filter((value) => {
+      if (course.indexOf(value.course_id) > -1) {
         return value;
       }
     });
@@ -189,7 +188,7 @@ function Course(props) {
           </View>
         )}
         {(props.role == "Teacher" || props.role == "Admin") && (
-          <View style={[styles.buttoncontainer1, {paddingHorizontal : 20}]}>
+          <View style={[styles.buttoncontainer1, { paddingHorizontal: 20 }]}>
             <TouchableOpacity
               style={[styles.enterclassbutton]}
               onPress={() => {
@@ -198,18 +197,22 @@ function Course(props) {
             >
               <Ionicons name="ios-enter-outline" size={30} color="black" />
             </TouchableOpacity>
-
-              <TouchableOpacity style={styles.editcontainer}>
-                <AntDesign name="edit" size={30} color="black" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.deletecontainer}
-                onPress={() => {
-                  confirmDel(props.id);
-                }}
-              >
-                <MaterialCommunityIcons name="delete" size={30} color="red" />
-              </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.editcontainer}
+              onPress={() => {
+                props.editcourse();
+              }}
+            >
+              <AntDesign name="edit" size={30} color="black" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.deletecontainer}
+              onPress={() => {
+                confirmDel(props.id);
+              }}
+            >
+              <MaterialCommunityIcons name="delete" size={30} color="red" />
+            </TouchableOpacity>
           </View>
         )}
       </View>
@@ -282,16 +285,25 @@ function Course(props) {
         {user.role == "Student" && (
           <View style={styles.header}>
             <Text style={styles.text_header}>Course</Text>
-            <View style={{ flexDirection: "row" , marginTop : 10}}>
-              <TouchableOpacity style={{marginRight : 20}} onPress={() =>{
-                setAllCourse(backUpCourse);
-              }}>
-                <Text style={{fontSize : 20, fontWeight : "500"}}>ALL COURSE</Text>
+            <View style={{ flexDirection: "row", marginTop: 10 }}>
+              <TouchableOpacity
+                style={{ marginRight: 20 }}
+                onPress={() => {
+                  setAllCourse(backUpCourse);
+                }}
+              >
+                <Text style={{ fontSize: 20, fontWeight: "500" }}>
+                  ALL COURSE
+                </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() =>{
-                myCourse();
-              }}>
-                <Text style={{fontSize : 20, fontWeight : "500"}}>MY COURSE</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  myCourse();
+                }}
+              >
+                <Text style={{ fontSize: 20, fontWeight: "500" }}>
+                  MY COURSE
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -318,6 +330,7 @@ function Course(props) {
             <RenderCrouse
               key={value.course_id}
               id={value.course_id}
+              data={value}
               img={value.img}
               title={value.title}
               subtitle={value.subtitle}
@@ -327,7 +340,14 @@ function Course(props) {
                 props.navigation.navigate("courseinfo", {
                   course: value,
                   user: user,
-                  router : props.navigation
+                  router: props.navigation,
+                });
+              }}
+              editcourse={() => {
+                props.navigation.navigate("Editcourse", {
+                  route: props.navigation,
+                  teacher: user.user_id,
+                  value: value,
                 });
               }}
             />

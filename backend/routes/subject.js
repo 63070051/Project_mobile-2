@@ -49,6 +49,57 @@ router.post(
   }
 );
 
+router.post(
+  "/editSubjectImg",
+  upload.single("img_subject"),
+  async function (req, res, next) {
+    const conn = await pool.getConnection();
+    await conn.beginTransaction();
+    try {
+      let teacher_id = req.body.teacherId;
+      let title = req.body.title;
+      let subtitle = req.body.subTitle;
+      let key = req.body.key;
+      let img_subject = req.file;
+      let course_id = req.body.course_id
+      let path = img_subject.path.substring(6);
+      const [course, field] = await conn.query(
+        "UPDATE course SET teacher_id = ?, title = ?, subtitle = ?, img = ?, s_key = ? WHERE course_id = ?",
+        [teacher_id, title, subtitle, path, key, course_id]
+      );
+      await conn.commit();
+      return res.json("success");
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post(
+  "/editSubject",
+  async function (req, res, next) {
+    const conn = await pool.getConnection();
+    await conn.beginTransaction();
+    try {
+      let teacher_id = req.body.teacherId;
+      let title = req.body.title;
+      let subtitle = req.body.subTitle;
+      let key = req.body.key;
+      let course_id = req.body.course_id
+      const [course, field] = await conn.query(
+        "UPDATE course SET teacher_id = ?, title = ?, subtitle = ?, s_key = ? WHERE course_id = ?",
+        [teacher_id, title, subtitle, key, course_id]
+      );
+      await conn.commit();
+      return res.json("success");
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+
+
 router.get("/getSubject", async function (req, res, next) {
   try {
     const [subject, field] = await pool.query("SELECT * FROM course");
