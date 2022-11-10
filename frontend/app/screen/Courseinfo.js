@@ -80,6 +80,8 @@ function CourseInfo({ route }) {
   const type = ["Youtube"];
   // console.log(width)
   function RenderCourseOverView(props) {
+    let sendDocument = [];
+    const [toggle , setToggle] = useState(false);
     return (
       <View style={styles.container}>
         <View style={styles.header2}>
@@ -117,24 +119,32 @@ function CourseInfo({ route }) {
                 }
               })}
             <View style={styles.material}>
-              <View style={styles.topMaterial}>
+              <TouchableOpacity
+                style={styles.topMaterial}
+                onPress={() => {
+                  setToggle(!toggle);
+                }}
+              >
                 <FontAwesome name="book" size={20} color="black" />
                 <Text style={{ marginLeft: 8 }}>Material</Text>
-              </View>
-              <View style={styles.mainMaterail}>
-                {listDocument.length != 0 &&
-                  listDocument.map((value) => {
-                    if (props.value.h_id == value.h_id) {
-                      return (
-                        <Render_File_Upload
-                          key={value.f_id}
-                          name={value.name}
-                          path={value.path}
-                        />
-                      );
-                    }
-                  })}
-              </View>
+              </TouchableOpacity>
+              {toggle && (
+                <View style={styles.mainMaterail}>
+                  {listDocument.length != 0 &&
+                    listDocument.map((value) => {
+                      if (props.value.h_id == value.h_id) {
+                        sendDocument.push(value);
+                        return (
+                          <Render_File_Upload
+                            key={value.f_id}
+                            name={value.name}
+                            path={value.path}
+                          />
+                        );
+                      }
+                    })}
+                </View>
+              )}
             </View>
           </View>
         </View>
@@ -151,6 +161,7 @@ function CourseInfo({ route }) {
                 data: props.data,
                 lesson: props.lesson,
                 h_id: props.value.h_id,
+                listDocument: sendDocument,
               }),
             ]}
           >
@@ -174,9 +185,10 @@ function CourseInfo({ route }) {
 
   function Render_File_Upload(props) {
     return (
-      <TouchableOpacity onPress={()=>{
-        Linking.openURL(`${Path}${props.path}`);
-      }}
+      <TouchableOpacity
+        onPress={() => {
+          Linking.openURL(`${Path}${props.path}`);
+        }}
         style={{
           width: "90%",
           padding: 13,
