@@ -46,7 +46,7 @@ function ChatStack() {
         name="chatinfo"
         component={ChatPeople}
         options={({ route }) => ({
-          title: route.params.DATA.item.email,
+          title: route.params.data.item.email,
           headerBackTitleVisible: false,
         })}
       />

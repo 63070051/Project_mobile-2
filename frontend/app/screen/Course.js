@@ -315,7 +315,6 @@ function Course(props) {
               style={styles.plus}
               onPress={() => {
                 props.navigation.navigate("coursecreate", {
-                  route: props.navigation,
                   teacher: user.user_id,
                 });
               }}
@@ -340,7 +339,6 @@ function Course(props) {
                 props.navigation.navigate("courseinfo", {
                   course: value,
                   user: user,
-                  router: props.navigation,
                 });
               }}
               editcourse={() => {

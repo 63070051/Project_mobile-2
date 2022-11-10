@@ -19,11 +19,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GiftedChat, Send, Bubble } from "react-native-gifted-chat";
 import { db } from "../../firebase";
 import Path from "../../path";
+import {useNavigation } from '@react-navigation/native';
 
 function ChatPeople({ route }) {
+  const router = useNavigation();
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState(route.params.user);
-  let target_id = route.params.DATA.item.user_id;
+  let target_id = route.params.data.item.user_id;
   async function getAllMessage() {
     const docId =
       target_id > users.user_id

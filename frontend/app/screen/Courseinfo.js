@@ -17,6 +17,8 @@ import {
   Entypo,
   MaterialCommunityIcons,
   Ionicons,
+  FontAwesome,
+  MaterialIcons,
 } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -27,6 +29,7 @@ import Youtube from "react-native-youtube-iframe";
 import RenderHtml from "react-native-render-html";
 import { TEST_ID } from "react-native-gifted-chat";
 import Path from "../../path";
+import { useNavigation } from "@react-navigation/native";
 
 function RenderCourseInfo(props) {
   return (
@@ -51,44 +54,28 @@ function RenderVideo(props) {
     setPlaying((prev) => !prev);
   };
   return (
-    <Youtube height={200} width={props.width} play={playing} videoId={props.videoId} />
+    <Youtube
+      height={200}
+      width={props.width}
+      play={playing}
+      videoId={props.videoId}
+    />
   );
 }
 
-// function RenderTitle(props) {
-//   return (
-//     <Text style={{ fontSize: 24, fontWeight: "bold" }}>{props.title}</Text>
-//   );
-// }
-
-// function RenderText(props) {
-//   return <Text style={{ fontSize: 16, fontWeight: "400" }}>{props.text}</Text>;
-// }
-
-// function RenderLink(props) {
-//   return (
-//     <Text
-//       style={{ fontSize: 16, fontWeight: "400", color: "blue" }}
-//       onPress={() => Linking.openURL(`${props.link}`)}
-//     >
-//       {props.link}
-//     </Text>
-//   );
-// }
-
 function CourseInfo({ route }) {
+  const router = useNavigation();
   const [user, setUser] = useState(route.params.user);
   const [course, setCourse] = useState(route.params.course);
   const [member, setmember] = useState(0);
   const { width } = useWindowDimensions();
   const [lesson, setLesson] = useState("");
+  const [listDocument, setListDocument] = useState([]);
   const [description, setDescription] = useState("");
   const [allDescription, setAllDescription] = useState([]);
   const [selectType, setSelectType] = useState("");
-  const [lessonId, setLessonId] = useState("");
   const [modalVisibleCreateDescription, setModalVisibleCreateDescription] =
     useState(false);
-  const [material, setMaterial] = useState(false);
   const [allLesson, setAllLesson] = useState([]);
   const type = ["Youtube"];
   // console.log(width)
@@ -110,7 +97,6 @@ function CourseInfo({ route }) {
           <TouchableOpacity
             onPress={() => {
               setModalVisibleCreateDescription(!modalVisibleCreateDescription);
-              setLessonId(props.value.h_id);
             }}
           >
             <Text style={{ fontSize: 16 }}>+</Text>
@@ -130,37 +116,51 @@ function CourseInfo({ route }) {
                   );
                 }
               })}
-            {/* <TouchableOpacity
-              style={styles.material}
-              onPress={() => {
-                setLessonId(props.value.h_id);
-                setMaterial(!material);
-              }}
-            >
-              <Text style={styles.text}>{props.material}</Text>
-            </TouchableOpacity>
-            {material && props.value.h_id == lessonId && (
-              <View>
-                <Text>dffdsfssfs</Text>
+            <View style={styles.material}>
+              <View style={styles.topMaterial}>
+                <FontAwesome name="book" size={20} color="black" />
+                <Text style={{ marginLeft: 8 }}>Material</Text>
               </View>
-            )} */}
+              <View style={styles.mainMaterail}>
+                {listDocument.length != 0 &&
+                  listDocument.map((value) => {
+                    if (props.value.h_id == value.h_id) {
+                      return (
+                        <Render_File_Upload
+                          key={value.f_id}
+                          name={value.name}
+                          path={value.path}
+                        />
+                      );
+                    }
+                  })}
+              </View>
+            </View>
           </View>
         </View>
         <View style={[styles.buttoncontainer1, { paddingHorizontal: 20 }]}>
-          <TouchableOpacity style={[styles.editcontainer ,{flex : 0.5, width : "50%", alignItems : "center"}]} onPress={()=>[
-            route.params.router.navigate("EditLesson", {
-              course: course,
-              user: user,
-              router: route.params.router,
-              data : props.data,
-              lesson : props.lesson,
-              h_id : props.value.h_id
-            })
-          ]}>
+          <TouchableOpacity
+            style={[
+              styles.editcontainer,
+              { flex: 0.5, width: "50%", alignItems: "center" },
+            ]}
+            onPress={() => [
+              router.navigate("EditLesson", {
+                course: course,
+                user: user,
+                data: props.data,
+                lesson: props.lesson,
+                h_id: props.value.h_id,
+              }),
+            ]}
+          >
             <AntDesign name="edit" size={30} color="black" />
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.deletecontainer, {flex : 0.5, width : "50%", alignItems : "center"}]}
+            style={[
+              styles.deletecontainer,
+              { flex: 0.5, width: "50%", alignItems: "center" },
+            ]}
             onPress={() => {
               confirmDel(props.value.h_id);
             }}
@@ -171,6 +171,33 @@ function CourseInfo({ route }) {
       </View>
     );
   }
+
+  function Render_File_Upload(props) {
+    return (
+      <TouchableOpacity onPress={()=>{
+        Linking.openURL(`${Path}${props.path}`);
+      }}
+        style={{
+          width: "90%",
+          padding: 13,
+          borderColor: "darkgrey",
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <AntDesign name="pdffile1" size={28} color="black" />
+          <Text style={{ marginLeft: 10 }}>{props.name}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
   const confirmDel = (id) => {
     return Alert.alert("Are your sure?", "Are you sure to Delete lesson?", [
       // The "Yes" button
@@ -240,6 +267,19 @@ function CourseInfo({ route }) {
         console.log(err);
       });
   }
+  async function getFile() {
+    await axios
+      .post(`${Path}/getFile`, {
+        course_id: course.course_id,
+      })
+      .then((response) => {
+        setListDocument(response.data);
+        // console.log(response.data)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   async function getDesciption() {
     await axios
       .post(`${Path}/getDescription`, {
@@ -281,8 +321,8 @@ function CourseInfo({ route }) {
     getMember();
     getLesson();
     getDesciption();
+    getFile();
   }, []);
-
   return (
     <ScrollView
       contentContainerStyle={{ alignItems: "center", paddingBottom: 20 }}
@@ -389,10 +429,9 @@ function CourseInfo({ route }) {
         <Text style={{ fontSize: 24, fontWeight: "500" }}>Create Lesson</Text>
         <TouchableOpacity
           onPress={() => {
-            route.params.router.navigate("createLesson", {
+            router.navigate("createLesson", {
               course: course,
               user: user,
-              router: route.params.router,
             });
           }}
         >
@@ -459,7 +498,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#FF9A00",
     width: "100%",
-    justifyContent: "center",
+    // justifyContent: "fl",
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
     padding: 10,
@@ -471,13 +510,14 @@ const styles = StyleSheet.create({
   },
   text: {
     marginBottom: 10,
+    alignSelf: "flex-start",
   },
   material: {
-    width: 250,
+    width: "100%",
     backgroundColor: "#fff",
     shadowRadius: 10,
     shadowColor: "#000",
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.05,
     shadowOffset: { width: 0, height: 0 },
     borderRadius: 10,
     marginTop: 10,
@@ -552,7 +592,7 @@ const styles = StyleSheet.create({
   },
   buttoncontainer1: {
     flexDirection: "row",
-    flex : 1,
+    flex: 1,
     backgroundColor: "#ffd7a8",
     padding: 5,
     // width: "100%",
@@ -568,6 +608,18 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     paddingRight: 5,
+  },
+  topMaterial: {
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "#7AAFFF",
+    borderTopStartRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  mainMaterail: {
+    padding: 10,
   },
 });
 

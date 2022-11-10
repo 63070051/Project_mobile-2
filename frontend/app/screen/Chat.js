@@ -101,7 +101,7 @@ function Chat(props) {
       // </View>
       <Card
         onPress={() =>
-          props.navigation.navigate("chatinfo", { DATA: itemData, user: user })
+          props.navigation.navigate("chatinfo", { data: itemData, user: user })
         }
       >
         <UserInfo>

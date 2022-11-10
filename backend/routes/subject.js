@@ -213,6 +213,19 @@ router.post("/getLesson", async function (req, res, next) {
   }
 });
 
+router.post("/getFile", async function (req, res, next) {
+  let course_id = req.body.course_id;
+  try {
+    const [file, field] = await pool.query(
+      "SELECT * FROM file WHERE c_id = ?",
+      [course_id]
+    );
+    res.json(file);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 router.post("/getDescription", async function (req, res, next) {
   let course_id = req.body.course_id;
   try {

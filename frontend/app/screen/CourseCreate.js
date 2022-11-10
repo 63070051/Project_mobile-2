@@ -12,8 +12,10 @@ import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import { Entypo } from '@expo/vector-icons';
 import Path from "../../path";
+import {useNavigation } from '@react-navigation/native';
 
 function CourseCreate({route}) {
+  const router = useNavigation();
   const [CourseName, setCourseName] = React.useState("");
   const [CourseSubTitle, setCourseSubTitle] = React.useState("");
   const [CourseKey, setCourseKey] = React.useState("");
@@ -66,7 +68,7 @@ function CourseCreate({route}) {
         if (response.data == "success") {
           alert("Create Success");
           {
-            route.params.route.replace("coursepage");
+            router.replace("coursepage");
           }
         }
       })

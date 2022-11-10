@@ -229,12 +229,12 @@ const styles = StyleSheet.create({
   },
   inputcontainer: {
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 25,
     justifyContent: "center",
   },
   input: {
     width: "100%",
-    padding: 13,
+    padding: 10,
     borderBottomWidth: 1,
     borderColor: "darkgrey",
     backgroundColor: "white",
