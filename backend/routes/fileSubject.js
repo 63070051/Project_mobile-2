@@ -35,7 +35,7 @@ router.post(
     let data = req.body.data;
     let lessonCourse = req.body.lesson;
     let pathArray = [];
-    console.log(file)
+    console.log(file);
     const conn = await pool.getConnection();
     await conn.beginTransaction();
     try {
@@ -44,7 +44,13 @@ router.post(
         [lessonCourse, data, course_id, u_id]
       );
       file.forEach((file, index) => {
-        let path = [lesson.insertId, u_id, course_id, file.path.substring(6), file.originalname];
+        let path = [
+          lesson.insertId,
+          u_id,
+          course_id,
+          file.path.substring(6),
+          file.originalname,
+        ];
         pathArray.push(path);
       });
 
@@ -59,5 +65,76 @@ router.post(
     }
   }
 );
+
+router.post(
+  "/updateLesson/file",
+  upload.array("fileSubject", 6),
+  async function (req, res, next) {
+    let course_id = req.body.course_id;
+    let u_id = req.body.u_id;
+    let h_id = req.body.h_id;
+    const file = req.files;
+    let data = req.body.data;
+    let lessonCourse = req.body.lesson;
+    let pathArray = [];
+    console.log(file);
+    const conn = await pool.getConnection();
+    await conn.beginTransaction();
+    try {
+      const [lesson, field] = await conn.query(
+        "UPDATE lesson SET lesson = ?, data = ?, c_id = ?, u_id = ? WHERE h_id = ?",
+        [lessonCourse, data, course_id, u_id, h_id]
+      );
+      file.forEach((file, index) => {
+        let path = [
+          lesson.insertId,
+          u_id,
+          course_id,
+          file.path.substring(6),
+          file.originalname,
+        ];
+        pathArray.push(path);
+      });
+      const [getFile, f] = await conn.query(
+        "SELECT * FROM file WHERE h_id = ?",
+        [h_id]
+      );
+      getFile.forEach((value) => {
+        fs.unlink("./static" + value.path, (err) => console.log(err));
+      });
+      const [delFile, fl] = await conn.query(
+        "DELETE FROM file WHERE h_id = ?",
+        [h_id]
+      );
+      const [fileSub, fil] = await conn.query(
+        "INSERT INTO file(h_id, u_id, c_id, path, name) VALUES ?",
+        [pathArray]
+      );
+      conn.commit();
+      res.json("success");
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+router.post("/updateLesson", async function (req, res, next) {
+  let course_id = req.body.course_id;
+  let u_id = req.body.u_id;
+  let h_id = req.body.h_id;
+  let data = req.body.data;
+  let lessonCourse = req.body.lesson;
+  const conn = await pool.getConnection();
+  await conn.beginTransaction();
+  try {
+    const [lesson, field] = await conn.query(
+      "UPDATE lesson SET lesson = ?, data = ?, c_id = ?, u_id = ? WHERE h_id = ?",
+      [lessonCourse, data, course_id, u_id, h_id]
+    );
+    conn.commit();
+    res.json("success");
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;

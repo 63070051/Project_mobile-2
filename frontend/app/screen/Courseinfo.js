@@ -63,6 +63,16 @@ function RenderVideo(props) {
   );
 }
 
+function RenderAssignment(props){
+  return(
+    <TouchableOpacity onPress={() =>{
+      props.Assignment();
+    }}>
+      <Text style={{fontSize : 18, color : "blue", fontWeight : "bold"}}>{props.text}</Text>
+    </TouchableOpacity>
+  );
+}
+
 function CourseInfo({ route }) {
   const router = useNavigation();
   const [user, setUser] = useState(route.params.user);
@@ -70,6 +80,7 @@ function CourseInfo({ route }) {
   const [member, setmember] = useState(0);
   const { width } = useWindowDimensions();
   const [lesson, setLesson] = useState("");
+  const [lessonId, setLessonId] = useState("");
   const [listDocument, setListDocument] = useState([]);
   const [description, setDescription] = useState("");
   const [allDescription, setAllDescription] = useState([]);
@@ -77,11 +88,11 @@ function CourseInfo({ route }) {
   const [modalVisibleCreateDescription, setModalVisibleCreateDescription] =
     useState(false);
   const [allLesson, setAllLesson] = useState([]);
-  const type = ["Youtube"];
+  const type = ["Youtube", "Assignment"];
   // console.log(width)
   function RenderCourseOverView(props) {
     let sendDocument = [];
-    const [toggle , setToggle] = useState(false);
+    const [toggle, setToggle] = useState(false);
     return (
       <View style={styles.container}>
         <View style={styles.header2}>
@@ -99,6 +110,7 @@ function CourseInfo({ route }) {
           <TouchableOpacity
             onPress={() => {
               setModalVisibleCreateDescription(!modalVisibleCreateDescription);
+              setLessonId(props.value.h_id);
             }}
           >
             <Text style={{ fontSize: 16 }}>+</Text>
@@ -110,12 +122,21 @@ function CourseInfo({ route }) {
             {allDescription &&
               allDescription.map((value) => {
                 if (props.value.h_id == value.h_id) {
-                  return (
-                    <RenderVideo
-                      key={value.d_id}
-                      videoId={value.data.substring(32)}
-                    />
-                  );
+                  if (value.type == "Youtube") {
+                    return (
+                      <RenderVideo
+                        key={value.d_id}
+                        videoId={value.data.substring(32)}
+                      />
+                    );
+                  }
+                  if(value.type == "Assignment"){
+                    return (
+                      <RenderAssignment key={value.d_id} text={value.data} Assignment={() =>{
+                        router.navigate("Assignment")
+                      }}/>
+                    );
+                  }
                 }
               })}
             <View style={styles.material}>

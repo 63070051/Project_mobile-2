@@ -20,6 +20,7 @@ const userRouter = require('./routes/user')
 const adminRouter = require('./routes/admin')
 const chatRouter = require('./routes/chat')
 const fileRouter = require('./routes/fileSubject')
+const javaRouter = require('./routes/javasyntax')
 
 
 app.use(subjectRouter);
@@ -28,6 +29,8 @@ app.use(userRouter);
 app.use(adminRouter);
 app.use(chatRouter);
 app.use(fileRouter);
+app.use(javaRouter);
+
 
 
 app.listen(3000, () => {
