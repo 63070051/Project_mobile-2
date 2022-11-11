@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import Assignment from "./app/screen/Assignment";
 import Home from "./app/screen/Home";
 import Login from "./app/screen/Login";
 import ManageRole from "./app/screen/ManageRole";
