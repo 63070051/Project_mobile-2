@@ -1,107 +1,166 @@
-import { StyleSheet, Text, View , Image, TouchableOpacity, ScrollView} from "react-native";
-import * as React from "react";
-import axios from 'axios';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { Button } from "react-native";
+import * as DocumentPicker from "expo-document-picker";
 import Path from "../../path";
-import {useNavigation } from '@react-navigation/native';
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
+function Assignment({ route }) {
+  const [user, setUser] = useState([]);
+  const [document, setDocument] = useState([]);
+  const router = useNavigation();
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const pickDocument = async () => {
+    let result = await DocumentPicker.getDocumentAsync({});
+    setDocument(result);
+  };
 
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
 
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
 
+  const handleConfirm = (date) => {
+    console.warn("A date has been picked: ", date);
+    hideDatePicker();
+  };
 
+  function File_upload(props) {
+    return (
+      <View
+        style={{
+          width: "100%",
+          padding: 13,
+          borderBottomWidth: 1,
+          borderColor: "darkgrey",
+          justifyContent: "space-between",
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <AntDesign name="pdffile1" size={28} color="black" />
+          <Text style={{ marginLeft: 10 }}>{props.name}</Text>
+        </View>
+        <TouchableOpacity
+          onPress={() => {
+            setDocument([]);
+          }}
+        >
+          <MaterialIcons name="delete" size={28} color="red" />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+  let no_file = <Text style={{ alignSelf: "center" }}>Empty!</Text>;
+  const submitContentHandle = async () => {
+    const replaceHTML = descHTML.replace(/<(.|\n)*?>/g, "").trim();
+    const replaceWhiteSpace = replaceHTML.replace(/&nbsp;/g, "").trim();
 
-
-
-function Assignment({route}) {
-  const [user, setUser] = React.useState([]);
-  return(
-    <Text>test</Text>
+    if (replaceWhiteSpace.length <= 0) {
+      setShowDescError(true);
+    } else {
+      if (document.name == undefined) {
+      } else {
+      }
+      // send data to your server!
+    }
+  };
+  console.log(document);
+  return (
+    <View>
+      <View
+        style={[
+          styles.upload,
+          no_file ? { justifyContent: "center", height: 100 } : null,
+        ]}
+      >
+        {document.name == undefined && no_file}
+        {document.name != undefined && (
+          <File_upload key={document} name={document.name} />
+        )}
+      </View>
+      <TouchableOpacity
+        style={[styles.saveButtonStyle, { marginTop: 20 }]}
+        onPress={() => {
+          pickDocument();
+        }}
+      >
+        <Button title="Show Date Picker" onPress={showDatePicker} />
+        <Text style={styles.textButtonStyle}>Upload your file</Text>
+      </TouchableOpacity>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+      />
+    </View>
   );
 }
 const styles = StyleSheet.create({
-    container :{
-      backgroundColor : "#FFF8EA"
-    },
-    logo:{
-        width : 350,
-        height : 150,
-        marginTop : 50,
-    },
-    logocontainer:{
-        // flex : 1,
-        alignItems : "center"
-    },
-    textcenter: {
-      textAlign : "center",
-      // marginTop : 20,
-      fontSize : 18 
-    },
-    textcontainer:{
-      paddingLeft : 5,
-      paddingRight : 5, 
-      // marginTop : 40
-    },
-    enterclassbutton:{
-      paddingTop : 8,
-      paddingBottom : 8,
-      paddingLeft : 12,
-      paddingRight : 12,
-      borderColor : "#FF9A00",
-      borderWidth : 2,
-      borderRadius : 5,
-      backgroundColor: "#FFFFFF",
-      height: 50,
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 6,
-      },
-      shadowOpacity: 0.39,
-      shadowRadius: 8.30,
-    },
-    textbutton:{
-      textAlign : "center",
-      fontSize : 20,
+  container: {
+    backgroundColor: "#FFF8EA",
+  },
 
+  upload: {
+    width: "100%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
     },
-    buttoncontainer :{
-      // flex : 1,
-      alignItems : "center",
-      marginTop : 20,
-      marginBottom : 20
+    shadowOpacity: 0.05,
+    shadowRadius: 2.62,
+    elevation: 4,
+    fontSize: 20,
+    padding: 10,
+  },
+  saveButtonStyle: {
+    borderWidth: 1,
+    borderColor: "#ffbA00",
+    borderRadius: 10,
+    padding: 10,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
     },
-    userlogo:{
-      width : 60,
-      height : 60
-    },
-    textlogo : {
-      fontSize : 20,
-      textAlign : "center"
-    },
-    containercenter : {
-      // flex : 1,
-      alignItems : "center",
-      padding : 10
-    },
-    card:{
-      backgroundColor : "#EBF9FF",
-      padding : 20,
-      marginLeft : 20,
-      marginRight : 20,
-      marginBottom : 30,
-      borderRadius : 10,
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 6,
-      },
-      shadowOpacity: 0.39,
-      shadowRadius: 8.30,
-    },
-    textcard:{
-      fontSize : 20,
-      marginTop : 50,
-      textAlign : "center"
-    },
+    shadowOpacity: 0.05,
+    shadowRadius: 2.62,
+    elevation: 4,
+    fontSize: 20,
+    marginTop: 10,
+    backgroundColor: "#ffbA00",
+  },
+
+  textButtonStyle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "white",
+  },
 });
 export default Assignment;

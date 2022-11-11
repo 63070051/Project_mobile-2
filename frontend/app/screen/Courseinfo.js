@@ -31,6 +31,7 @@ import { TEST_ID } from "react-native-gifted-chat";
 import Path from "../../path";
 import { useNavigation } from "@react-navigation/native";
 
+
 function RenderCourseInfo(props) {
   return (
     <View style={styles.container}>
@@ -63,12 +64,16 @@ function RenderVideo(props) {
   );
 }
 
-function RenderAssignment(props){
-  return(
-    <TouchableOpacity onPress={() =>{
-      props.Assignment();
-    }}>
-      <Text style={{fontSize : 18, color : "blue", fontWeight : "bold"}}>{props.text}</Text>
+function RenderAssignment(props) {
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        props.Assignment();
+      }}
+    >
+      <Text style={{ fontSize: 18, color: "blue", fontWeight: "bold" }}>
+        {props.text}
+      </Text>
     </TouchableOpacity>
   );
 }
@@ -90,6 +95,9 @@ function CourseInfo({ route }) {
   const [allLesson, setAllLesson] = useState([]);
   const type = ["Youtube", "Assignment"];
   // console.log(width)
+
+
+
   function RenderCourseOverView(props) {
     let sendDocument = [];
     const [toggle, setToggle] = useState(false);
@@ -130,11 +138,15 @@ function CourseInfo({ route }) {
                       />
                     );
                   }
-                  if(value.type == "Assignment"){
+                  if (value.type == "Assignment") {
                     return (
-                      <RenderAssignment key={value.d_id} text={value.data} Assignment={() =>{
-                        router.navigate("Assignment")
-                      }}/>
+                      <RenderAssignment
+                        key={value.d_id}
+                        text={value.data}
+                        Assignment={() => {
+                          router.navigate("Assignment");
+                        }}
+                      />
                     );
                   }
                 }
@@ -349,7 +361,6 @@ function CourseInfo({ route }) {
         console.log(err);
       });
   }
-
   useEffect(() => {
     getMember();
     getLesson();
@@ -366,7 +377,6 @@ function CourseInfo({ route }) {
         description={course.subtitle}
         member={member}
       />
-
       <View style={styles.centeredView}>
         <Modal
           animationType="fade"
@@ -411,6 +421,7 @@ function CourseInfo({ route }) {
                   ]}
                   placeholder="Please Input Link Youtube"
                 />
+              
               </View>
               <View
                 style={{

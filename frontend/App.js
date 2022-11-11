@@ -10,6 +10,7 @@ import Profile from "./app/screen/Profile";
 import CourseInfo from "./app/screen/Courseinfo";
 import CourseCreate from "./app/screen/CourseCreate";
 import CreateLesson from "./app/screen/CreateLesson";
+import Test from "./app/screen/Test"
 
 export default function App() {
   return <MyNavigator />;
