@@ -3,7 +3,7 @@ import * as React from "react";
 import axios from 'axios';
 import { Button } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { useNavigation } from "@react-navigation/native";
 
 
 
@@ -14,7 +14,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function Home(props) {
   const [user, setUser] = React.useState([]);
-  
+  const router = useNavigation();
   const getUser = async () =>{
     let users = await AsyncStorage.getItem("@login");
     setUser(JSON.parse(users))
@@ -36,7 +36,7 @@ function Home(props) {
 
       <View style={styles.buttoncontainer}>
         <TouchableOpacity style={styles.enterclassbutton} onPress={() => {
-          props.navigation.navigate("coursepage");
+          router.navigate("coursepage");
         }}>
           <Text style={styles.textbutton}>Getting Started</Text>
         </TouchableOpacity>

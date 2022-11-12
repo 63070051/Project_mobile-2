@@ -32,6 +32,7 @@ router.post("/checksyntax", async function (req, res, next) {
     `./static${filepath}`,
     "utf-8"
   );
+  console.log(filepath);
   let leftcurlybracket = 0;
   let rightcurlybracket = 0;
   let leftparenthesis = 0;
@@ -66,14 +67,6 @@ router.post("/checksyntax", async function (req, res, next) {
     }
     // console.log(`${line}`);
   });
-  console.log(
-    leftcurlybracket,
-    rightcurlybracket,
-    leftparenthesis,
-    rigthparenthesis,
-    semicolon,
-    checksemicolon
-  );
   if (
     leftcurlybracket != rightcurlybracket ||
     leftparenthesis != rigthparenthesis ||
@@ -81,11 +74,6 @@ router.post("/checksyntax", async function (req, res, next) {
   ) {
     check = "error";
   }
-  console.log(
-    leftcurlybracket != rightcurlybracket ||
-      leftparenthesis != rigthparenthesis ||
-      checksemicolon != semicolon
-  );
   if (check == "true") {
     try{
       const [setStatus, field] = await pool.query(
@@ -95,6 +83,12 @@ router.post("/checksyntax", async function (req, res, next) {
     }catch(err){
       next(err)
     }
+  }
+  else{
+    const [setStatus, field] = await pool.query(
+      "UPDATE s_file SET status = ? WHERE s_id",
+      ["Not Pass", s_id]
+    );
   }
   res.json("success");
   //   console.log("readFile called");

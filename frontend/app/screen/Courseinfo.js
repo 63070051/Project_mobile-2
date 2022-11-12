@@ -112,13 +112,15 @@ function CourseInfo({ route }) {
           }}
         >
           <Text style={{ fontSize: 12 }}>{props.course_description}</Text>
-          <TouchableOpacity
-            onPress={() => {
-              router.navigate("createDescription");
-            }}
-          >
-            <Text style={{ fontSize: 16 }}>+</Text>
-          </TouchableOpacity>
+          {user.role != "Student" && (
+            <TouchableOpacity
+              onPress={() => {
+                router.navigate("createDescription");
+              }}
+            >
+              <Text style={{ fontSize: 16 }}>+</Text>
+            </TouchableOpacity>
+          )}
         </View>
         <View style={styles.box}>
           <View style={styles.inside}>
@@ -181,37 +183,39 @@ function CourseInfo({ route }) {
             </View>
           </View>
         </View>
-        <View style={[styles.buttoncontainer1, { paddingHorizontal: 20 }]}>
-          <TouchableOpacity
-            style={[
-              styles.editcontainer,
-              { flex: 0.5, width: "50%", alignItems: "center" },
-            ]}
-            onPress={() => [
-              router.navigate("EditLesson", {
-                course: course,
-                user: user,
-                data: props.data,
-                lesson: props.lesson,
-                h_id: props.value.h_id,
-                listDocument: sendDocument,
-              }),
-            ]}
-          >
-            <AntDesign name="edit" size={30} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.deletecontainer,
-              { flex: 0.5, width: "50%", alignItems: "center" },
-            ]}
-            onPress={() => {
-              confirmDel(props.value.h_id);
-            }}
-          >
-            <MaterialCommunityIcons name="delete" size={30} color="red" />
-          </TouchableOpacity>
-        </View>
+        {user.role != "Student" && (
+          <View style={[styles.buttoncontainer1, { paddingHorizontal: 20 }]}>
+            <TouchableOpacity
+              style={[
+                styles.editcontainer,
+                { flex: 0.5, width: "50%", alignItems: "center" },
+              ]}
+              onPress={() => [
+                router.navigate("EditLesson", {
+                  course: course,
+                  user: user,
+                  data: props.data,
+                  lesson: props.lesson,
+                  h_id: props.value.h_id,
+                  listDocument: sendDocument,
+                }),
+              ]}
+            >
+              <AntDesign name="edit" size={30} color="black" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.deletecontainer,
+                { flex: 0.5, width: "50%", alignItems: "center" },
+              ]}
+              onPress={() => {
+                confirmDel(props.value.h_id);
+              }}
+            >
+              <MaterialCommunityIcons name="delete" size={30} color="red" />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     );
   }
@@ -456,16 +460,18 @@ function CourseInfo({ route }) {
         }}
       >
         <Text style={{ fontSize: 24, fontWeight: "500" }}>Create Lesson</Text>
-        <TouchableOpacity
-          onPress={() => {
-            router.navigate("createLesson", {
-              course: course,
-              user: user,
-            });
-          }}
-        >
-          <Text style={{ fontSize: 24, fontWeight: "500" }}>+</Text>
-        </TouchableOpacity>
+        {user.role != "Student" && (
+          <TouchableOpacity
+            onPress={() => {
+              router.navigate("createLesson", {
+                course: course,
+                user: user,
+              });
+            }}
+          >
+            <Text style={{ fontSize: 24, fontWeight: "500" }}>+</Text>
+          </TouchableOpacity>
+        )}
       </View>
       {allLesson.map((value) => {
         return (

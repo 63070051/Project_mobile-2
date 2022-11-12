@@ -118,10 +118,23 @@ function Assignment({ route }) {
       axios
         .post(`${Path}/uploadAssignment/file`, data)
         .then((response) => {
-          if (response.data == "success") {
-            getFileStudent();
-            alert("Success");
-          }
+            if (response.data != "err") {
+                let path = response.data.path
+                axios
+                  .post(`${Path}/checksyntax`, {
+                    filepath : path,
+                    s_id : response.data.s_id
+                  })
+                  .then((res) => {
+                    if (res.data) {
+                      getFileStudent();
+                      alert("Success");
+                    }
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              }
         })
         .catch((err) => {
           console.log(err);

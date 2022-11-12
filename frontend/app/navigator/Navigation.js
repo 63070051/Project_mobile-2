@@ -27,6 +27,7 @@ import Path from "../../path";
 import Assignment from "../screen/Assignment";
 import EditLesson from "../screen/EditLesson";
 import EditCourse from "../screen/EditCourse";
+import Splash from "../screen/Splash";
 import CreateDescription from "../screen/CreateDescription";
 import { LogBox } from "react-native";
 LogBox.ignoreAllLogs();
@@ -207,7 +208,7 @@ function TabNavigater() {
 
 function LoginStackNavigator() {
   return (
-    <LoginNavigator.Navigator initialRouteName="login">
+    <LoginNavigator.Navigator initialRouteName="Splash">
       <LoginNavigator.Screen
         name="login"
         component={Login}
@@ -229,27 +230,18 @@ function LoginStackNavigator() {
           headerShown: false,
         }}
       />
+      <LoginNavigator.Screen
+        name="Splash"
+        component={Splash}
+        options={{
+          headerShown :false,
+        }}
+      />
     </LoginNavigator.Navigator>
   );
 }
 function MyNavigator(props) {
   const [login, setLogin] = useState(false);
-  const [user, setUser] = useState([]);
-  const checkUser = async () => {
-    try {
-      const value = await AsyncStorage.getItem("@login");
-      if (value !== null) {
-        setUser(JSON.parse(value));
-        // We have data!!
-        // console.log(value);
-        setLogin(true);
-      } else {
-        setLogin(false);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
   let page_componet = <LoginStackNavigator />;
 
   return <NavigationContainer>{page_componet}</NavigationContainer>;

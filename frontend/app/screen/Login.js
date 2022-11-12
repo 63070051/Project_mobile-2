@@ -13,9 +13,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Path from "../../path";
 
 function Login(props) {
-  if (props.login) {
-    props.navigation.navigate("TabHome");
-  }
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
