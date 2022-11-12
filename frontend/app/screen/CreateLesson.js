@@ -64,10 +64,7 @@ function CreateLesson({ route }) {
           .then((response) => {
             if (response.data == "success") {
               alert("Create Lesson Success");
-              router.replace("courseinfo", {
-                course: course,
-                user: user,
-              });
+              router.goBack();
             }
           })
           .catch((err) => {
@@ -97,10 +94,7 @@ function CreateLesson({ route }) {
           .then((response) => {
             if (response.data == "success") {
               alert("Create Lesson Success");
-              router.replace("courseinfo", {
-                course: course,
-                user: user,
-              });
+              router.goBack();
             }
           })
           .catch((err) => {

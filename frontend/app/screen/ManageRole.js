@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  useWindowDimensions,
 } from "react-native";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -59,7 +60,7 @@ function ManageRole() {
   const [search, setSearch] = useState("");
   const [allUser, setAllUser] = useState([]);
   const [backUp, setBackUp] = useState([]);
-
+  const {width} = useWindowDimensions();
 
 
   function Search(text) {
@@ -97,12 +98,12 @@ function ManageRole() {
       horizontal={true}
       style={styles.scrollview}
     >
-      <View style={styles.container}>
+      <View>
         <View style={styles.header}>
           <Text style={styles.text_header}>Manage Role</Text>
           <TextInput style={styles.textInput} placeholder="Search" onChangeText={(text) => {Search(text)}}/>
         </View>
-        <View style={styles.box}>
+        <View style={[styles.box, {width : width}]}>
           {/* <FlatList data={allUser} renderItems={MapData} style={{ width: "100%" }}/> */}
           {allUser.map((value) => {
             return <MapData key={value.user_id} email={value.email} role={value.role} id={value.user_id}/>;
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
   box: {
     backgroundColor: "#fff",
     alignItems: "center",
-    width: 400,
+    // width: 400,
     borderRadius: 10,
     borderColor: "gray",
     borderWidth: 1,

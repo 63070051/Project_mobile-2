@@ -27,6 +27,7 @@ import Path from "../../path";
 import Assignment from "../screen/Assignment";
 import EditLesson from "../screen/EditLesson";
 import EditCourse from "../screen/EditCourse";
+import CreateDescription from "../screen/CreateDescription";
 import { LogBox } from "react-native";
 LogBox.ignoreAllLogs();
 
@@ -107,6 +108,13 @@ function CourseStack() {
         component={Assignment}
         options={{
           title: "Assignment",
+        }}
+      />
+      <CourseNavigator.Screen
+        name="createDescription"
+        component={CreateDescription}
+        options={{
+          title: "createDescription",
         }}
       />
     </CourseNavigator.Navigator>

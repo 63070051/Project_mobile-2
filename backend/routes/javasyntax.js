@@ -26,8 +26,10 @@ var storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.post("/checksyntax", async function (req, res, next) {
+  const filepath = req.body.filepath;
+  const s_id = req.body.s_id;
   const allFileContents = fs.readFileSync(
-    "./static/filejava/Appointment.java",
+    `./static${filepath}`,
     "utf-8"
   );
   let leftcurlybracket = 0;
@@ -85,10 +87,16 @@ router.post("/checksyntax", async function (req, res, next) {
       checksemicolon != semicolon
   );
   if (check == "true") {
-    res.json("Syntax Ok");
-  } else {
-    res.json("Syntax error");
+    try{
+      const [setStatus, field] = await pool.query(
+        "UPDATE s_file SET status = ? WHERE s_id",
+        ["Pass", s_id]
+      );
+    }catch(err){
+      next(err)
+    }
   }
+  res.json("success");
   //   console.log("readFile called");
 });
 

@@ -13,36 +13,121 @@ import * as DocumentPicker from "expo-document-picker";
 import Path from "../../path";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from "moment";
 
 function Assignment({ route }) {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState(route.params.user);
   const [document, setDocument] = useState([]);
   const router = useNavigation();
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [date, setDate] = useState(null);
+  moment.locale("th");
+  const [backUpDocument, setBackUpDocument] = useState([]);
   const [submitStatus, setSubmitstatus] = useState(true);
-  const [gradestatus, setGradestatus] = useState(false)
-  const [modified, setModefied] = useState("-")
+  const [gradestatus, setGradestatus] = useState(false);
+  const [checkFile, setCheckFile] = useState(false);
+  const [modified, setModefied] = useState("-");
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
-    setDocument(result);
+    if (result.type != "cancel") {
+      setDocument(result);
+    }
   };
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
+  async function getFileStudent() {
+    await axios
+      .post(`${Path}/getFileStudent/id`, {
+        h_id: route.params.h_id,
+        d_id: route.params.data.d_id,
+        u_id: user.user_id,
+      })
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.length != 0) {
+          setDocument(response.data);
+          setBackUpDocument(response.data);
+          setModefied(
+            moment(response.data.date).format("D MMMM YYYY, h:mm:ss a")
+          );
+          setCheckFile(true);
+          if(response.data.status == "Pass"){
+            setGradestatus(true);
+          }
+          else if(response.data.status == "Not Pass"){
+            setGradestatus(false);
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  useEffect(() => {
+    getFileStudent();
+  }, []);
 
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirm = (date) => {
-    // console.warn("A date has been picked: ", date);
-    setDate(date)
-    hideDatePicker();
-  };
-  console.log(date);
+  async function addFile() {
+    if (checkFile) {
+      const data = new FormData();
+      data.append("u_id", user.user_id);
+      data.append("h_id", route.params.h_id);
+      data.append("d_id", route.params.data.d_id);
+      data.append("s_id", backUpDocument.s_id);
+      data.append("filename", document.name);
+      data.append("path", backUpDocument.path);
+      const newUri = "file:///" + document.uri.split("file:/").join("");
+      data.append("fileStudent", {
+        uri: newUri,
+        type: document.mimeType,
+        name: document.name,
+      });
+      axios
+        .post(`${Path}/updateAssignment/file`, data)
+        .then((response) => {
+          if (response.data.length != 0) {
+            let path = response.data[0].path
+            axios
+              .post(`${Path}/checksyntax`, {
+                filepath : path,
+                s_id : response.data[0].s_id
+              })
+              .then((res) => {
+                if (res.data) {
+                  getFileStudent();
+                  alert("Success");
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      const data = new FormData();
+      data.append("u_id", user.user_id);
+      data.append("h_id", route.params.h_id);
+      data.append("d_id", route.params.data.d_id);
+      data.append("filename", document.name);
+      const newUri = "file:///" + document.uri.split("file:/").join("");
+      data.append("fileStudent", {
+        uri: newUri,
+        type: document.mimeType,
+        name: document.name,
+      });
+      axios
+        .post(`${Path}/uploadAssignment/file`, data)
+        .then((response) => {
+          if (response.data == "success") {
+            getFileStudent();
+            alert("Success");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
   function File_upload(props) {
     return (
       <View
@@ -67,7 +152,7 @@ function Assignment({ route }) {
         </View>
         <TouchableOpacity
           onPress={() => {
-            setDocument([]);
+            setDocument(backUpDocument);
           }}
         >
           <MaterialIcons name="delete" size={28} color="red" />
@@ -89,31 +174,11 @@ function Assignment({ route }) {
       // send data to your server!
     }
   };
-  let submited =(
-    <Text>
-      Submitted for grading
-    </Text>
-  );
-  let nonsubmit = (
-    <Text>
-      Nothing has been submitted for this assignment
-    </Text>
-  );
-  let pass = (
-    <Text>
-      Pass
-    </Text>
-  );
-  let notPass = (
-    <Text>
-      Not Pass
-    </Text>
-  );
-  let notGrade = (
-    <Text>
-      Not graded
-    </Text>
-  );
+  let submited = <Text>Submitted for grading</Text>;
+  let nonsubmit = <Text>Nothing has been submitted for this assignment</Text>;
+  let pass = <Text>Pass</Text>;
+  let notPass = <Text>Not Pass</Text>;
+  let notGrade = <Text>Not graded</Text>;
   console.log(document);
   return (
     <ScrollView
@@ -121,12 +186,25 @@ function Assignment({ route }) {
       contentContainerStyle={{ paddingBottom: 30 }}
     >
       <Text style={styles.headerStyle}>Submission status</Text>
-      <View style={[styles.showdata, submitStatus ? { backgroundColor : "#CFEECE"} : null]}>
+      <View
+        style={[
+          styles.showdata,
+          submitStatus ? { backgroundColor: "#CFEECE" } : null,
+        ]}
+      >
         {submitStatus && submited}
         {!submitStatus && nonsubmit}
       </View>
       <Text style={styles.headerStyle}>Grading status</Text>
-      <View style={[styles.showdata, gradestatus && submitStatus ? {backgroundColor : "#CFEECE"} : null, !gradestatus && submitStatus ? {backgroundColor : "lightcoral"} : null]}>
+      <View
+        style={[
+          styles.showdata,
+          gradestatus && submitStatus ? { backgroundColor: "#CFEECE" } : null,
+          !gradestatus && submitStatus
+            ? { backgroundColor: "lightcoral" }
+            : null,
+        ]}
+      >
         {gradestatus && submitStatus && pass}
         {!gradestatus && submitStatus && notPass}
         {!submitStatus && notGrade}
@@ -137,9 +215,7 @@ function Assignment({ route }) {
       </View>
       <Text style={styles.headerStyle}>Last modified</Text>
       <View style={styles.showdata}>
-        <Text>
-          {modified}
-        </Text>
+        <Text>{modified}</Text>
       </View>
       <Text style={styles.headerStyle}>file submissions</Text>
       <View
@@ -148,8 +224,8 @@ function Assignment({ route }) {
           no_file ? { justifyContent: "center", height: 100 } : null,
         ]}
       >
-        {document.name == undefined && no_file}
-        {document.name != undefined && (
+        {document.length == 0 && no_file}
+        {document.length != 0 && (
           <File_upload key={document} name={document.name} />
         )}
       </View>
@@ -162,17 +238,22 @@ function Assignment({ route }) {
         <Text style={styles.textButtonStyle}>Add submission</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.saveButtonStyle]}
-        onPress={showDatePicker}
+        style={[
+          styles.saveButtonStyle,
+          document != backUpDocument || document.length == 0
+            ? { backgroundColor: "blue" }
+            : { backgroundColor: "gray" },
+        ]}
+        onPress={() => {
+          if (document != backUpDocument) {
+            addFile();
+          } else {
+            alert("Please Add Submission");
+          }
+        }}
       >
-        <Text style={styles.textButtonStyle}>Choose due date</Text>
+        <Text style={styles.textButtonStyle}>ADD</Text>
       </TouchableOpacity>
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="date"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-      />
     </ScrollView>
   );
 }
@@ -225,14 +306,14 @@ const styles = StyleSheet.create({
   scroll: {
     backgroundColor: "#FFF8EA",
     paddingHorizontal: 20,
-    paddingTop: 10
+    paddingTop: 10,
   },
   headerStyle: {
     fontSize: 20,
     fontWeight: "600",
     marginVertical: 10,
   },
-  showdata:{
+  showdata: {
     width: "100%",
     backgroundColor: "white",
     padding: 13,
@@ -245,6 +326,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 2.62,
     elevation: 4,
-  }
+  },
 });
 export default Assignment;

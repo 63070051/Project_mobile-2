@@ -31,7 +31,6 @@ import { TEST_ID } from "react-native-gifted-chat";
 import Path from "../../path";
 import { useNavigation } from "@react-navigation/native";
 
-
 function RenderCourseInfo(props) {
   return (
     <View style={styles.container}>
@@ -96,8 +95,6 @@ function CourseInfo({ route }) {
   const type = ["Youtube", "Assignment"];
   // console.log(width)
 
-
-
   function RenderCourseOverView(props) {
     let sendDocument = [];
     const [toggle, setToggle] = useState(false);
@@ -117,8 +114,7 @@ function CourseInfo({ route }) {
           <Text style={{ fontSize: 12 }}>{props.course_description}</Text>
           <TouchableOpacity
             onPress={() => {
-              setModalVisibleCreateDescription(!modalVisibleCreateDescription);
-              setLessonId(props.value.h_id);
+              router.navigate("createDescription");
             }}
           >
             <Text style={{ fontSize: 16 }}>+</Text>
@@ -144,7 +140,11 @@ function CourseInfo({ route }) {
                         key={value.d_id}
                         text={value.data}
                         Assignment={() => {
-                          router.navigate("Assignment");
+                          router.navigate("Assignment", {
+                            user: user,
+                            data: value,
+                            h_id: props.value.h_id,
+                          });
                         }}
                       />
                     );
@@ -339,33 +339,18 @@ function CourseInfo({ route }) {
       });
   }
 
-  async function createDescription() {
-    await axios
-      .post(`${Path}/createDescription`, {
-        type: selectType,
-        data: description,
-        course_id: course.course_id,
-        h_id: lessonId,
-        u_id: user.user_id,
-      })
-      .then((response) => {
-        if (response.data == "success") {
-          // getLesson();
-          alert("success");
-          getDesciption();
-          setModalVisibleCreateDescription(!modalVisibleCreateDescription);
-        }
-        // console.log(response.data)
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
   useEffect(() => {
     getMember();
     getLesson();
     getDesciption();
     getFile();
+    const willFocusSubscription = router.addListener("focus", () => {
+      getLesson();
+      getDesciption();
+      getFile();
+    });
+
+    return willFocusSubscription;
   }, []);
   return (
     <ScrollView
@@ -377,7 +362,7 @@ function CourseInfo({ route }) {
         description={course.subtitle}
         member={member}
       />
-      <View style={styles.centeredView}>
+      {/* <View style={styles.centeredView}>
         <Modal
           animationType="fade"
           transparent={true}
@@ -460,7 +445,7 @@ function CourseInfo({ route }) {
             </View>
           </View>
         </Modal>
-      </View>
+      </View> */}
 
       <View
         style={{
