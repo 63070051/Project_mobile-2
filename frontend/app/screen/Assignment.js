@@ -20,6 +20,10 @@ function Assignment({ route }) {
   const [document, setDocument] = useState([]);
   const router = useNavigation();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [date, setDate] = useState(null);
+  const [submitStatus, setSubmitstatus] = useState(true);
+  const [gradestatus, setGradestatus] = useState(false)
+  const [modified, setModefied] = useState("-")
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
     setDocument(result);
@@ -34,10 +38,11 @@ function Assignment({ route }) {
   };
 
   const handleConfirm = (date) => {
-    console.warn("A date has been picked: ", date);
+    // console.warn("A date has been picked: ", date);
+    setDate(date)
     hideDatePicker();
   };
-
+  console.log(date);
   function File_upload(props) {
     return (
       <View
@@ -84,9 +89,59 @@ function Assignment({ route }) {
       // send data to your server!
     }
   };
+  let submited =(
+    <Text>
+      Submitted for grading
+    </Text>
+  );
+  let nonsubmit = (
+    <Text>
+      Nothing has been submitted for this assignment
+    </Text>
+  );
+  let pass = (
+    <Text>
+      Pass
+    </Text>
+  );
+  let notPass = (
+    <Text>
+      Not Pass
+    </Text>
+  );
+  let notGrade = (
+    <Text>
+      Not graded
+    </Text>
+  );
   console.log(document);
   return (
-    <View>
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={{ paddingBottom: 30 }}
+    >
+      <Text style={styles.headerStyle}>Submission status</Text>
+      <View style={[styles.showdata, submitStatus ? { backgroundColor : "#CFEECE"} : null]}>
+        {submitStatus && submited}
+        {!submitStatus && nonsubmit}
+      </View>
+      <Text style={styles.headerStyle}>Grading status</Text>
+      <View style={[styles.showdata, gradestatus && submitStatus ? {backgroundColor : "#CFEECE"} : null, !gradestatus && submitStatus ? {backgroundColor : "lightcoral"} : null]}>
+        {gradestatus && submitStatus && pass}
+        {!gradestatus && submitStatus && notPass}
+        {!submitStatus && notGrade}
+      </View>
+      <Text style={styles.headerStyle}>Due date</Text>
+      <View style={styles.showdata}>
+        <Text>Saturday, 11 November 2002</Text>
+      </View>
+      <Text style={styles.headerStyle}>Last modified</Text>
+      <View style={styles.showdata}>
+        <Text>
+          {modified}
+        </Text>
+      </View>
+      <Text style={styles.headerStyle}>file submissions</Text>
       <View
         style={[
           styles.upload,
@@ -99,13 +154,18 @@ function Assignment({ route }) {
         )}
       </View>
       <TouchableOpacity
-        style={[styles.saveButtonStyle, { marginTop: 20 }]}
+        style={[styles.saveButtonStyle]}
         onPress={() => {
           pickDocument();
         }}
       >
-        <Button title="Show Date Picker" onPress={showDatePicker} />
-        <Text style={styles.textButtonStyle}>Upload your file</Text>
+        <Text style={styles.textButtonStyle}>Add submission</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.saveButtonStyle]}
+        onPress={showDatePicker}
+      >
+        <Text style={styles.textButtonStyle}>Choose due date</Text>
       </TouchableOpacity>
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
@@ -113,7 +173,7 @@ function Assignment({ route }) {
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
@@ -140,7 +200,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ffbA00",
     borderRadius: 10,
-    padding: 10,
+    padding: 13,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -153,7 +213,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2.62,
     elevation: 4,
     fontSize: 20,
-    marginTop: 10,
+    marginTop: 15,
     backgroundColor: "#ffbA00",
   },
 
@@ -162,5 +222,29 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "white",
   },
+  scroll: {
+    backgroundColor: "#FFF8EA",
+    paddingHorizontal: 20,
+    paddingTop: 10
+  },
+  headerStyle: {
+    fontSize: 20,
+    fontWeight: "600",
+    marginVertical: 10,
+  },
+  showdata:{
+    width: "100%",
+    backgroundColor: "white",
+    padding: 13,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 2.62,
+    elevation: 4,
+  }
 });
 export default Assignment;
