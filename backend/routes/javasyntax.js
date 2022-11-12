@@ -32,7 +32,6 @@ router.post("/checksyntax", async function (req, res, next) {
     `./static${filepath}`,
     "utf-8"
   );
-  console.log(filepath);
   let leftcurlybracket = 0;
   let rightcurlybracket = 0;
   let leftparenthesis = 0;
