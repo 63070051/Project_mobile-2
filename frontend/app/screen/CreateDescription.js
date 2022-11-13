@@ -19,21 +19,22 @@ import RenderHtml from "react-native-render-html";
 import * as DocumentPicker from "expo-document-picker";
 import Path from "../../path";
 import axios from "axios";
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import SelectDropdown from "react-native-select-dropdown";
 import Youtube from "react-native-youtube-iframe";
 import moment from "moment";
 
-function CreateDescription({route}) {
+
+function CreateDescription({ route }) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState(null);
   const [course, setCourse] = useState(route.params.course);
   const [user, setUser] = useState(route.params.user);
   const { width } = useWindowDimensions();
   const [description, setDescription] = useState("");
-  const [selectType, setSelectType] = useState("");
+  const [selectType, setSelectType] = useState("Youtube");
   const type = ["Youtube", "Assignment"];
   const [selectedDate, setSelectedDate] = useState();
   const router = useNavigation();
@@ -58,7 +59,7 @@ function CreateDescription({route}) {
         course_id: course.course_id,
         h_id: route.params.h_id,
         u_id: user.user_id,
-        time : selectedDate
+        time: selectedDate,
       })
       .then((response) => {
         if (response.data == "success") {
@@ -94,7 +95,11 @@ function CreateDescription({route}) {
         data={type}
         dropdownStyle={[styles.dropdown]}
         defaultButtonText={"Youtube"}
-        buttonStyle={styles.button}
+        buttonStyle={
+          selectType == "Youtube"
+            ? styles.buttonYoutube
+            : styles.buttonAssignment
+        }
         onSelect={(selectedItem, index) => {
           {
             setSelectType(selectedItem);
@@ -114,10 +119,8 @@ function CreateDescription({route}) {
       <TextInput
         onChangeText={(text) => setDescription(text)}
         multiline={true}
-        style={[
-          selectType == "Text" ? styles.textArea : styles.input,
-          { width: "100%", marginTop: 10 },
-        ]}
+        style={styles.textInput}
+        
         placeholder={
           selectType == "Youtube"
             ? "Please input link youtube"
@@ -127,12 +130,19 @@ function CreateDescription({route}) {
       {selectType == "Youtube" && description != "" && (
         <RenderVideo videoId={description.substring(32)} />
       )}
-      <Text>{`Date:  ${
-        selectedDate
-          ? moment(selectedDate).format("D MMMM YYYY, h:mm:ss a")
-          : "Please select date"
-      }`}</Text>
-      <Button title="Select Time" onPress={showDatePicker} />
+      {selectType == "Assignment" && (
+        <View>
+          <Text style={styles.showDate}>{`Date:  ${
+            selectedDate
+              ? moment(selectedDate).format("D MMMM YYYY, h:mm:ss a")
+              : "Please select date"
+          }`}</Text>
+          <TouchableOpacity onPress={showDatePicker} style={styles.date}>
+            <AntDesign name="calendar" size={24} color="black" />
+            <Text style={styles.selectDate}>Select Date</Text>
+          </TouchableOpacity>
+        </View>
+      )}
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="datetime"
@@ -140,11 +150,13 @@ function CreateDescription({route}) {
         onCancel={hideDatePicker}
       />
       <TouchableOpacity
+        style={styles.upload}
         onPress={() => {
-          createDescription();
+          // createDescription();
         }}
       >
-        <Text>Upload</Text>
+        <Feather name="upload" size={24} color="black" />
+        <Text style={{marginLeft: 10}}>Upload</Text>
       </TouchableOpacity>
     </View>
   );
@@ -157,12 +169,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 30,
   },
-  button: {
+  buttonYoutube: {
     width: 300,
     borderRadius: 10,
     padding: 10,
     elevation: 2,
     marginTop: 20,
+    backgroundColor: "#fa3c3c",
+  },
+  buttonAssignment: {
+    width: 300,
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    marginTop: 20,
+    backgroundColor: "#00a331",
   },
   dropdown: {
     width: 200,
@@ -180,6 +201,49 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
   },
+  upload:{
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 50,
+    width: 120,
+    marginTop: 20,
+    borderRadius: 20,
+    backgroundColor: "#ffbA00",
+  },
+  textInput:{
+    marginTop: 20,
+    marginBottom: 20,
+    padding: 10,
+    alignItems: "center",
+    width: "100%",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "gray",
+    backgroundColor: "white",
+
+  },
+  date:{
+    borderColor: "gray",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems:"center",
+  },
+  selectDate:{
+    marginTop : 10,
+    marginLeft: 10,
+    fontSize: 15,
+
+  },
+  showDate:{
+    width: "100%",
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "gray",
+    backgroundColor: "white",
+    borderRadius: 10,
+    marginBottom: 10,
+  }
 });
 
 export default CreateDescription;
