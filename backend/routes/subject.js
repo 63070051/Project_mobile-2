@@ -239,17 +239,41 @@ router.post("/getDescription", async function (req, res, next) {
   }
 });
 
+router.post("/getDescription/Assignment", async function (req, res, next) {
+  let course_id = req.body.c_id;
+  let d_id = req.body.d_id
+  try {
+    const [assignment, field] = await pool.query(
+      "SELECT * FROM dataLesson WHERE c_id = ? AND d_id = ?",
+      [course_id, d_id]
+    );
+    console.log(assignment)
+    res.json(assignment[0]);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 router.post("/createDescription", async function (req, res, next) {
   let course_id = req.body.course_id;
   let h_id = req.body.h_id;
   let data = req.body.data;
   let type = req.body.type;
   let u_id = req.body.u_id;
+  let time = req.body.time;
   try {
-    const [description, field] = await pool.query(
-      "INSERT INTO dataLesson(type, data, h_id, u_id, c_id) VALUES(?, ?, ?, ?, ?)",
-      [type, data, h_id, u_id, course_id]
-    );
+    if(time == undefined){
+      const [description, field] = await pool.query(
+        "INSERT INTO dataLesson(type, data, duedate, h_id, u_id, c_id) VALUES(?, ?, CURRENT_TIMESTAMP(), ?, ?, ?)",
+        [type, data, h_id, u_id, course_id]
+      );
+    }
+    else{
+      const [description, field] = await pool.query(
+        "INSERT INTO dataLesson(type, data, duedate, h_id, u_id, c_id) VALUES(?, ?, ?, ?, ?, ?)",
+        [type, data, time, h_id, u_id, course_id]
+      );
+    }
     res.json("success");
   } catch (error) {
     res.json(error);

@@ -203,7 +203,7 @@ function CreateLesson({ route }) {
           <View
             style={[
               styles.upload,
-              no_file ? { justifyContent: "center", height: 100 } : null,
+              no_file ? { justifyContent: "center", minHeight: 100 } : null,
             ]}
           >
             {listDocument.length == 0 && no_file}

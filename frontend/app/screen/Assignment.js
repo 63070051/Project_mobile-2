@@ -14,9 +14,11 @@ import Path from "../../path";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
+import CourseInfo from "./Courseinfo";
 
 function Assignment({ route }) {
   const [user, setUser] = useState(route.params.user);
+  const [course, setCourse] = useState(route.params.course);
   const [document, setDocument] = useState([]);
   const router = useNavigation();
   moment.locale("th");
@@ -25,6 +27,7 @@ function Assignment({ route }) {
   const [gradestatus, setGradestatus] = useState(false);
   const [checkFile, setCheckFile] = useState(false);
   const [modified, setModefied] = useState("-");
+  const [duedate, setDueDate] = useState("-");
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
     if (result.type != "cancel") {
@@ -33,6 +36,20 @@ function Assignment({ route }) {
   };
 
   async function getFileStudent() {
+    await axios
+      .post(`${Path}/getDescription/Assignment`, {
+        d_id: route.params.data.d_id,
+        c_id: course.course_id,
+      })
+      .then((response) => {
+        setDueDate(
+          moment(response.data.duedate).format("D MMMM YYYY, h:mm:ss a")
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     await axios
       .post(`${Path}/getFileStudent/id`, {
         h_id: route.params.h_id,
@@ -48,10 +65,9 @@ function Assignment({ route }) {
             moment(response.data.date).format("D MMMM YYYY, h:mm:ss a")
           );
           setCheckFile(true);
-          if(response.data.status == "Pass"){
+          if (response.data.status == "Pass") {
             setGradestatus(true);
-          }
-          else if(response.data.status == "Not Pass"){
+          } else if (response.data.status == "Not Pass") {
             setGradestatus(false);
           }
         }
@@ -83,11 +99,11 @@ function Assignment({ route }) {
         .post(`${Path}/updateAssignment/file`, data)
         .then((response) => {
           if (response.data.length != 0) {
-            let path = response.data[0].path
+            let path = response.data[0].path;
             axios
               .post(`${Path}/checksyntax`, {
-                filepath : path,
-                s_id : response.data[0].s_id
+                filepath: path,
+                s_id: response.data[0].s_id,
               })
               .then((res) => {
                 if (res.data) {
@@ -118,23 +134,23 @@ function Assignment({ route }) {
       axios
         .post(`${Path}/uploadAssignment/file`, data)
         .then((response) => {
-            if (response.data != "err") {
-                let path = response.data.path
-                axios
-                  .post(`${Path}/checksyntax`, {
-                    filepath : path,
-                    s_id : response.data.s_id
-                  })
-                  .then((res) => {
-                    if (res.data) {
-                      getFileStudent();
-                      alert("Success");
-                    }
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
-              }
+          if (response.data != "err") {
+            let path = response.data.path;
+            axios
+              .post(`${Path}/checksyntax`, {
+                filepath: path,
+                s_id: response.data.s_id,
+              })
+              .then((res) => {
+                if (res.data) {
+                  getFileStudent();
+                  alert("Success");
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -224,7 +240,7 @@ function Assignment({ route }) {
       </View>
       <Text style={styles.headerStyle}>Due date</Text>
       <View style={styles.showdata}>
-        <Text>Saturday, 11 November 2002</Text>
+        <Text>{duedate}</Text>
       </View>
       <Text style={styles.headerStyle}>Last modified</Text>
       <View style={styles.showdata}>

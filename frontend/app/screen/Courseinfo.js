@@ -89,10 +89,10 @@ function CourseInfo({ route }) {
   const [description, setDescription] = useState("");
   const [allDescription, setAllDescription] = useState([]);
   const [selectType, setSelectType] = useState("");
+  const type = ["Youtube", "Assignment"];
   const [modalVisibleCreateDescription, setModalVisibleCreateDescription] =
     useState(false);
   const [allLesson, setAllLesson] = useState([]);
-  const type = ["Youtube", "Assignment"];
   // console.log(width)
 
   function RenderCourseOverView(props) {
@@ -115,7 +115,7 @@ function CourseInfo({ route }) {
           {user.role != "Student" && (
             <TouchableOpacity
               onPress={() => {
-                router.navigate("createDescription");
+                router.navigate("createDescription", {user : user, course : course, h_id : props.value.h_id});
               }}
             >
               <Text style={{ fontSize: 16 }}>+</Text>
@@ -146,6 +146,7 @@ function CourseInfo({ route }) {
                             user: user,
                             data: value,
                             h_id: props.value.h_id,
+                            course : course
                           });
                         }}
                       />
