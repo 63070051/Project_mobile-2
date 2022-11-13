@@ -125,6 +125,7 @@ function Profile(props) {
       <TextInput
         style={[styles.input]}
         placeholder="Old Password"
+        placeholderTextColor={"gray"}
         secureTextEntry={true}
         autoCorrect={false}
         onChangeText={(pass) => {
@@ -146,6 +147,7 @@ function Profile(props) {
       <TextInput
         style={[styles.input, { marginTop: 20 }]}
         placeholder="New Password"
+        placeholderTextColor={"gray"}
         secureTextEntry={true}
         autoCorrect={false}
         onChangeText={(pass) => {
@@ -169,7 +171,7 @@ function Profile(props) {
           onPress={checkResetpassword}
           style={[styles.buttonpho, { backgroundColor: "#FF9A00" }]}
         >
-          <Text style={{ color: "white" }}>Confirm Reset Password</Text>
+          <Text style={{ color: "white", fontSize: 15}}>Confirm Reset Password</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
@@ -182,7 +184,7 @@ function Profile(props) {
           }}
           style={[styles.buttonpho, { backgroundColor: "darkgray" }]}
         >
-          <Text style={{ color: "white" }}>cancel</Text>
+          <Text style={{ color: "white", fontSize: 15 }}>cancel</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -195,7 +197,7 @@ function Profile(props) {
       style={[styles.button, { flexDirection: "row" }]}
     >
       <MaterialCommunityIcons name="lock-reset" size={24} color="grey" />
-      <Text style={[{ marginLeft: 10 }, { color: "grey" }]}>
+      <Text style={[{ marginLeft: 10 }, { color: "grey", fontSize: 15 }]}>
         Reset Password
       </Text>
     </TouchableOpacity>
@@ -253,7 +255,7 @@ function Profile(props) {
       style={[styles.button, { flexDirection: "row" }]}
     >
       <MaterialIcons name="add-a-photo" size={24} color="grey" />
-      <Text style={[{ marginLeft: 10 }, { color: "grey" }]}>Add new Photo</Text>
+      <Text style={[{ marginLeft: 10 }, { color: "grey", fontSize: 15}]}>Add new Photo</Text>
     </TouchableOpacity>
   );
   const pickImage = async () => {
@@ -308,7 +310,7 @@ function Profile(props) {
           style={[styles.button, { flexDirection: "row" }]}
         >
           <SimpleLineIcons name="logout" size={20} color="grey" />
-          <Text style={[{ marginLeft: 14 }, { color: "grey" }]}>Logout</Text>
+          <Text style={[{ marginLeft: 14 }, { color: "grey" , fontSize: 15}]}>Logout</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -337,22 +339,24 @@ const styles = StyleSheet.create({
       width: -2,
       height: 4,
     },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.05,
     shadowRadius: 3,
     elevation: 5,
+    paddingBottom: 13
   },
   buttonpho: {
     alignItems: "center",
-    padding: 13,
+    padding: 15,
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
       width: -2,
       height: 4,
     },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.05,
     shadowRadius: 3,
     elevation: 5,
+    fontSize: 15,
   },
   button: {
     width: "100%",
@@ -363,17 +367,20 @@ const styles = StyleSheet.create({
   },
   input: {
     width: 330,
-    borderRadius: 10,
-    padding: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: -2,
-      height: 4,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 5,
+    // borderRadius: 10,
+    padding: 15,
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: -2,
+    //   height: 4,
+    // },
+    // shadowOpacity: 0.05,
+    // shadowRadius: 3,
+    // elevation: 5,
     backgroundColor: "white",
+    fontSize: 15,
+    borderBottomWidth: 1,
+    borderColor: "darkgrey"
   },
   image: {
     height: 150,

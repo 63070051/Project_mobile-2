@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import * as React from "react";
 import axios from "axios";
-import { AntDesign, Zocial, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, Zocial, Ionicons, MaterialIcon, FontAwesome, MaterialIcons, MaterialCommunityIcons  } from "@expo/vector-icons";
 import { launchImageLibrary } from "react-native-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
@@ -36,6 +36,8 @@ function Register(props) {
   const [image, setImage] = React.useState(null);
   const [objectImg, setObjectImg] = React.useState([]);
   const [secret, setSecret] = React.useState("");
+  const [sec, setSec] = React.useState(true);
+  const [secCon, setSeccon] = React.useState(true);
   const checkHandle = () => {
     // console.log(email.indexOf("@it.kmitl.ac.th"));
     setCheckpass(false);
@@ -145,20 +147,22 @@ function Register(props) {
             onPress={pickImage}
             style={[styles.button, { backgroundColor: "royalblue" }, {marginBottom: 20}]}
           >
-            <Text style={{ color: "white" }}>Upload Photo</Text>
+            <Text style={{ color: "white", fontSize: 15  }}>Upload Photo</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => setImage(null)}
             style={[styles.button, { backgroundColor: "darkgray" }]}
           >
-            <Text style={{ color: "white" }}>Remove Photo</Text>
+            <Text style={{ color: "white", fontSize: 15  }}>Remove Photo</Text>
           </TouchableOpacity>
         </View>
         <View style={[styles.inputcontainer, { flexDirection: "row" , justifyContent : "space-between"}]}>
           {/* <Zocial name="email" size={24} color="black" /> */}
+          <FontAwesome style={styles.user} name="user" size={24} color="gray" />
           <TextInput
             style={[styles.input, { width: "65%" }]}
             placeholder="Email"
+            placeholderTextColor={"darkgrey"}
             keyboardType="email-address"
             autoCapitalize="none"
             onChangeText={(mail) => {
@@ -171,13 +175,15 @@ function Register(props) {
               sendSecretCode();
             }}
           >
-            <Text style={{ color: "white" }}>Send</Text>
+            <Text style={{ color: "white", fontSize: 15  }}>Send</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.inputcontainer}>
+        <Ionicons style={styles.key} name="ios-key" size={24} color="gray" />
           <TextInput
             style={styles.input}
             placeholder="Secret Key"
+            placeholderTextColor={"darkgrey"}
             autoCapitalize="none"
             onChangeText={(key) => {
               setKey(key);
@@ -185,35 +191,47 @@ function Register(props) {
           />
         </View>
         <View style={styles.inputcontainer}>
+          <MaterialIcons style={styles.password} name="lock" size={24} color="gray" />
           <TextInput
             style={styles.input}
-            autoCapitalize='none'
+            // autoCapitalize='none'
             placeholder="Password"
-            secureTextEntry={true}
+            placeholderTextColor={"darkgrey"}
+            secureTextEntry={sec}
             autoCorrect={false}
             onChangeText={(pass) => {
               setPassword(pass);
             }}
           />
+          <TouchableOpacity style={styles.secret} onPress={() => {setSec(!sec)}}>
+            {sec && <Ionicons name="eye" size={24} color="gray" />}
+            {!sec && <Ionicons name="eye-off" size={24} color="gray" />}
+          </TouchableOpacity>
         </View>
         <View style={styles.inputcontainer}>
+        <MaterialCommunityIcons style={styles.password} name="lock-plus" size={24} color="gray" />
           <TextInput
             style={styles.input}
             placeholder="Confirm Password"
-            secureTextEntry={true}
+            placeholderTextColor={"darkgrey"}
+            secureTextEntry={secCon}
             autoCapitalize='none'
             autoCorrect={false}
             onChangeText={(pass) => {
               setConfirmpass(pass);
             }}
           />
+          <TouchableOpacity style={styles.secret} onPress={() => {setSeccon(!secCon)}}>
+            {sec && <Ionicons name="eye" size={24} color="gray" />}
+            {!sec && <Ionicons name="eye-off" size={24} color="gray" />}
+          </TouchableOpacity>
           {checkpass ? (
             <Text style={{ color: "red" , marginTop : 5}}>Password not match</Text>
           ) : null}
         </View>
         <View style={[styles.inputcontainer, {marginBottom: 0}]}>
           <TouchableOpacity style={styles.button} onPress={checkHandle}>
-            <Text style={{ color: "white" }}>Sign up</Text>
+            <Text style={{ color: "white", fontSize: 15 }}>Sign up</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -238,6 +256,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "darkgrey",
     backgroundColor: "white",
+    fontSize: 18,
+    paddingLeft: 35,
+    color: "gray"
   },
   button: {
     width: "100%",
@@ -258,7 +279,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#FF9A00",
     alignItems: "center",
-    padding: 13,
+    padding: 15,
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
@@ -288,6 +309,29 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 3,
     elevation: 5,
+  },
+  secret: {
+    position: "absolute",
+    right: 6,
+    top: 8
+  },
+  user:{
+    position: "absolute",
+    left: 9,
+    top: 11,
+    zIndex: 5
+  },
+  password: {
+    position: "absolute",
+    left: 6,
+    top: 8,
+    zIndex: 2
+  },
+  key:{
+    position: "absolute",
+    left: 6,
+    top: 8,
+    zIndex: 2
   }
 });
 export default Register;

@@ -28,8 +28,6 @@ function Home(props) {
   // console.log(user);
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.navbar}>
-      </View>
       <View style={styles.logocontainer}>
         <Image style={styles.logo} source={require('../assets/logo.png')}/>
       </View>
@@ -101,27 +99,24 @@ const styles = StyleSheet.create({
       // marginTop : 40
     },
     enterclassbutton:{
-      paddingTop : 8,
-      paddingBottom : 8,
+      paddingTop : 12,
       paddingLeft : 12,
       paddingRight : 12,
-      borderColor : "#FF9A00",
-      borderWidth : 2,
       borderRadius : 5,
-      backgroundColor: "#FFFFFF",
+      backgroundColor: "#ffbA00",
       height: 50,
       shadowColor: "#000",
       shadowOffset: {
         width: 0,
         height: 6,
       },
-      shadowOpacity: 0.39,
+      shadowOpacity: 0.05,
       shadowRadius: 8.30,
     },
     textbutton:{
       textAlign : "center",
       fontSize : 20,
-
+      color: "white"
     },
     buttoncontainer :{
       // flex : 1,
@@ -154,7 +149,7 @@ const styles = StyleSheet.create({
         width: 0,
         height: 6,
       },
-      shadowOpacity: 0.39,
+      shadowOpacity: 0.05,
       shadowRadius: 8.30,
     },
     textcard:{

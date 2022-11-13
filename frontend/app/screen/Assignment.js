@@ -264,13 +264,13 @@ function Assignment({ route }) {
           pickDocument();
         }}
       >
-        <Text style={styles.textButtonStyle}>Add submission</Text>
+        <Text style={styles.textButtonStyle}>Add file</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[
           styles.saveButtonStyle,
           document != backUpDocument || document.length == 0
-            ? { backgroundColor: "blue" }
+            ? { backgroundColor: "royalblue" }
             : { backgroundColor: "gray" },
         ]}
         onPress={() => {
@@ -281,7 +281,7 @@ function Assignment({ route }) {
           }
         }}
       >
-        <Text style={styles.textButtonStyle}>ADD</Text>
+        <Text style={styles.textButtonStyle}>Submit Assignment</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -307,8 +307,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   saveButtonStyle: {
-    borderWidth: 1,
-    borderColor: "#ffbA00",
     borderRadius: 10,
     padding: 13,
     width: "100%",

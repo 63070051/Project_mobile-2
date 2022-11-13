@@ -19,6 +19,7 @@ import {
   Ionicons,
   FontAwesome,
   MaterialIcons,
+  Feather
 } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -65,15 +66,25 @@ function RenderVideo(props) {
 
 function RenderAssignment(props) {
   return (
-    <TouchableOpacity
-      onPress={() => {
-        props.Assignment();
-      }}
-    >
-      <Text style={{ fontSize: 18, color: "blue", fontWeight: "bold" }}>
-        {props.text}
-      </Text>
-    </TouchableOpacity>
+    <View style={{
+      flexDirection: "row",
+      alignItems: "center"
+    }}>
+      <TouchableOpacity
+        onPress={() => {
+          props.Assignment();
+        }}
+      >
+        <Text style={{ fontSize: 18, color: "#FF9A00", fontWeight: "bold" }}>
+          {props.text}
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity 
+        style={{marginLeft: 10}}
+      >
+        <Feather name="edit" size={22} color="black" />
+      </TouchableOpacity>
+    </View>
   );
 }
 
@@ -105,22 +116,37 @@ function CourseInfo({ route }) {
         </View>
         <View
           style={{
-            paddingHorizontal: 10,
+            paddingHorizontal: 15,
             paddingTop: 10,
             flexDirection: "row",
             justifyContent: "space-between",
+            alignItems: "center"
           }}
         >
           <Text style={{ fontSize: 12 }}>{props.course_description}</Text>
-          {user.role != "Student" && (
-            <TouchableOpacity
-              onPress={() => {
-                router.navigate("createDescription", {user : user, course : course, h_id : props.value.h_id});
-              }}
-            >
-              <Text style={{ fontSize: 16 }}>+</Text>
-            </TouchableOpacity>
-          )}
+          <View style={{
+            flexDirection: "row"
+          }}>
+            {user.role != "Student" && (
+              <TouchableOpacity
+                onPress={() => {
+                  router.navigate("createDescription", {user : user, course : course, h_id : props.value.h_id});
+                }}
+                style={{marginRight: 6}}
+              >
+                <Ionicons name="add-circle-outline" size={23} color="black" />
+              </TouchableOpacity>
+            )}
+            {user.role != "Student" && (
+              <TouchableOpacity
+                onPress={() => {
+                  
+                }}
+              >
+                <MaterialCommunityIcons name="movie-edit-outline" size={24} color="black" />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
         <View style={styles.box}>
           <View style={styles.inside}>
@@ -156,7 +182,7 @@ function CourseInfo({ route }) {
               })}
             <View style={styles.material}>
               <TouchableOpacity
-                style={styles.topMaterial}
+                style={[styles.topMaterial, !toggle ? {borderBottomEndRadius : 10, borderBottomStartRadius : 10} : null]}
                 onPress={() => {
                   setToggle(!toggle);
                 }}
@@ -202,7 +228,7 @@ function CourseInfo({ route }) {
                 }),
               ]}
             >
-              <AntDesign name="edit" size={30} color="black" />
+              <MaterialCommunityIcons name="file-document-edit-outline" size={30} color="black" />
             </TouchableOpacity>
             <TouchableOpacity
               style={[

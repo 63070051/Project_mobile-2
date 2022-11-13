@@ -12,6 +12,7 @@ import CourseInfo from "./app/screen/Courseinfo";
 import CourseCreate from "./app/screen/CourseCreate";
 import CreateLesson from "./app/screen/CreateLesson";
 import Test from "./app/screen/Test"
+import EditAssignment from "./app/screen/EditAssignment"
 import CreateDescription from "./app/screen/CreateDescription";
 
 export default function App() {
