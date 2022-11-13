@@ -43,7 +43,7 @@ function Assignment({ route }) {
       })
       .then((response) => {
         setDueDate(
-          moment(response.data.duedate).format("D MMMM YYYY, h:mm:ss a")
+          moment(response.data.date).format("D MMMM YYYY, h:mm:ss a")
         );
       })
       .catch((err) => {
