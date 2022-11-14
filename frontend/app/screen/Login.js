@@ -7,6 +7,7 @@ import {
   ScrollView,
   TextInput,
 } from "react-native";
+import { Ionicons, FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -16,6 +17,7 @@ function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+  const [sec, setSec] = useState(true)
   let TextError = null;
 
   const getUser = async () => {
@@ -67,20 +69,30 @@ function Login(props) {
       <View style={styles.box}>
         <View style={styles.TextInput}>
           {/* <Text style={styles.text}>Email</Text> */}
+          <FontAwesome style={styles.user} name="user" size={24} color="gray" />
           <TextInput
             style={styles.input}
             placeholder="Email"
+            placeholderTextColor={"darkgrey"}
             onChangeText={(email) => setEmail(email)}
           />
         </View>
         <View style={styles.TextInput}>
           {/* <Text style={styles.text}>Password</Text> */}
-          <TextInput
-            style={styles.input}
-            placeholder="password"
-            secureTextEntry={true}
-            onChangeText={(password) => setPassword(password)}
-          />
+          <View style={{flexDirection: "row"}}>
+            <MaterialIcons style={styles.password} name="lock-outline" size={24} color="gray" />
+            <TextInput
+              style={styles.input}
+              placeholder="password"
+              placeholderTextColor={"darkgrey"}
+              secureTextEntry={sec}
+              onChangeText={(password) => setPassword(password)}
+            />
+            <TouchableOpacity style={styles.secret} onPress={() => {setSec(!sec)}}>
+              {sec && <Ionicons name="eye" size={24} color="gray" />}
+              {!sec && <Ionicons name="eye-off" size={24} color="gray" />}
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity style={{marginBottom: 5}}>
             <Text style={{fontSize : 13, color: "#ffbA00"}}>Forgot password?</Text>
           </TouchableOpacity>
@@ -92,15 +104,15 @@ function Login(props) {
             SignIn();
           }}
         >
-          <Text style={{ color: "white" }}>Sign in</Text>
+          <Text style={{ color: "white", fontSize: 18}}>Sign in</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, {backgroundColor: "royalblue"}]}
           onPress={() => {
             props.navigation.navigate("register");
           }}
         >
-          <Text style={{ color: "white" }}>Sign up</Text>
+          <Text style={{ color: "white", fontSize: 18}}>Sign up</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.countContainer}>
@@ -123,20 +135,23 @@ const styles = StyleSheet.create({
   },
   input: {
     width: 330,
-    // borderRadius: 6,
-    padding: 13,
+    borderRadius: 10,
+    paddingLeft: 40,
+    padding: 15,
     // shadowColor: "#000",
     // shadowOffset: {
-    //   width: -2,
+    //   width: 2,
     //   height: 4,
     // },
-    // shadowOpacity: 0.05,
+    // shadowOpacity: 0.08,
     // shadowRadius: 3,
     // elevation: 5,
     // backgroundColor: "white",
     marginVertical: 9,
     borderColor: "darkgrey",
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
+    fontSize: 18,
+    color: "gray"
   },
   button: {
     width: 330,
@@ -163,7 +178,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignSelf: "center",
     backgroundColor: "white",
-    paddingHorizontal: 25,
+    paddingHorizontal: 20,
     paddingBottom: 15,
     paddingTop: 10,
     borderRadius: 10,
@@ -188,5 +203,20 @@ const styles = StyleSheet.create({
   cop: {
     alignItems: "center",
   },
+  secret: {
+    position: "absolute",
+    right: 25,
+    top: 22
+  },
+  user:{
+    position: "absolute",
+    left: 15,
+    top: 22
+  },
+  password: {
+    position: "absolute",
+    left: 12,
+    top: 23
+  }
 });
 export default Login;

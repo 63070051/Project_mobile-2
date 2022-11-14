@@ -178,7 +178,7 @@ function TabNavigater() {
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => {
-            return <Ionicons name="chatbubble" size={size} color="black" />;
+            return <Ionicons name="chatbubble-ellipses-outline" size={size} color="black" />
           },
         }}
       />

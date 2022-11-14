@@ -153,9 +153,6 @@ function EditLesson({ route }) {
     <ScrollView contentContainerStyle={{ marginBottom: 30 }}>
       <SafeAreaView edges={["bottom", "left", "right"]} style={{ flex: 1 }}>
         <View style={styles.container}>
-          <Text style={[styles.headerStyle, { fontSize: 21 }]}>
-            Crate Lesson
-          </Text>
           <Text style={[styles.headerStyle, { alignSelf: "flex-start" }]}>
             Lesson
           </Text>
