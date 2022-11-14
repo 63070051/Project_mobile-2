@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Button } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-
+import { Entypo, FontAwesome5, MaterialIcons, MaterialCommunityIcons    } from '@expo/vector-icons';
 
 
 
@@ -31,7 +31,6 @@ function Home(props) {
       <View style={styles.logocontainer}>
         <Image style={styles.logo} source={require('../assets/logo.png')}/>
       </View>
-
       <View style={styles.buttoncontainer}>
         <TouchableOpacity style={styles.enterclassbutton} onPress={() => {
           router.navigate("coursepage");
@@ -41,28 +40,28 @@ function Home(props) {
       </View>
       <View style={styles.card}>
         <View style={styles.containercenter}>
-          <Image style={styles.userlogo} source={require('../assets/users.png')} />
+        <FontAwesome5 name="user-friends" size={40} color="black" />
           <Text style={styles.textlogo}>ใช้งาน</Text>
           <Text style={styles.textcard}>ระบบ J: Learn ออกแบบมาเพื่อให้ผู้ใช้สามารถใช้งานได้อย่างง่ายดาย ไม่มีความซับซ้อน</Text>
         </View>
       </View>
       <View style={styles.card}>
         <View style={styles.containercenter}>
-          <Image style={styles.userlogo} source={require('../assets/users.png')} />
+          <Entypo name="code" size={50} color="black" />
           <Text style={styles.textlogo}>โค้ด</Text>
           <Text style={styles.textcard}>ระบบตรวจโครงสร้างอัตโนมัติ ช่วยลดระยะการตรวจของผู้สอน</Text>
         </View>
       </View>
       <View style={styles.card}>
         <View style={styles.containercenter}>
-          <Image style={styles.userlogo} source={require('../assets/users.png')} />
+        <MaterialIcons name="featured-play-list" size={50} color="black" />
           <Text style={styles.textlogo}>ฟีเจอร์</Text>
           <Text style={styles.textcard}>ส่วนช่วยจัดการผู้เรียนได้ง่าย ตรวจสอบผู้เรียนได้ง่าย และจัดการงานแต่ละงานได้ง่าย</Text>
         </View>
       </View>
       <View style={styles.card}>
         <View style={styles.containercenter}>
-          <Image style={styles.userlogo} source={require('../assets/users.png')} />
+          <MaterialCommunityIcons name="comment-question" size={50} color="black" />
           <Text style={styles.textlogo}>เพิ่มประสิทธิภาพ</Text>
           <Text style={styles.textcard}>เพิ่มประสิทธิภาพให้กับผู้เรียน เนื่องจากลดภาระของผู้สอน ให้ผู้สอนสามารถครอบคลุมผู้เรียนได้อย่างทั่วถึง</Text>
         </View>
@@ -80,9 +79,9 @@ const styles = StyleSheet.create({
       backgroundColor : "#FFF8EA"
     },
     logo:{
-        width : 350,
-        height : 150,
-        marginTop : 50,
+        width : 300,
+        height : 120,
+        marginTop : 30,
     },
     logocontainer:{
         // flex : 1,
@@ -121,16 +120,12 @@ const styles = StyleSheet.create({
     buttoncontainer :{
       // flex : 1,
       alignItems : "center",
-      marginTop : 20,
-      marginBottom : 20
-    },
-    userlogo:{
-      width : 60,
-      height : 60
+      marginVertical : 30
     },
     textlogo : {
       fontSize : 20,
-      textAlign : "center"
+      textAlign : "center",
+      marginTop: 10
     },
     containercenter : {
       // flex : 1,
@@ -143,19 +138,24 @@ const styles = StyleSheet.create({
       marginLeft : 20,
       marginRight : 20,
       marginBottom : 30,
-      borderRadius : 10,
+      borderRadius : 15,
       shadowColor: "#000",
       shadowOffset: {
         width: 0,
         height: 6,
       },
-      shadowOpacity: 0.05,
+      shadowOpacity: 0.09,
       shadowRadius: 8.30,
     },
     textcard:{
-      fontSize : 20,
-      marginTop : 50,
+      fontSize : 17,
+      marginTop : 45,
       textAlign : "center"
     },
+    start: {
+      backgroundColor: "white",
+      flexDirection: "row",
+
+    }
 });
 export default Home;

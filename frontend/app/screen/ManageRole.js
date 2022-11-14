@@ -14,7 +14,7 @@ import { FlatList } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import Path from "../../path";
 const role = ["Student", "Teacher", "Student"];
-
+import { MaterialIcons } from '@expo/vector-icons';
 
 const changeDataBaseRole = (id, role) => {
   axios.post(`${Path}/updateRole`, {
@@ -95,21 +95,24 @@ function ManageRole() {
   return (
     <ScrollView
       nestedScrollEnabled={true}
-      horizontal={true}
+      // horizontal={true}
       style={styles.scrollview}
     >
-      <View>
+      {/* <View> */}
         <View style={styles.header}>
           <Text style={styles.text_header}>Manage Role</Text>
-          <TextInput style={styles.textInput} placeholder="Search" onChangeText={(text) => {Search(text)}}/>
+          <View>
+            <MaterialIcons style={styles.search} name="search" size={28} color="gray" />
+            <TextInput style={styles.textInput} placeholder="Search" placeholderTextColor={"darkgrey"} onChangeText={(text) => {Search(text)}}/>
+          </View>
         </View>
-        <View style={[styles.box, {width : width}]}>
+        <View style={[styles.box, {width : "100%"}]}>
           {/* <FlatList data={allUser} renderItems={MapData} style={{ width: "100%" }}/> */}
           {allUser.map((value) => {
             return <MapData key={value.user_id} email={value.email} role={value.role} id={value.user_id}/>;
           })}
         </View>
-      </View>
+      {/* </View> */}
     </ScrollView>
   );
 }
@@ -117,15 +120,16 @@ const styles = StyleSheet.create({
   scrollview: {
     flex: 1,
     backgroundColor: "#FFF8EA",
+    paddingHorizontal: 20
   },
 
   container: {
     padding : 12
   },
   header: {
-    marginTop: 50,
+    marginTop: 40,
     justifyContent: "flex-end",
-    paddingHorizontal: 20,
+    // paddingHorizontal: 20,
     paddingBottom: 50,
   },
   text_header: {
@@ -134,58 +138,75 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   textInput: {
-    height: 50,
-    width: 350,
-    borderColor: "gray",
-    borderWidth: 1,
+    marginTop: 20,
+    width: "100%",
+    backgroundColor: "white",
+    padding: 15,
     borderRadius: 10,
-    paddingLeft: 10,
-    marginTop: 10,
-    backgroundColor: "#FFFFFF",
-    borderColor: "#FF9A00",
+    shadowColor: "#000",
+    shadowOffset: {
+    width: 0,
+    height: 2,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 2.62,
+    elevation: 4,
+    fontSize: 18,
+    paddingLeft: 40
   },
   box: {
     backgroundColor: "#fff",
+    paddingLeft: 15,
     alignItems: "center",
     // width: 400,
     borderRadius: 10,
     borderColor: "gray",
-    borderWidth: 1,
+    // borderWidth: 1,
     marginTop: 10,
     flexDirection: "column",
-    borderColor: "#FF9A00",
+    // borderColor: "#FF9A00",
+    shadowColor: "#000",
+    shadowOffset: {
+    width: 0,
+    height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2.62,
+    elevation: 4,
   },
   text: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     marginTop: 20,
   },
   dropdown: {
     width: 200,
     height: 100,
-    borderColor: "gray",
-    borderWidth: 1,
     borderRadius: 10,
     paddingLeft: 10,
     marginTop: 10,
     marginLeft: 10,
   },
   button: {
-    width: 120,
+    width: 110,
     height: 40,
-    borderColor: "#FF9A00",
-    borderWidth: 1,
     borderRadius: 10,
     paddingLeft: 10,
     marginTop: 10,
     marginLeft: 10,
     marginRight: 10,
-    backgroundColor: "#A8E890",
+    backgroundColor: "#FF9A00",
   },
   inside: {
     flexDirection: "row",
     marginBottom: 10,
     marginLeft : 8,
   },
+  search: {
+    position: "absolute",
+    top: 33,
+    left: 8,
+    zIndex: 2
+  }
 });
 export default ManageRole;

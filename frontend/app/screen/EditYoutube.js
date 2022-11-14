@@ -8,7 +8,7 @@ import {
   ScrollView,
   Alert
 } from "react-native";
-import { AntDesign, MaterialIcons, Entypo } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
@@ -37,6 +37,22 @@ function EditYoutube({ route }) {
       },
     ]);
   };
+  const confirmDelete = (link, value) => {
+    return Alert.alert("Are your sure?", "Are you sure to delete Link Youtube?", [
+      // The "Yes" button
+      {
+        text: "Yes",
+        onPress: async () => {
+
+        },
+      },
+      // The "No" button
+      // Does nothing but dismiss the dialog when tapped
+      {
+        text: "No",
+      },
+    ]);
+  }
 
   async function UpdateLink(link, value){
     await axios.post(`${Path}/EditYoutube`, {
@@ -66,20 +82,30 @@ function EditYoutube({ route }) {
         <Text style={styles.headerStyle}> Link </Text>
         <View style={styles.inputcontainer}>
           <Entypo style={styles.link} name="link" size={24} color="gray" />
-          <TextInput
-            style={[styles.input, { marginBottom: 10 }]}
-            defaultValue={link}
-            onChangeText={(value) => {
-              setLink(value);
-            }}
-          />
-          {props.value.data != link && (
-            <TouchableOpacity style={styles.save} onPress={() => {
-                confirmUpdate(link, props.value);
-            }}>
-              <Entypo name="save" size={24} color="black" />
+          <View style={{flexDirection : 'row', alignItems:"center"}}>
+            <TextInput
+              style={[styles.input]}
+              defaultValue={link}
+              onChangeText={(value) => {
+                setLink(value);
+              }}
+            />
+            {props.value.data != link && (
+              <TouchableOpacity style={styles.save} onPress={() => {
+                  confirmUpdate(link, props.value);
+              }}>
+                <Entypo name="save" size={24} color="black" />
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity
+              style={{marginLeft : 10}}
+              onPress={() => {
+                confirmDelete(link, props.value);
+              }}
+            >
+              <MaterialCommunityIcons name="delete" size={30} color="red" />
             </TouchableOpacity>
-          )}
+          </View>
         </View>
         <Youtube
           height={220}
@@ -112,7 +138,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   input: {
-    width: "100%",
+    width: "90%",
     backgroundColor: "white",
     padding: 13,
     paddingLeft: 35,
@@ -155,7 +181,7 @@ const styles = StyleSheet.create({
   },
   link: {
     position: "absolute",
-    left: 6,
+    left: 3,
     top: 8,
     zIndex: 2,
   },
