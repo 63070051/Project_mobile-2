@@ -29,7 +29,9 @@ function EditLesson({ route }) {
   const [descHTML, setDescHTML] = useState(route.params.data);
   const [lesson, setLesson] = useState(route.params.lesson);
   const [listDocument, setListDocument] = useState(route.params.listDocument);
+  const [backUpDocument, setBackUpDocument] = useState(route.params.listDocument);
   const [showDescError, setShowDescError] = useState(false);
+  const [deleteDocument, setDeleteDocument] = useState([]);
   const { width } = useWindowDimensions();
   let no_file = <Text style={{ alignSelf: "center" }}>Empty!</Text>;
   const richTextHandle = (descriptionText) => {
@@ -43,7 +45,9 @@ function EditLesson({ route }) {
   };
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
-    setListDocument([...listDocument, result]);
+    if(result.type != "cancel"){
+      setListDocument([...listDocument, result]);
+    }
   };
   const submitContentHandle = async () => {
     const replaceHTML = descHTML.replace(/<(.|\n)*?>/g, "").trim();
@@ -74,30 +78,32 @@ function EditLesson({ route }) {
             console.log(err);
           });
       } else {
-        console.log(1)
         const data = new FormData();
         data.append("course_id", course.course_id);
         data.append("u_id", user.user_id);
         data.append("lesson", lesson);
         data.append("data", descHTML);
         data.append("h_id", route.params.h_id);
+        data.append("deldocument", JSON.stringify(deleteDocument));
         listDocument.map((value)=>{
-          const newUri = "file:///" + value.uri.split("file:/").join("");
-          data.append("fileSubject", {
-            uri: newUri,
-            type: value.mimeType,
-            name: value.name,
-          });
+          if(backUpDocument.indexOf(value) == -1){
+            const newUri = "file:///" + value.uri.split("file:/").join("");
+            data.append("fileSubject", {
+              uri: newUri,
+              type: value.mimeType,
+              name: value.name,
+            });
+          }
         })
         axios
-          .post(`${Path}/createLesson/file`, data, {
+          .post(`${Path}/updateLesson/file`, data, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
           })
           .then((response) => {
             if (response.data == "success") {
-              alert("Create Lesson Success");
+              alert("Update Lesson Success");
               router.replace("courseinfo", {
                 course: course,
                 user: user,
@@ -111,7 +117,7 @@ function EditLesson({ route }) {
       // send data to your server!
     }
   };
-
+  console.log(deleteDocument)
   function File_Upload(props) {
     return (
       <View
@@ -137,7 +143,10 @@ function EditLesson({ route }) {
         <TouchableOpacity
           onPress={() => {
             const listsave = [...listDocument];
-            listsave.splice(props.index, 1);
+            let del = listsave.splice(props.index, 1);
+            if(backUpDocument.indexOf(del[0]) > -1){
+              setDeleteDocument([...deleteDocument, ...del]);
+            }
             setListDocument(listsave);
             // setListDocument(listDocument.splice(props.index, 1));
           }}
@@ -147,7 +156,6 @@ function EditLesson({ route }) {
       </View>
     );
   }
-
 
   return (
     <ScrollView contentContainerStyle={{ marginBottom: 30 }}>

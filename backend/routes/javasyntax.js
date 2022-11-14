@@ -64,7 +64,6 @@ router.post("/checksyntax", async function (req, res, next) {
     ) {
       checksemicolon += 1;
     }
-    // console.log(`${line}`);
   });
   if (
     leftcurlybracket != rightcurlybracket ||
@@ -90,7 +89,6 @@ router.post("/checksyntax", async function (req, res, next) {
     );
   }
   res.json("success");
-  //   console.log("readFile called");
 });
 
 module.exports = router;

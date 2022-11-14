@@ -2,33 +2,24 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableOpacity,
   ScrollView,
-  Modal,
-  TextInput,
-  Pressable,
   Linking,
   Alert,
   useWindowDimensions,
 } from "react-native";
 import {
   AntDesign,
-  Entypo,
   MaterialCommunityIcons,
   Ionicons,
   FontAwesome,
-  MaterialIcons,
-  Feather
+  Feather,
 } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Button } from "react-native";
-import SelectDropdown from "react-native-select-dropdown";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Youtube from "react-native-youtube-iframe";
 import RenderHtml from "react-native-render-html";
-import { TEST_ID } from "react-native-gifted-chat";
 import Path from "../../path";
 import { useNavigation } from "@react-navigation/native";
 
@@ -49,66 +40,67 @@ function RenderCourseInfo(props) {
   );
 }
 
-function RenderVideo(props) {
-  const [playing, setPlaying] = useState(false);
-  const togglePlaying = () => {
-    setPlaying((prev) => !prev);
-  };
-  return (
-    <Youtube
-      height={200}
-      width={props.width}
-      play={playing}
-      videoId={props.videoId}
-    />
-  );
-}
-
-function RenderAssignment(props) {
-  return (
-    <View style={{
-      flexDirection: "row",
-      alignItems: "center"
-    }}>
-      <TouchableOpacity
-        onPress={() => {
-          props.Assignment();
-        }}
-      >
-        <Text style={{ fontSize: 18, color: "#FF9A00", fontWeight: "bold" }}>
-          {props.text}
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity 
-        style={{marginLeft: 10}}
-      >
-        <Feather name="edit" size={22} color="black" />
-      </TouchableOpacity>
-    </View>
-  );
-}
-
 function CourseInfo({ route }) {
   const router = useNavigation();
   const [user, setUser] = useState(route.params.user);
   const [course, setCourse] = useState(route.params.course);
   const [member, setmember] = useState(0);
   const { width } = useWindowDimensions();
-  const [lesson, setLesson] = useState("");
-  const [lessonId, setLessonId] = useState("");
   const [listDocument, setListDocument] = useState([]);
-  const [description, setDescription] = useState("");
   const [allDescription, setAllDescription] = useState([]);
-  const [selectType, setSelectType] = useState("");
-  const type = ["Youtube", "Assignment"];
-  const [modalVisibleCreateDescription, setModalVisibleCreateDescription] =
-    useState(false);
   const [allLesson, setAllLesson] = useState([]);
-  // console.log(width)
+
+  function RenderVideo(props) {
+    const [playing, setPlaying] = useState(false);
+    const togglePlaying = () => {
+      setPlaying((prev) => !prev);
+    };
+    return (
+      <Youtube
+        height={200}
+        width={props.width}
+        play={playing}
+        videoId={props.videoId}
+      />
+    );
+  }
+
+  function RenderAssignment(props) {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginBottom: 10,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            props.Assignment();
+          }}
+        >
+          <Text style={{ fontSize: 18, color: "#FF9A00", fontWeight: "bold" }}>
+            {props.text}
+          </Text>
+        </TouchableOpacity>
+        {user.role != "Student" && (
+          <TouchableOpacity
+            style={{ marginLeft: 10 }}
+            onPress={() => {
+              router.navigate("editassignment", { value: props.value });
+            }}
+          >
+            <Feather name="edit" size={22} color="black" />
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  }
 
   function RenderCourseOverView(props) {
     let sendDocument = [];
     const [toggle, setToggle] = useState(false);
+    let sendYoutube = [];
     return (
       <View style={styles.container}>
         <View style={styles.header2}>
@@ -120,19 +112,25 @@ function CourseInfo({ route }) {
             paddingTop: 10,
             flexDirection: "row",
             justifyContent: "space-between",
-            alignItems: "center"
+            alignItems: "center",
           }}
         >
           <Text style={{ fontSize: 12 }}>{props.course_description}</Text>
-          <View style={{
-            flexDirection: "row"
-          }}>
+          <View
+            style={{
+              flexDirection: "row",
+            }}
+          >
             {user.role != "Student" && (
               <TouchableOpacity
                 onPress={() => {
-                  router.navigate("createDescription", {user : user, course : course, h_id : props.value.h_id});
+                  router.navigate("createDescription", {
+                    user: user,
+                    course: course,
+                    h_id: props.value.h_id,
+                  });
                 }}
-                style={{marginRight: 6}}
+                style={{ marginRight: 6 }}
               >
                 <Ionicons name="add-circle-outline" size={23} color="black" />
               </TouchableOpacity>
@@ -140,10 +138,14 @@ function CourseInfo({ route }) {
             {user.role != "Student" && (
               <TouchableOpacity
                 onPress={() => {
-                  
+                  router.navigate("EditYoutube", { data: sendYoutube });
                 }}
               >
-                <MaterialCommunityIcons name="movie-edit-outline" size={24} color="black" />
+                <MaterialCommunityIcons
+                  name="movie-edit-outline"
+                  size={24}
+                  color="black"
+                />
               </TouchableOpacity>
             )}
           </View>
@@ -155,6 +157,7 @@ function CourseInfo({ route }) {
               allDescription.map((value) => {
                 if (props.value.h_id == value.h_id) {
                   if (value.type == "Youtube") {
+                    sendYoutube.push(value);
                     return (
                       <RenderVideo
                         key={value.d_id}
@@ -172,9 +175,10 @@ function CourseInfo({ route }) {
                             user: user,
                             data: value,
                             h_id: props.value.h_id,
-                            course : course
+                            course: course,
                           });
                         }}
+                        value={value}
                       />
                     );
                   }
@@ -182,7 +186,12 @@ function CourseInfo({ route }) {
               })}
             <View style={styles.material}>
               <TouchableOpacity
-                style={[styles.topMaterial, !toggle ? {borderBottomEndRadius : 10, borderBottomStartRadius : 10} : null]}
+                style={[
+                  styles.topMaterial,
+                  !toggle
+                    ? { borderBottomEndRadius: 10, borderBottomStartRadius: 10 }
+                    : null,
+                ]}
                 onPress={() => {
                   setToggle(!toggle);
                 }}
@@ -228,7 +237,11 @@ function CourseInfo({ route }) {
                 }),
               ]}
             >
-              <MaterialCommunityIcons name="file-document-edit-outline" size={30} color="black" />
+              <MaterialCommunityIcons
+                name="file-document-edit-outline"
+                size={30}
+                color="black"
+              />
             </TouchableOpacity>
             <TouchableOpacity
               style={[
@@ -276,15 +289,12 @@ function CourseInfo({ route }) {
 
   const confirmDel = (id) => {
     return Alert.alert("Are your sure?", "Are you sure to Delete lesson?", [
-      // The "Yes" button
       {
         text: "Yes",
         onPress: async () => {
           DeleteLesson(id);
         },
       },
-      // The "No" button
-      // Does nothing but dismiss the dialog when tapped
       {
         text: "No",
       },
@@ -312,7 +322,6 @@ function CourseInfo({ route }) {
         course_id: course.course_id,
       })
       .then((response) => {
-        // console.log(response.data)
         setmember(response.data);
       })
       .catch((err) => {
@@ -337,7 +346,6 @@ function CourseInfo({ route }) {
       })
       .then((response) => {
         setAllLesson(response.data);
-        // console.log(response.data)
       })
       .catch((err) => {
         console.log(err);
@@ -350,7 +358,6 @@ function CourseInfo({ route }) {
       })
       .then((response) => {
         setListDocument(response.data);
-        // console.log(response.data)
       })
       .catch((err) => {
         console.log(err);
@@ -363,7 +370,6 @@ function CourseInfo({ route }) {
       })
       .then((response) => {
         setAllDescription(response.data);
-        // console.log(response.data)
       })
       .catch((err) => {
         console.log(err);
@@ -393,90 +399,6 @@ function CourseInfo({ route }) {
         description={course.subtitle}
         member={member}
       />
-      {/* <View style={styles.centeredView}>
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={modalVisibleCreateDescription}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisibleCreateDescription(!modalVisibleCreateDescription);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Create Description</Text>
-              <View style={{ width: "100%", alignItems: "center" }}>
-                <SelectDropdown
-                  data={type}
-                  dropdownStyle={[styles.dropdown]}
-                  defaultButtonText={"Youtube"}
-                  buttonStyle={styles.button}
-                  onSelect={(selectedItem, index) => {
-                    {
-                      setSelectType(selectedItem);
-                    }
-                  }}
-                  buttonTextAfterSelection={(selectedItem, index) => {
-                    // text represented after item is selected
-                    // if data array is an array of objects then return selectedItem.property to render after item is selected
-                    return selectedItem;
-                  }}
-                  rowTextForSelection={(item, index) => {
-                    // text represented for each item in dropdown
-                    // if data array is an array of objects then return item.property to represent item in dropdown
-                    return item;
-                  }}
-                />
-                <TextInput
-                  onChangeText={(text) => setDescription(text)}
-                  multiline={true}
-                  style={[
-                    selectType == "Text" ? styles.textArea : styles.input,
-                    { width: "100%", marginTop: 10 },
-                  ]}
-                  placeholder="Please Input Link Youtube"
-                />
-              
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  width: "100%",
-                  justifyContent: "center",
-                }}
-              >
-                <Pressable
-                  style={[
-                    styles.button,
-                    styles.buttonClose,
-                    { marginLeft: 5, marginRight: 5 },
-                  ]}
-                  onPress={() =>
-                    setModalVisibleCreateDescription(
-                      !modalVisibleCreateDescription
-                    )
-                  }
-                >
-                  <Text style={styles.textStyle}>Cancel</Text>
-                </Pressable>
-                <Pressable
-                  style={[
-                    styles.button,
-                    styles.buttonConfirm,
-                    { marginRight: 5, marginLeft: 5 },
-                  ]}
-                  onPress={() => {
-                    createDescription();
-                  }}
-                >
-                  <Text style={styles.textStyle}>Create</Text>
-                </Pressable>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      </View> */}
 
       <View
         style={{

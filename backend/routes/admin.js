@@ -12,7 +12,6 @@ router.post("/updateRole", async function (req, res, next) {
     try {
         let u_id = req.body.id;
         let role = req.body.role;
-        // console.log(u_id, role)
         const [update, field] = await pool.query(
             "UPDATE user set role = ? Where user_id = ?", 
             [role, u_id]

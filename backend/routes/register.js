@@ -77,7 +77,6 @@ router.post("/confirmemail", async function (req, res, next) {
     "SELECT * FROM user WHERE email = ?",
     [email]
   );
-  // console.log(checkEmail)
   if(checkEmail.length != 0){
     return res.json("used");
   }
@@ -120,12 +119,78 @@ router.post("/confirmemail", async function (req, res, next) {
       if (error) {
         console.log(error);
       } else {
-        console.log("Email sent: " + info.response);
+        // console.log("Email sent: " + info.response);
         res.json(password);
       }
     });
   } catch (error) {
     return next(error);
+  }
+});
+
+router.post("/resetPasswordMail", async function (req, res, next) {
+  let email = req.body.email;
+
+  let chars =
+    "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let passwordLength = 5;
+  let password = "";
+  for (let i = 0; i <= passwordLength; i++) {
+    let randomNumber = Math.floor(Math.random() * chars.length);
+    password += chars.substring(randomNumber, randomNumber + 1);
+  }
+
+  try {
+    const output = `
+              <p>You have a Secret code</p>
+              <h3>Secret code to Register</h3>
+              <ul>
+                  <li>Secret code : ${password}</li>
+              </ul>
+              `;
+    // let testAccount = await nodemailer.createTestAccount();
+    // create reusable transporter object using the default SMTP transport
+    var transporter = nodemailer.createTransport({
+      service : "gmail",
+      auth: {
+        user: "63070065@kmitl.ac.th",
+        pass: "SakuraHiro8852",
+      },
+    });
+
+    var mailOptions = {
+      from: "63070065@kmitl.ac.th",
+      to: `${email}`,
+      subject: "Secret code",
+      text: "Hello!",
+      html: output,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        // console.log("Email sent: " + info.response);
+        res.json(password);
+      }
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.post("/resetPassword", async function (req, res, next) {
+  try {
+    let email = req.body.email;
+    let password = req.body.password;
+    let tokens = md5(password);
+    const [checkuser, field] = await pool.query(
+      "UPDATE user SET tokens = ? WHERE email = ?",
+      [tokens, email]
+    );
+    return res.json("success");
+  } catch (err) {
+    next(err);
   }
 });
 

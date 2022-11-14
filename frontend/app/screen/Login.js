@@ -20,17 +20,6 @@ function Login(props) {
   const [sec, setSec] = useState(true)
   let TextError = null;
 
-  const getUser = async () => {
-    let users = await AsyncStorage.getItem("@login");
-    if (users != undefined) {
-      props.navigation.replace("TabHome");
-    }
-    // return JSON.parse(user);
-  };
-  useEffect(() => {
-    getUser();
-  }, []);
-
   const SignIn = async () => {
     axios
       .post(`${Path}/checkUser`, {
@@ -89,11 +78,13 @@ function Login(props) {
               onChangeText={(password) => setPassword(password)}
             />
             <TouchableOpacity style={styles.secret} onPress={() => {setSec(!sec)}}>
-              {sec && <Ionicons name="eye" size={24} color="gray" />}
-              {!sec && <Ionicons name="eye-off" size={24} color="gray" />}
+              {!sec && <Ionicons name="eye" size={24} color="gray" />}
+              {sec && <Ionicons name="eye-off" size={24} color="gray" />}
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={{marginBottom: 5}}>
+          <TouchableOpacity style={{marginBottom: 5}} onPress={()=>{
+            props.navigation.navigate("resetpassword");
+          }}>
             <Text style={{fontSize : 13, color: "#ffbA00"}}>Forgot password?</Text>
           </TouchableOpacity>
         </View>

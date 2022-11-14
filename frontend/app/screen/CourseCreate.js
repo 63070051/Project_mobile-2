@@ -10,7 +10,6 @@ import {
 import { TextInput } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
-import { Entypo } from '@expo/vector-icons';
 import Path from "../../path";
 import {useNavigation } from '@react-navigation/native';
 
@@ -30,15 +29,12 @@ function CourseCreate({route}) {
   );
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);
@@ -120,7 +116,6 @@ function CourseCreate({route}) {
                     <Text style={{ color: "white" }}>Remove Photo</Text>
                 </TouchableOpacity>
             </View>
-            {/* <Text style={styles.text}>Course Name</Text> */}
             <TextInput
             placeholder="Course Title"
             onChangeText={(title) => {
@@ -128,7 +123,6 @@ function CourseCreate({route}) {
             }}
             style={styles.textinput}
             />
-            {/* <Text style={styles.text}>Sub title</Text> */}
             <TextInput
             multiline={true}
             placeholder="Course Subtitle"
@@ -137,7 +131,6 @@ function CourseCreate({route}) {
             }}
             style={styles.textinput}
             />
-            {/* <Text style={styles.text}>Enroll Key</Text> */}
             <TextInput
             placeholder="Course Key"
             onChangeText={(key) => {
@@ -202,7 +195,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     width: "100%",
     padding: 10,
-    // height: 30,
     borderRadius: 5,
     borderBottomWidth: 1,
     borderColor: "darkgray"

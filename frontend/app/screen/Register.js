@@ -204,8 +204,8 @@ function Register(props) {
             }}
           />
           <TouchableOpacity style={styles.secret} onPress={() => {setSec(!sec)}}>
-            {sec && <Ionicons name="eye" size={24} color="gray" />}
-            {!sec && <Ionicons name="eye-off" size={24} color="gray" />}
+            {!sec && <Ionicons name="eye" size={24} color="gray" />}
+            {sec && <Ionicons name="eye-off" size={24} color="gray" />}
           </TouchableOpacity>
         </View>
         <View style={styles.inputcontainer}>
@@ -222,8 +222,8 @@ function Register(props) {
             }}
           />
           <TouchableOpacity style={styles.secret} onPress={() => {setSeccon(!secCon)}}>
-            {sec && <Ionicons name="eye" size={24} color="gray" />}
-            {!sec && <Ionicons name="eye-off" size={24} color="gray" />}
+            {!secCon && <Ionicons name="eye" size={24} color="gray" />}
+            {secCon && <Ionicons name="eye-off" size={24} color="gray" />}
           </TouchableOpacity>
           {checkpass ? (
             <Text style={{ color: "red" , marginTop : 5}}>Password not match</Text>

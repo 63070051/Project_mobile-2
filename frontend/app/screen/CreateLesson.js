@@ -44,7 +44,9 @@ function CreateLesson({ route }) {
 
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
-    setListDocument([...listDocument, result]);
+    if(result.type != "cancel"){
+      setListDocument([...listDocument, result]);
+    }
   };
   const submitContentHandle = async () => {
     const replaceHTML = descHTML.replace(/<(.|\n)*?>/g, "").trim();

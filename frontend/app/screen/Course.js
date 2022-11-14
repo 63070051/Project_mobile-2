@@ -5,7 +5,6 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  FlatList,
   Modal,
   Pressable,
   Alert,
@@ -45,7 +44,6 @@ function Course(props) {
       .catch((err) => {
         console.log(err);
       });
-    // return JSON.parse(user);
     await axios
       .get(`${Path}/getSubject`)
       .then((response) => {
@@ -84,15 +82,12 @@ function Course(props) {
 
   const confirmDel = (id) => {
     return Alert.alert("Are your sure?", "Are you sure to Delete course?", [
-      // The "Yes" button
       {
         text: "Yes",
         onPress: async () => {
           DeleteCourse(id);
         },
       },
-      // The "No" button
-      // Does nothing but dismiss the dialog when tapped
       {
         text: "No",
       },

@@ -14,8 +14,12 @@ import CreateLesson from "./app/screen/CreateLesson";
 import Test from "./app/screen/Test"
 import EditAssignment from "./app/screen/EditAssignment"
 import CreateDescription from "./app/screen/CreateDescription";
+import registerNNPushToken from 'native-notify';
 
 export default function App() {
+  registerNNPushToken(4815, 'I2euvmyKYql7tVik6koMm9');
+
+
   return <MyNavigator />;
 }
 

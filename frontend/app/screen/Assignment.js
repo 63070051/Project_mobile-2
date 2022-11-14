@@ -2,25 +2,20 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableOpacity,
   ScrollView,
 } from "react-native";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Button } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import Path from "../../path";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
-import CourseInfo from "./Courseinfo";
 
 function Assignment({ route }) {
   const [user, setUser] = useState(route.params.user);
   const [course, setCourse] = useState(route.params.course);
   const [document, setDocument] = useState([]);
-  const router = useNavigation();
   moment.locale("th");
   const [backUpDocument, setBackUpDocument] = useState([]);
   const [submitStatus, setSubmitstatus] = useState(true);
@@ -57,7 +52,6 @@ function Assignment({ route }) {
         u_id: user.user_id,
       })
       .then((response) => {
-        console.log(response.data);
         if (response.data.length != 0) {
           setDocument(response.data);
           setBackUpDocument(response.data);
@@ -208,7 +202,6 @@ function Assignment({ route }) {
   let pass = <Text>Pass</Text>;
   let notPass = <Text>Not Pass</Text>;
   let notGrade = <Text>Not graded</Text>;
-  console.log(document);
   return (
     <ScrollView
       style={styles.scroll}

@@ -1,28 +1,15 @@
 import {
-  StyleSheet,
-  Text,
   View,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  FlatList,
 } from "react-native";
-import { useEffect, useState, useCallback , useLayoutEffect} from "react";
-import axios from "axios";
+import { useState, useCallback , useLayoutEffect} from "react";
 import {
-  AntDesign,
-  Entypo,
   MaterialCommunityIcons,
-  Ionicons,
 } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GiftedChat, Send, Bubble } from "react-native-gifted-chat";
 import { db } from "../../firebase";
 import Path from "../../path";
-import {useNavigation } from '@react-navigation/native';
 
 function ChatPeople({ route }) {
-  const router = useNavigation();
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState(route.params.user);
   let target_id = route.params.data.item.user_id;

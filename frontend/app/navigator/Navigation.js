@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
   AntDesign,
   Ionicons,
@@ -29,17 +28,16 @@ import EditLesson from "../screen/EditLesson";
 import EditCourse from "../screen/EditCourse";
 import Splash from "../screen/Splash";
 import CreateDescription from "../screen/CreateDescription";
+import EditAssignment from "../screen/EditAssignment";
+import EditYoutube from "../screen/EditYoutube";
+import ResetPasword from "../screen/ForgotPassword";
 import { LogBox } from "react-native";
 LogBox.ignoreAllLogs();
-
 
 const LoginNavigator = createNativeStackNavigator();
 const CourseNavigator = createNativeStackNavigator();
 const ChatNavigator = createNativeStackNavigator();
-// const FavNavigator = createNativeStackNavigator();
-// const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
-// const FilterNavigator = createNativeStackNavigator();
 
 function ChatStack() {
   return (
@@ -118,6 +116,20 @@ function CourseStack() {
           title: "createDescription",
         }}
       />
+      <CourseNavigator.Screen
+        name="editassignment"
+        component={EditAssignment}
+        options={{
+          title: "Edit Assignment",
+        }}
+      />
+      <CourseNavigator.Screen
+        name="EditYoutube"
+        component={EditYoutube}
+        options={{
+          title: "Edit Youtube",
+        }}
+      />
     </CourseNavigator.Navigator>
   );
 }
@@ -138,9 +150,6 @@ function TabNavigater() {
           .catch((err) => {
             console.log(err);
           });
-        // setRole(JSON.parse(value).role);
-        // // We have data!!
-        // // console.log(value);
       }
     } catch (error) {
       console.log(error);
@@ -166,7 +175,7 @@ function TabNavigater() {
         name="Course"
         component={CourseStack}
         options={{
-          headerShown : false,
+          headerShown: false,
           tabBarIcon: ({ color, size }) => {
             return <Entypo name="open-book" size={size} color="black" />;
           },
@@ -178,7 +187,13 @@ function TabNavigater() {
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => {
-            return <Ionicons name="chatbubble-ellipses-outline" size={size} color="black" />
+            return (
+              <Ionicons
+                name="chatbubble-ellipses-outline"
+                size={size}
+                color="black"
+              />
+            );
           },
         }}
       />
@@ -224,6 +239,13 @@ function LoginStackNavigator() {
         }}
       />
       <LoginNavigator.Screen
+        name="resetpassword"
+        component={ResetPasword}
+        options={{
+          title: "Reset Password",
+        }}
+      />
+      <LoginNavigator.Screen
         name="TabHome"
         component={TabNavigater}
         options={{
@@ -234,7 +256,7 @@ function LoginStackNavigator() {
         name="Splash"
         component={Splash}
         options={{
-          headerShown :false,
+          headerShown: false,
         }}
       />
     </LoginNavigator.Navigator>

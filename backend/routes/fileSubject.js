@@ -35,7 +35,6 @@ router.post(
     let data = req.body.data;
     let lessonCourse = req.body.lesson;
     let pathArray = [];
-    console.log(file);
     const conn = await pool.getConnection();
     await conn.beginTransaction();
     try {
@@ -76,8 +75,9 @@ router.post(
     const file = req.files;
     let data = req.body.data;
     let lessonCourse = req.body.lesson;
+    let deleteDocument = JSON.parse(req.body.deldocument);
+    let pathdelete = [];
     let pathArray = [];
-    console.log(file);
     const conn = await pool.getConnection();
     await conn.beginTransaction();
     try {
@@ -87,7 +87,7 @@ router.post(
       );
       file.forEach((file, index) => {
         let path = [
-          lesson.insertId,
+          h_id,
           u_id,
           course_id,
           file.path.substring(6),
@@ -99,17 +99,27 @@ router.post(
         "SELECT * FROM file WHERE h_id = ?",
         [h_id]
       );
-      getFile.forEach((value) => {
-        fs.unlink("./static" + value.path, (err) => console.log(err));
-      });
-      const [delFile, fl] = await conn.query(
-        "DELETE FROM file WHERE h_id = ?",
-        [h_id]
-      );
-      const [fileSub, fil] = await conn.query(
-        "INSERT INTO file(h_id, u_id, c_id, path, name) VALUES ?",
-        [pathArray]
-      );
+      if (getFile.length == 0) {
+        const [fileSub, fil] = await conn.query(
+          "INSERT INTO file(h_id, u_id, c_id, path, name) VALUES ?",
+          [pathArray]
+        );
+      } else {
+        deleteDocument.forEach((value) => {
+          pathdelete.push([value.f_id]);
+          fs.unlink("./static" + value.path, (err) => console.log(err));
+        });
+        const [delFile, fl] = await conn.query(
+          "DELETE FROM file WHERE f_id IN (?)",
+          [pathdelete]
+        );
+        if(file.length != 0){
+          const [file, fisl] = await conn.query(
+            "INSERT INTO file(h_id, u_id, c_id, path, name) VALUES ?",
+            [pathArray]
+          );
+        }
+      }
       conn.commit();
       res.json("success");
     } catch (error) {

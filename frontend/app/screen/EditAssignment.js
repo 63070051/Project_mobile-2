@@ -12,9 +12,15 @@ import { useNavigation } from "@react-navigation/native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
 import { TextInput } from "react-native-gesture-handler";
-function EditAssignment(){
-    const [selectedDate, setSelectedDate] = useState();
+import axios from "axios";
+import Path from "../../path";
+
+function EditAssignment({route}){
+    const [selectedDate, setSelectedDate] = useState(route.params.value.date);
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [data, setData] = useState(route.params.value.data);
+    const [assignment, setAssignment] = useState(route.params.value);
+    const router = useNavigation();
     const showDatePicker = () => {
         setDatePickerVisibility(true);
     };
@@ -27,10 +33,35 @@ function EditAssignment(){
         setSelectedDate(date);
         hideDatePicker();
     };
+
+    async function editAssign(){
+        await axios.post(`${Path}/EditAssignment`, {
+            c_id : assignment.c_id,
+            d_id : assignment.d_id,
+            u_id : assignment.u_id,
+            data : data,
+            date : selectedDate
+        })
+        .then((response) =>{
+            if(response.data == 'success'){
+                alert("Edit Assignment Success");
+                router.goBack();
+            }
+        })
+        .catch((err) =>{
+            console.log(err)
+        })
+    }
+
+
+
+
     return(
         <ScrollView style={styles.scroll}>
             <Text style={styles.headerStyle}>Title</Text>
-            <TextInput style={styles.input}></TextInput>
+            <TextInput style={styles.input} defaultValue={data} onChangeText={(value)=>{
+                setData(value);
+            }}/>
             <Text style={styles.headerStyle}>Due date</Text>
             <View style={styles.input}>
                 <Text>
@@ -48,7 +79,9 @@ function EditAssignment(){
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
             />
-            <TouchableOpacity onPress={showDatePicker} style={[styles.button, {backgroundColor: "royalblue"}]}>
+            <TouchableOpacity onPress={() =>{
+                editAssign();
+            }} style={[styles.button, {backgroundColor: "royalblue"}]}>
                 <Text style={{color: "white"}}>Update Assignment</Text>
             </TouchableOpacity>
         </ScrollView>
