@@ -30,6 +30,7 @@ import Splash from "../screen/Splash";
 import CreateDescription from "../screen/CreateDescription";
 import EditAssignment from "../screen/EditAssignment";
 import EditYoutube from "../screen/EditYoutube";
+import AllFile from "../screen/Alls_file";
 import ResetPasword from "../screen/ForgotPassword";
 import { LogBox } from "react-native";
 LogBox.ignoreAllLogs();
@@ -128,6 +129,13 @@ function CourseStack() {
         component={EditYoutube}
         options={{
           title: "Edit Youtube",
+        }}
+      />
+      <CourseNavigator.Screen
+        name="allfile"
+        component={AllFile}
+        options={{
+          title: "All File",
         }}
       />
     </CourseNavigator.Navigator>

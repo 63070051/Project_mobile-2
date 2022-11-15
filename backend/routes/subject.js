@@ -234,6 +234,21 @@ router.post("/getDescription", async function (req, res, next) {
   }
 });
 
+
+router.post("/getDescriptionLesson", async function (req, res, next) {
+  let h_id = req.body.h_id;
+  try {
+    const [description, field] = await pool.query(
+      "SELECT * FROM dataLesson WHERE h_id = ? AND type = ?",
+      [h_id, "Assignment"]
+    );
+    res.json(description);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+
 router.post("/getDescription/Assignment", async function (req, res, next) {
   let course_id = req.body.c_id;
   let d_id = req.body.d_id;

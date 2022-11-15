@@ -14,6 +14,7 @@ import {
   Ionicons,
   FontAwesome,
   Feather,
+  MaterialIcons
 } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -146,6 +147,16 @@ function CourseInfo({ route }) {
                   size={24}
                   color="black"
                 />
+              </TouchableOpacity>
+            )}
+            {user.role != "Student" && (
+              <TouchableOpacity
+              style={{marginLeft : 7}}
+                onPress={() => {
+                  router.navigate("allfile", { course: course, h_id : props.value.h_id });
+                }}
+              >
+                <MaterialIcons name="assignment" size={23} color="black" />
               </TouchableOpacity>
             )}
           </View>
