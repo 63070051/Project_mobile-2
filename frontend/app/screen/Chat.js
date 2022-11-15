@@ -25,7 +25,7 @@ import {
 } from "../styles/chat";
 import SelectDropdown from "react-native-select-dropdown";
 import Path from "../../path";
-
+import { MaterialIcons } from '@expo/vector-icons';
 
 function Chat(props) {
   const [allUser, setAllUser] = useState([]);
@@ -124,9 +124,11 @@ function Chat(props) {
   return (
     <Container>
       <View style={{flexDirection : "row", alignItems : "center"}}>
+        <MaterialIcons style={styles.search} name="search" size={28} color="gray" />
         <TextInput
           style={[styles.textInput, {width : "60%"}]}
           placeholder="Search"
+          placeholderTextColor={"darkgrey"}
           onChangeText={(text) => {
             setText(text);
             Search(text);
@@ -202,7 +204,7 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 10,
-    paddingLeft: 10,
+    paddingLeft: 35,
     marginTop: 10,
     backgroundColor: "#FFFFFF",
     borderColor: "#FF9A00",
@@ -226,5 +228,11 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
   },
+  search: {
+    position: "absolute",
+    top: 21,
+    left: 8,
+    zIndex: 2
+  }
 });
 export default Chat;

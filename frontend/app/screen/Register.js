@@ -160,7 +160,7 @@ function Register(props) {
           </View>
           <View style={[styles.inputcontainer, { flexDirection: "row" , justifyContent : "space-between"}]}>
             {/* <Zocial name="email" size={24} color="black" /> */}
-            <FontAwesome style={styles.user} name="user" size={24} color="gray" />
+            <FontAwesome style={styles.user} name="user-o" size={24} color="gray" />
             <TextInput
               style={[styles.input, { width: "65%" }]}
               placeholder="Email"
@@ -181,7 +181,7 @@ function Register(props) {
             </TouchableOpacity>
           </View>
           <View style={styles.inputcontainer}>
-          <Ionicons style={styles.key} name="ios-key" size={24} color="gray" />
+          <Ionicons style={styles.key} name="key-outline" size={24} color="gray" />
             <TextInput
               style={styles.input}
               placeholder="Secret Key"
@@ -193,7 +193,7 @@ function Register(props) {
             />
           </View>
           <View style={styles.inputcontainer}>
-            <MaterialIcons style={styles.password} name="lock" size={24} color="gray" />
+            <MaterialIcons style={styles.password} name="lock-outline" size={24} color="gray" />
             <TextInput
               style={styles.input}
               // autoCapitalize='none'
@@ -206,12 +206,12 @@ function Register(props) {
               }}
             />
             <TouchableOpacity style={styles.secret} onPress={() => {setSec(!sec)}}>
-              {!sec && <Ionicons name="eye" size={24} color="gray" />}
-              {sec && <Ionicons name="eye-off" size={24} color="gray" />}
+              {!sec && <Ionicons name="eye-outline" size={24} color="gray" />}
+              {sec && <Ionicons name="eye-off-outline" size={24} color="gray" />}
             </TouchableOpacity>
           </View>
           <View style={styles.inputcontainer}>
-          <MaterialCommunityIcons style={styles.password} name="lock-plus" size={24} color="gray" />
+          <MaterialCommunityIcons style={styles.password} name="lock-plus-outline" size={24} color="gray" />
             <TextInput
               style={styles.input}
               placeholder="Confirm Password"
@@ -224,8 +224,8 @@ function Register(props) {
               }}
             />
             <TouchableOpacity style={styles.secret} onPress={() => {setSeccon(!secCon)}}>
-              {!secCon && <Ionicons name="eye" size={24} color="gray" />}
-              {secCon && <Ionicons name="eye-off" size={24} color="gray" />}
+              {!secCon && <Ionicons name="eye-outline" size={24} color="gray" />}
+              {secCon && <Ionicons name="eye-off-outline" size={24} color="gray" />}
             </TouchableOpacity>
             {checkpass ? (
               <Text style={{ color: "red" , marginTop : 5}}>Password not match</Text>
