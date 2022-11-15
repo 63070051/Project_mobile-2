@@ -58,7 +58,7 @@ function Login(props) {
       <View style={styles.box}>
         <View style={styles.TextInput}>
           {/* <Text style={styles.text}>Email</Text> */}
-          <FontAwesome style={styles.user} name="user" size={24} color="gray" />
+          <FontAwesome style={styles.user} name="user-o" size={22} color="gray" />
           <TextInput
             style={styles.input}
             placeholder="Email"
@@ -72,7 +72,7 @@ function Login(props) {
             <MaterialIcons style={styles.password} name="lock-outline" size={24} color="gray" />
             <TextInput
               style={styles.input}
-              placeholder="password"
+              placeholder="Password"
               placeholderTextColor={"darkgrey"}
               secureTextEntry={sec}
               onChangeText={(password) => setPassword(password)}
@@ -126,8 +126,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: 330,
-    borderRadius: 10,
-    paddingLeft: 40,
+    paddingLeft: 30,
     padding: 15,
     // shadowColor: "#000",
     // shadowOffset: {
@@ -196,18 +195,18 @@ const styles = StyleSheet.create({
   },
   secret: {
     position: "absolute",
-    right: 25,
+    right: 15,
     top: 22
   },
   user:{
     position: "absolute",
-    left: 15,
-    top: 22
+    left: 4,
+    top: 23
   },
   password: {
     position: "absolute",
-    left: 12,
-    top: 23
+    left: 2,
+    top: 24
   }
 });
 export default Login;

@@ -7,6 +7,8 @@ import {
   ScrollView,
   TextInput,
   Button,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import * as React from "react";
 import axios from "axios";
@@ -122,119 +124,120 @@ function Register(props) {
       setObjectImg(result);
     }
   };
-
   return (
     <ScrollView
       contentContainerStyle={{ paddingBottom: 30 }}
       style={styles.container}
     >
-      <Image
-        source={require("../assets/newLogo.png")}
-        style={styles.logo}
-      ></Image>
-      <View style={styles.box}>
-        {!image && profile_user_not_upload}
-        <View style={styles.inputcontainer}>
-          {image && (
-            <>
-              <Image
-                source={{ uri: image }}
-                style={{ width: 150, height: 150, borderRadius: 999 }}
-              />
-            </>
-          )}
-          <TouchableOpacity
-            onPress={pickImage}
-            style={[styles.button, { backgroundColor: "royalblue" }, {marginBottom: 20}]}
-          >
-            <Text style={{ color: "white", fontSize: 15  }}>Upload Photo</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setImage(null)}
-            style={[styles.button, { backgroundColor: "darkgray" }]}
-          >
-            <Text style={{ color: "white", fontSize: 15  }}>Remove Photo</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={[styles.inputcontainer, { flexDirection: "row" , justifyContent : "space-between"}]}>
-          {/* <Zocial name="email" size={24} color="black" /> */}
-          <FontAwesome style={styles.user} name="user" size={24} color="gray" />
-          <TextInput
-            style={[styles.input, { width: "65%" }]}
-            placeholder="Email"
-            placeholderTextColor={"darkgrey"}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            onChangeText={(mail) => {
-              setEmail(mail);
-            }}
-          />
-          <TouchableOpacity
-            style={[styles.button_send, { width: "30%"}]}
-            onPress={() => {
-              sendSecretCode();
-            }}
-          >
-            <Text style={{ color: "white", fontSize: 15  }}>Send</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.inputcontainer}>
-        <Ionicons style={styles.key} name="ios-key" size={24} color="gray" />
-          <TextInput
-            style={styles.input}
-            placeholder="Secret Key"
-            placeholderTextColor={"darkgrey"}
-            autoCapitalize="none"
-            onChangeText={(key) => {
-              setKey(key);
-            }}
-          />
-        </View>
-        <View style={styles.inputcontainer}>
-          <MaterialIcons style={styles.password} name="lock" size={24} color="gray" />
-          <TextInput
-            style={styles.input}
-            // autoCapitalize='none'
-            placeholder="Password"
-            placeholderTextColor={"darkgrey"}
-            secureTextEntry={sec}
-            autoCorrect={false}
-            onChangeText={(pass) => {
-              setPassword(pass);
-            }}
-          />
-          <TouchableOpacity style={styles.secret} onPress={() => {setSec(!sec)}}>
-            {!sec && <Ionicons name="eye" size={24} color="gray" />}
-            {sec && <Ionicons name="eye-off" size={24} color="gray" />}
-          </TouchableOpacity>
-        </View>
-        <View style={styles.inputcontainer}>
-        <MaterialCommunityIcons style={styles.password} name="lock-plus" size={24} color="gray" />
-          <TextInput
-            style={styles.input}
-            placeholder="Confirm Password"
-            placeholderTextColor={"darkgrey"}
-            secureTextEntry={secCon}
-            autoCapitalize='none'
-            autoCorrect={false}
-            onChangeText={(pass) => {
-              setConfirmpass(pass);
-            }}
-          />
-          <TouchableOpacity style={styles.secret} onPress={() => {setSeccon(!secCon)}}>
-            {!secCon && <Ionicons name="eye" size={24} color="gray" />}
-            {secCon && <Ionicons name="eye-off" size={24} color="gray" />}
-          </TouchableOpacity>
-          {checkpass ? (
-            <Text style={{ color: "red" , marginTop : 5}}>Password not match</Text>
-          ) : null}
-        </View>
-        <View style={[styles.inputcontainer, {marginBottom: 0}]}>
-          <TouchableOpacity style={styles.button} onPress={checkHandle}>
-            <Text style={{ color: "white", fontSize: 15 }}>Sign up</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null}>
+        <Image
+          source={require("../assets/newLogo.png")}
+          style={styles.logo}
+        ></Image>
+        <View style={styles.box}>
+          {!image && profile_user_not_upload}
+          <View style={styles.inputcontainer}>
+            {image && (
+              <>
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 150, height: 150, borderRadius: 999 }}
+                />
+              </>
+            )}
+            <TouchableOpacity
+              onPress={pickImage}
+              style={[styles.button, { backgroundColor: "royalblue" }, {marginBottom: 20}]}
+            >
+              <Text style={{ color: "white", fontSize: 15  }}>Upload Photo</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setImage(null)}
+              style={[styles.button, { backgroundColor: "darkgray" }]}
+            >
+              <Text style={{ color: "white", fontSize: 15  }}>Remove Photo</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.inputcontainer, { flexDirection: "row" , justifyContent : "space-between"}]}>
+            {/* <Zocial name="email" size={24} color="black" /> */}
+            <FontAwesome style={styles.user} name="user" size={24} color="gray" />
+            <TextInput
+              style={[styles.input, { width: "65%" }]}
+              placeholder="Email"
+              placeholderTextColor={"darkgrey"}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              onChangeText={(mail) => {
+                setEmail(mail);
+              }}
+            />
+            <TouchableOpacity
+              style={[styles.button_send, { width: "30%"}]}
+              onPress={() => {
+                sendSecretCode();
+              }}
+            >
+              <Text style={{ color: "white", fontSize: 15  }}>Send</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.inputcontainer}>
+          <Ionicons style={styles.key} name="ios-key" size={24} color="gray" />
+            <TextInput
+              style={styles.input}
+              placeholder="Secret Key"
+              placeholderTextColor={"darkgrey"}
+              autoCapitalize="none"
+              onChangeText={(key) => {
+                setKey(key);
+              }}
+            />
+          </View>
+          <View style={styles.inputcontainer}>
+            <MaterialIcons style={styles.password} name="lock" size={24} color="gray" />
+            <TextInput
+              style={styles.input}
+              // autoCapitalize='none'
+              placeholder="Password"
+              placeholderTextColor={"darkgrey"}
+              secureTextEntry={sec}
+              autoCorrect={false}
+              onChangeText={(pass) => {
+                setPassword(pass);
+              }}
+            />
+            <TouchableOpacity style={styles.secret} onPress={() => {setSec(!sec)}}>
+              {!sec && <Ionicons name="eye" size={24} color="gray" />}
+              {sec && <Ionicons name="eye-off" size={24} color="gray" />}
+            </TouchableOpacity>
+          </View>
+          <View style={styles.inputcontainer}>
+          <MaterialCommunityIcons style={styles.password} name="lock-plus" size={24} color="gray" />
+            <TextInput
+              style={styles.input}
+              placeholder="Confirm Password"
+              placeholderTextColor={"darkgrey"}
+              secureTextEntry={secCon}
+              autoCapitalize='none'
+              autoCorrect={false}
+              onChangeText={(pass) => {
+                setConfirmpass(pass);
+              }}
+            />
+            <TouchableOpacity style={styles.secret} onPress={() => {setSeccon(!secCon)}}>
+              {!secCon && <Ionicons name="eye" size={24} color="gray" />}
+              {secCon && <Ionicons name="eye-off" size={24} color="gray" />}
+            </TouchableOpacity>
+            {checkpass ? (
+              <Text style={{ color: "red" , marginTop : 5}}>Password not match</Text>
+            ) : null}
+          </View>
+          <View style={[styles.inputcontainer, {marginBottom: 0}]}>
+            <TouchableOpacity style={styles.button} onPress={checkHandle}>
+              <Text style={{ color: "white", fontSize: 15 }}>Sign up</Text>
+            </TouchableOpacity>
+          </View>
+        </View> 
+      </KeyboardAvoidingView>
     </ScrollView>
   );
 }

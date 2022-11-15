@@ -85,12 +85,17 @@ function CourseInfo({ route }) {
         </TouchableOpacity>
         {user.role != "Student" && (
           <TouchableOpacity
-            style={{ marginLeft: 10 }}
+            style={{ marginLeft: 12 }}
             onPress={() => {
               router.navigate("editassignment", { value: props.value });
             }}
           >
             <Feather name="edit" size={22} color="black" />
+          </TouchableOpacity>
+        )}
+        {user.role != "Student" &&(
+          <TouchableOpacity style={{marginLeft : 8}}>
+            <MaterialCommunityIcons name="delete" size={24} color="red" />
           </TouchableOpacity>
         )}
       </View>
