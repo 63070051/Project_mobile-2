@@ -107,7 +107,7 @@ function AllFile({ route }) {
           <View style={styles.mainMaterail}>
             {allFile.length != 0 &&
               allFile.map((value) => {
-                if (props.value.h_id == value.h_id) {
+                if (props.value.d_id == value.d_id) {
                   return (
                     <Render_File_Upload
                       key={value.f_id}

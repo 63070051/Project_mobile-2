@@ -95,7 +95,9 @@ function CourseInfo({ route }) {
           </TouchableOpacity>
         )}
         {user.role != "Student" &&(
-          <TouchableOpacity style={{marginLeft : 8}}>
+          <TouchableOpacity style={{marginLeft : 8}} onPress={()=>{
+            confirmDelAssign(props.value.d_id);
+          }}>
             <MaterialCommunityIcons name="delete" size={24} color="red" />
           </TouchableOpacity>
         )}
@@ -144,7 +146,7 @@ function CourseInfo({ route }) {
             {user.role != "Student" && (
               <TouchableOpacity
                 onPress={() => {
-                  router.navigate("EditYoutube", { data: sendYoutube });
+                  router.navigate("EditYoutube", { data: sendYoutube , h_id : props.value.h_id});
                 }}
               >
                 <MaterialCommunityIcons
@@ -316,6 +318,36 @@ function CourseInfo({ route }) {
       },
     ]);
   };
+
+  const confirmDelAssign = (id) => {
+    return Alert.alert("Are your sure?", "Are you sure to Delete Assignment?", [
+      {
+        text: "Yes",
+        onPress: async () => {
+          DeleteAssign(id);
+        },
+      },
+      {
+        text: "No",
+      },
+    ]);
+  };
+  async function DeleteAssign(id) {
+    await axios
+      .post(`${Path}/deleteAssignment`, {
+        d_id: id,
+      })
+      .then((response) => {
+        if (response.data == "success") {
+          getDesciption();
+          alert("Delete success");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   async function DeleteLesson(lesson_id) {
     await axios
       .post(`${Path}/DeleteLesson`, {

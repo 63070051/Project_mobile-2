@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,9 +6,14 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  Alert
+  Alert,
 } from "react-native";
-import { AntDesign, MaterialIcons, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  MaterialIcons,
+  Entypo,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
@@ -18,57 +23,90 @@ import axios from "axios";
 import Path from "../../path";
 
 function EditYoutube({ route }) {
-  const [listYoutube, setListYoutube] = useState(route.params.data);
+  const [listYoutube, setListYoutube] = useState([]);
   const router = useNavigation();
 
-  const confirmUpdate = (link, value) => {
-    return Alert.alert("Are your sure?", "Are you sure to Update Link Youtube?", [
-      // The "Yes" button
+  async function getYoutube() {
+    await axios
+      .post(`${Path}/getYoutubeLesson`, {h_id : route.params.h_id})
+      .then((response) => {
+        setListYoutube(response.data)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  useEffect(() => {
+    getYoutube();
+  }, []);
+
+  const confirmDelYoutube = (id) => {
+    return Alert.alert("Are your sure?", "Are you sure to Delete Link", [
       {
         text: "Yes",
         onPress: async () => {
-          UpdateLink(link, value);
+          DeleteYoutube(id);
         },
       },
-      // The "No" button
-      // Does nothing but dismiss the dialog when tapped
       {
         text: "No",
       },
     ]);
   };
-  const confirmDelete = (link, value) => {
-    return Alert.alert("Are your sure?", "Are you sure to delete Link Youtube?", [
-      // The "Yes" button
-      {
-        text: "Yes",
-        onPress: async () => {
-
-        },
-      },
-      // The "No" button
-      // Does nothing but dismiss the dialog when tapped
-      {
-        text: "No",
-      },
-    ]);
+  async function DeleteYoutube(id) {
+    await axios
+      .post(`${Path}/deleteYoutube`, {
+        d_id: id,
+      })
+      .then((response) => {
+        if (response.data == "success") {
+          getYoutube();
+          alert("Delete success");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
-  async function UpdateLink(link, value){
-    await axios.post(`${Path}/EditYoutube`, {
-        c_id : value.c_id,
-        d_id : value.d_id,
-        data : link,
-        u_id : value.u_id
-    })
-    .then((response) =>{
-        if(response.data == "success"){
-            alert("Update Success");
+  const confirmUpdate = (link, value) => {
+    return Alert.alert(
+      "Are your sure?",
+      "Are you sure to Update Link Youtube?",
+      [
+        // The "Yes" button
+        {
+          text: "Yes",
+          onPress: async () => {
+            UpdateLink(link, value);
+          },
+        },
+        // The "No" button
+        // Does nothing but dismiss the dialog when tapped
+        {
+          text: "No",
+        },
+      ]
+    );
+  };
+
+  async function UpdateLink(link, value) {
+    await axios
+      .post(`${Path}/EditYoutube`, {
+        c_id: value.c_id,
+        d_id: value.d_id,
+        data: link,
+        u_id: value.u_id,
+      })
+      .then((response) => {
+        if (response.data == "success") {
+          alert("Update Success");
         }
-    })
-    .catch((err) =>{
-        console.log(err)
-    })
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function RenderVideo(props) {
@@ -82,7 +120,7 @@ function EditYoutube({ route }) {
         <Text style={styles.headerStyle}> Link </Text>
         <View style={styles.inputcontainer}>
           <Entypo style={styles.link} name="link" size={24} color="gray" />
-          <View style={{flexDirection : 'row', alignItems:"center"}}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <TextInput
               style={[styles.input]}
               defaultValue={link}
@@ -91,16 +129,19 @@ function EditYoutube({ route }) {
               }}
             />
             {props.value.data != link && (
-              <TouchableOpacity style={styles.save} onPress={() => {
+              <TouchableOpacity
+                style={styles.save}
+                onPress={() => {
                   confirmUpdate(link, props.value);
-              }}>
+                }}
+              >
                 <Entypo name="save" size={24} color="black" />
               </TouchableOpacity>
             )}
             <TouchableOpacity
-              style={{marginLeft : 10}}
+              style={{ marginLeft: 10 }}
               onPress={() => {
-                confirmDelete(link, props.value);
+                confirmDelYoutube(props.value.d_id);
               }}
             >
               <MaterialCommunityIcons name="delete" size={30} color="red" />
@@ -119,7 +160,7 @@ function EditYoutube({ route }) {
 
   return (
     <ScrollView style={styles.scroll}>
-      {listYoutube.map((value) => {
+      {listYoutube && listYoutube.map((value) => {
         return <RenderVideo key={value.d_id} value={value} />;
       })}
       {/* <TouchableOpacity onPress={() =>{
@@ -142,7 +183,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 13,
     paddingLeft: 35,
-    paddingRight : 40,
+    paddingRight: 40,
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {

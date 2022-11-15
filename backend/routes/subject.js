@@ -284,7 +284,7 @@ router.post("/createDescription", async function (req, res, next) {
     }
     res.json("success");
   } catch (error) {
-    res.json(error);
+    next(error);
   }
 });
 
@@ -333,6 +333,45 @@ router.post("/EditYoutube", async function (req, res, next) {
       [data, u_id, course_id, d_id]
     );
     res.json("success");
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/deleteYoutube", async function (req, res, next) {
+  let d_id = req.body.d_id;
+  try {
+    const [lesson, field] = await pool.query(
+      "DELETE FROM dataLesson WHERE d_id = ?",
+      [d_id]
+    );
+    res.json("success");
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/deleteAssignment", async function (req, res, next) {
+  let d_id = req.body.d_id;
+  try {
+    const [lesson, field] = await pool.query(
+      "DELETE FROM dataLesson WHERE d_id = ?",
+      [d_id]
+    );
+    res.json("success");
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/getYoutubeLesson", async function (req, res, next) {
+  let h_id = req.body.h_id;
+  try {
+    const [lesson, field] = await pool.query(
+      "SELECT * FROM dataLesson WHERE h_id = ? AND type = ?",
+      [h_id, "Youtube"]
+    );
+    res.json(lesson);
   } catch (error) {
     next(error);
   }

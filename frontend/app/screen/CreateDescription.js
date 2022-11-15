@@ -152,7 +152,7 @@ function CreateDescription({ route }) {
       <TouchableOpacity
         style={styles.upload}
         onPress={() => {
-          // createDescription();
+          createDescription();
         }}
       >
         <Feather name="upload" size={24} color="black" />
