@@ -232,7 +232,7 @@ function EditLesson({ route }) {
               })}
           </View>
           <TouchableOpacity
-            style={[styles.saveButtonStyle, { marginTop: 20 }]}
+            style={[styles.saveButtonStyle, { marginTop: 20 , backgroundColor: "royalblue"}]}
             onPress={() => {
               pickDocument();
             }}
@@ -322,8 +322,6 @@ const styles = StyleSheet.create({
   },
 
   saveButtonStyle: {
-    borderWidth: 1,
-    borderColor: "#ffbA00",
     borderRadius: 10,
     padding: 10,
     width: "100%",

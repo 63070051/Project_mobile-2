@@ -78,8 +78,8 @@ function Login(props) {
               onChangeText={(password) => setPassword(password)}
             />
             <TouchableOpacity style={styles.secret} onPress={() => {setSec(!sec)}}>
-              {!sec && <Ionicons name="eye" size={24} color="gray" />}
-              {sec && <Ionicons name="eye-off" size={24} color="gray" />}
+              {!sec && <Ionicons name="eye-outline" size={24} color="gray" />}
+              {sec && <Ionicons name="eye-off-outline" size={24} color="gray" />}
             </TouchableOpacity>
           </View>
           <TouchableOpacity style={{marginBottom: 5}} onPress={()=>{

@@ -14,7 +14,7 @@ import {
   Ionicons,
   FontAwesome,
   Feather,
-  MaterialIcons
+  MaterialIcons,
 } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -30,11 +30,29 @@ function RenderCourseInfo(props) {
       <View style={styles.header}>
         <Text style={styles.text_header}>Course Info</Text>
       </View>
-      <View style={styles.box}>
-        <View style={styles.inside}>
-          <Text style={styles.text}>{props.name}</Text>
-          <Text style={styles.text}>{props.description}</Text>
-          <Text style={styles.text}>{props.member}</Text>
+      <View style={[styles.box]}>
+        <View style={[styles.insidecourse]}>
+          <View style={styles.boxofinfo}>
+            <MaterialCommunityIcons name="clipboard-text-multiple-outline" size={22} color="black" />
+            <View style={{marginLeft: 10}}>
+              <Text style={styles.headinfo}>Course name</Text>
+              <Text style={styles.text}>{props.name}</Text>
+            </View>
+          </View>
+          <View style={styles.boxofinfo}>
+            <Feather name="file-text" size={22} color="black" />
+            <View style={{marginLeft: 10}}>
+              <Text style={styles.headinfo}>Course description</Text>
+              <Text style={styles.text}>{props.description}</Text>
+            </View>
+          </View>
+          <View style={[styles.boxofinfo]}>
+            <FontAwesome name="user-o" size={22} color="black" />
+            <View style={{marginLeft: 10, flexDirection: "row", alignItems: "center"}}>
+              <Text style={[styles.headinfo, {marginBottom: 0}]}>Number of member</Text>
+              <Text style={{marginLeft: 10, marginTop: 1}}>{props.member}</Text>
+            </View>
+          </View>
         </View>
       </View>
     </View>
@@ -123,7 +141,7 @@ function CourseInfo({ route }) {
             alignItems: "center",
           }}
         >
-          <Text style={{ fontSize: 12 }}>{props.course_description}</Text>
+          <Text style={{ fontSize: 14 }}>{props.course_description}</Text>
           <View
             style={{
               flexDirection: "row",
@@ -214,8 +232,8 @@ function CourseInfo({ route }) {
                   setToggle(!toggle);
                 }}
               >
-                <FontAwesome name="book" size={20} color="black" />
-                <Text style={{ marginLeft: 8 }}>Material</Text>
+                <FontAwesome name="book" size={20} color="white" />
+                <Text style={{ marginLeft: 8, fontSize: 15, fontWeight: "600", color: "white" }}>Material</Text>
               </TouchableOpacity>
               {toggle && (
                 <View style={styles.mainMaterail}>
@@ -298,8 +316,8 @@ function CourseInfo({ route }) {
             alignItems: "center",
           }}
         >
-          <AntDesign name="pdffile1" size={28} color="black" />
-          <Text style={{ marginLeft: 10 }}>{props.name}</Text>
+          <AntDesign name="pdffile1" size={24} color="black" />
+          <Text style={{ marginLeft: 10 , fontSize: 14}}>{props.name}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -453,7 +471,7 @@ function CourseInfo({ route }) {
           flexDirection: "row",
           justifyContent: "space-between",
           width: "80%",
-          marginTop: 10,
+          marginTop: 20,
         }}
       >
         <Text style={{ fontSize: 24, fontWeight: "500" }}>Create Lesson</Text>
@@ -496,7 +514,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 20,
     // marginLeft: 50,
-    width: "90%",
+    width: "87%",
 
     borderRadius: 10,
   },
@@ -538,10 +556,10 @@ const styles = StyleSheet.create({
   inside: {
     width: "100%",
     // alignItems: "center",
-    padding: 10,
+    padding: 10
   },
   text: {
-    marginBottom: 10,
+    marginBottom: 15,
     alignSelf: "flex-start",
   },
   material: {
@@ -652,6 +670,28 @@ const styles = StyleSheet.create({
   },
   mainMaterail: {
     padding: 10,
+    width: "100%"
+  },
+  headinfo: {
+    fontSize: 16,
+    marginBottom: 5,
+    fontWeight: "600"
+  },
+  text_header: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "white"
+  },
+  boxofinfo: {
+    flexDirection: "row",
+    // alignItems: "center",
+  },
+  insidecourse: {
+    width: "100%",
+    // alignItems: "center",
+    paddingLeft: 5,
+    paddingVertical: 10,
+    paddingRight: 25
   },
 });
 

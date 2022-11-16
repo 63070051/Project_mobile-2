@@ -12,6 +12,7 @@ import {
   FontAwesome,
   MaterialCommunityIcons,
   MaterialIcons,
+  Feather
 } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -103,7 +104,7 @@ function ResetPasword(props) {
           ]}
         >
           {/* <Zocial name="email" size={24} color="black" /> */}
-          <FontAwesome style={styles.user} name="user" size={24} color="gray" />
+          <FontAwesome style={styles.user} name="user-o" size={24} color="gray" />
           <TextInput
             style={[styles.input, { width: "65%" }]}
             placeholder="Email"
@@ -124,7 +125,7 @@ function ResetPasword(props) {
           </TouchableOpacity>
         </View>
         <View style={styles.inputcontainer}>
-          <Ionicons style={styles.key} name="ios-key" size={24} color="gray" />
+          <Ionicons style={styles.key} name="key-outline" size={24} color="gray" />
           <TextInput
             style={styles.input}
             placeholder="Secret Key"
@@ -138,7 +139,7 @@ function ResetPasword(props) {
         <View style={styles.inputcontainer}>
           <MaterialIcons
             style={styles.password}
-            name="lock"
+            name="lock-outline"
             size={24}
             color="gray"
           />
@@ -159,14 +160,14 @@ function ResetPasword(props) {
               setSec(!sec);
             }}
           >
-            {!sec && <Ionicons name="eye" size={24} color="gray" />}
-            {sec && <Ionicons name="eye-off" size={24} color="gray" />}
+            {!sec && <Ionicons name="eye-outline" size={24} color="gray" />}
+            {sec && <Ionicons name="eye-off-outline" size={24} color="gray" />}
           </TouchableOpacity>
         </View>
         <View style={styles.inputcontainer}>
           <MaterialCommunityIcons
             style={styles.password}
-            name="lock-plus"
+            name="lock-plus-outline"
             size={24}
             color="gray"
           />
@@ -187,8 +188,8 @@ function ResetPasword(props) {
               setSeccon(!secCon);
             }}
           >
-            {!secCon && <Ionicons name="eye" size={24} color="gray" />}
-            {secCon && <Ionicons name="eye-off" size={24} color="gray" />}
+            {!secCon && <Ionicons name="eye-outline" size={24} color="gray" />}
+            {secCon && <Ionicons name="eye-off-outline" size={24} color="gray" />}
           </TouchableOpacity>
           {checkpass ? (
             <Text style={{ color: "red", marginTop: 5 }}>
@@ -208,7 +209,9 @@ function ResetPasword(props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFF8EA",
-    paddingTop: 60,
+    paddingTop: 30,
+    paddingHorizontal : 25,
+    flex: 1,
   },
   text: {
     fontSize: 20,
@@ -219,8 +222,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: 330,
-    borderRadius: 10,
-    paddingLeft: 40,
+    paddingLeft: 35,
     padding: 15,
     // shadowColor: "#000",
     // shadowOffset: {
@@ -289,17 +291,17 @@ const styles = StyleSheet.create({
   },
   secret: {
     position: "absolute",
-    right: 25,
+    right: 8,
     top: 22,
   },
   user: {
     position: "absolute",
-    left: 15,
-    top: 25,
+    left: 9,
+    top: 22,
   },
   password: {
     position: "absolute",
-    left: 12,
+    left: 6,
     top: 24,
   },
   key: {
