@@ -154,7 +154,7 @@ function CourseInfo({ route }) {
             )}
             {user.role != "Student" && (
               <TouchableOpacity
-                style={{ marginLeft: 7 }}
+                style={{ marginLeft: 6 }}
                 onPress={() => {
                   router.navigate("allfile", {
                     course: course,
@@ -162,7 +162,7 @@ function CourseInfo({ route }) {
                   });
                 }}
               >
-                <MaterialIcons name="assignment" size={23} color="black" />
+                <MaterialIcons name="assignment" size={24} color="black" />
               </TouchableOpacity>
             )}
           </View>

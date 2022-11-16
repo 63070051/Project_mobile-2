@@ -110,7 +110,6 @@ function EditCourse({ route }) {
       contentContainerStyle={{ paddingBottom: 30, alignItems: "center" }}
     >
       <View style={styles.box}>
-        <Text style={styles.text_header}>Create Course</Text>
       </View>
       <View style={styles.inside}>
         <View style={styles.inputcontainer}>
@@ -136,7 +135,7 @@ function EditCourse({ route }) {
               { backgroundColor: "royalblue", marginBottom: 20 },
             ]}
           >
-            <Text style={{ color: "white" }}>Upload Photo</Text>
+            <Text style={{ color: "white", fontSize: 16, fontWeight: "700" }}>Upload Photo</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
@@ -150,12 +149,13 @@ function EditCourse({ route }) {
                 : styles.regray,
             ]}
           >
-            <Text style={{ color: "white" }}>Remove Photo</Text>
+            <Text style={{ color: "white", fontSize: 16, fontWeight: "700" }}>Remove Photo</Text>
           </TouchableOpacity>
         </View>
         {/* <Text style={styles.text}>Course Name</Text> */}
         <TextInput
           placeholder="Course Title"
+          placeholderTextColor={"darkgrey"}
           defaultValue={route.params.value.title}
           onChangeText={(title) => {
             setCourseName(title);
@@ -167,6 +167,7 @@ function EditCourse({ route }) {
           multiline={true}
           defaultValue={route.params.value.subtitle}
           placeholder="Course Subtitle"
+          placeholderTextColor={"darkgrey"}
           onChangeText={(subtitle) => {
             setCourseSubTitle(subtitle);
           }}
@@ -175,6 +176,7 @@ function EditCourse({ route }) {
         {/* <Text style={styles.text}>Enroll Key</Text> */}
         <TextInput
           placeholder="Course Key"
+          placeholderTextColor={"darkgrey"}
           defaultValue={route.params.value.s_key}
           onChangeText={(key) => {
             setCourseKey(key);
@@ -190,7 +192,7 @@ function EditCourse({ route }) {
             },
           ]}
         >
-          <Text style={{ color: "white" }}>Edit Course</Text>
+          <Text style={{ color: "white", fontSize: 16, fontWeight: "700" }}>Edit Course</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -215,11 +217,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 40,
     backgroundColor: "#FF9A00",
-    height: 250,
+    height: 210,
     position: "absolute",
   },
   inside: {
-    marginTop: 120,
+    marginTop: 80,
     width: "90%",
     padding: 20,
     flexDirection: "column",
@@ -244,6 +246,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderBottomWidth: 1,
     borderColor: "darkgray",
+    fontSize: 17
   },
   text: {
     fontSize: 20,

@@ -197,7 +197,7 @@ function Profile(props) {
       style={[styles.button, { flexDirection: "row" }]}
     >
       <MaterialCommunityIcons name="lock-reset" size={24} color="grey" />
-      <Text style={[{ marginLeft: 10 }, { color: "grey", fontSize: 15 }]}>
+      <Text style={[{ marginLeft: 10 }, { color: "grey", fontSize: 16, fontWeight: "600"}]}>
         Reset Password
       </Text>
     </TouchableOpacity>
@@ -255,7 +255,7 @@ function Profile(props) {
       style={[styles.button, { flexDirection: "row" }]}
     >
       <MaterialIcons name="add-a-photo" size={24} color="grey" />
-      <Text style={[{ marginLeft: 10 }, { color: "grey", fontSize: 15}]}>Add new Photo</Text>
+      <Text style={[{ marginLeft: 10 }, { color: "grey", fontSize: 16, fontWeight: "600"}]}>Add New Photo</Text>
     </TouchableOpacity>
   );
   const pickImage = async () => {
@@ -294,7 +294,7 @@ function Profile(props) {
           </View>
         )}
         <View style={{ height: 40 }}>
-          <Text style={[{ fontSize: 17 }, { fontWeight: "700" }]}>
+          <Text style={[{ fontSize: 18 }, { fontWeight: "700" }]}>
             {user.email}
           </Text>
         </View>
@@ -310,7 +310,7 @@ function Profile(props) {
           style={[styles.button, { flexDirection: "row" }]}
         >
           <SimpleLineIcons name="logout" size={20} color="grey" />
-          <Text style={[{ marginLeft: 14 }, { color: "grey" , fontSize: 15}]}>Logout</Text>
+          <Text style={[{ marginLeft: 14 }, { color: "grey" , fontSize: 16, fontWeight: "600"}]}>Logout</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

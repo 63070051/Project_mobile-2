@@ -8,6 +8,8 @@ import {
   View,
   useWindowDimensions,
   Button,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import {
@@ -90,75 +92,87 @@ function CreateDescription({ route }) {
   }
 
   return (
-    <View style={styles.container}>
-      <SelectDropdown
-        data={type}
-        dropdownStyle={[styles.dropdown]}
-        defaultButtonText={"Youtube"}
-        buttonStyle={
-          selectType == "Youtube"
-            ? styles.buttonYoutube
-            : styles.buttonAssignment
-        }
-        onSelect={(selectedItem, index) => {
-          {
-            setSelectType(selectedItem);
+    <TouchableWithoutFeedback onPress={() => {
+      Keyboard.dismiss();
+    }}>
+      <View style={styles.container}>
+        <SelectDropdown
+          data={type}
+          dropdownStyle={[styles.dropdown]}
+          defaultButtonText={"Youtube"}
+          buttonTextStyle={{color: "white"}}
+          buttonStyle={
+            selectType == "Youtube"
+              ? styles.buttonYoutube
+              : styles.buttonAssignment
           }
-        }}
-        buttonTextAfterSelection={(selectedItem, index) => {
-          // text represented after item is selected
-          // if data array is an array of objects then return selectedItem.property to render after item is selected
-          return selectedItem;
-        }}
-        rowTextForSelection={(item, index) => {
-          // text represented for each item in dropdown
-          // if data array is an array of objects then return item.property to represent item in dropdown
-          return item;
-        }}
-      />
-      <TextInput
-        onChangeText={(text) => setDescription(text)}
-        multiline={true}
-        style={styles.textInput}
-        
-        placeholder={
-          selectType == "Youtube"
-            ? "Please input link youtube"
-            : "Please input title assignment"
-        }
-      />
-      {selectType == "Youtube" && description != "" && (
-        <RenderVideo videoId={description.substring(32)} />
-      )}
-      {selectType == "Assignment" && (
-        <View>
-          <Text style={styles.showDate}>{`Date:  ${
-            selectedDate
-              ? moment(selectedDate).format("D MMMM YYYY, h:mm:ss a")
-              : "Please select date"
-          }`}</Text>
-          <TouchableOpacity onPress={showDatePicker} style={styles.date}>
-            <AntDesign name="calendar" size={24} color="black" />
-            <Text style={styles.selectDate}>Select Date</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="datetime"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-      />
-      <TouchableOpacity
-        style={styles.upload}
-        onPress={() => {
-          createDescription();
-        }}
-      >
-        <Feather name="upload" size={24} color="black" />
-        <Text style={{marginLeft: 10}}>Upload</Text>
-      </TouchableOpacity>
-    </View>
+          onSelect={(selectedItem, index) => {
+            {
+              setSelectType(selectedItem);
+            }
+          }}
+          buttonTextAfterSelection={(selectedItem, index) => {
+            // text represented after item is selected
+            // if data array is an array of objects then return selectedItem.property to render after item is selected
+            return selectedItem;
+          }}
+          rowTextForSelection={(item, index) => {
+            // text represented for each item in dropdown
+            // if data array is an array of objects then return item.property to represent item in dropdown
+            return item;
+          }}
+        />
+        <Text style={styles.headerStyle}>{selectType == "Youtube" ? "Link Youtube" : "Title"}</Text>
+        <TextInput
+          onChangeText={(text) => setDescription(text)}
+          multiline={true}
+          style={styles.textInput}
+          placeholderTextColor={"darkgrey"}
+          placeholder={
+            selectType == "Youtube"
+              ? "Please input link youtube"
+              : "Please input title assignment"
+          }
+        />
+        {selectType == "Youtube" && description != "" && (
+          <RenderVideo videoId={description.substring(32)} />
+        )}
+        {selectType == "Assignment" && (
+          <View style={{width: "100%"}}>
+            <Text style={styles.headerStyle}>
+              Due Date
+            </Text>
+            <View style={styles.showDate}>
+              <Text>{`Date:  ${
+                selectedDate
+                  ? moment(selectedDate).format("D MMMM YYYY, h:mm:ss a")
+                  : "Please select date"
+                }`}
+              </Text>
+            </View>
+            <TouchableOpacity onPress={showDatePicker} style={styles.date}>
+              <AntDesign name="calendar" size={24} color="white" />
+              <Text style={{marginLeft: 7, color: "white", fontSize: 16, fontWeight: "600"}}>Select Due Date</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="datetime"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+        />
+        <TouchableOpacity
+          style={styles.upload}
+          onPress={() => {
+            createDescription();
+          }}
+        >
+          <Feather name="upload" size={24} color="white" />
+          <Text style={{marginLeft: 7, color: "white", fontSize: 16, fontWeight: "600"}}>Upload</Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -166,24 +180,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFF8EA",
-    alignItems: "center",
     paddingHorizontal: 30,
   },
   buttonYoutube: {
-    width: 300,
+    width: "100%",
     borderRadius: 10,
     padding: 10,
     elevation: 2,
     marginTop: 20,
-    backgroundColor: "#fa3c3c",
+    backgroundColor: "lightcoral",
   },
   buttonAssignment: {
-    width: 300,
+    width: "100%",
     borderRadius: 10,
     padding: 10,
     elevation: 2,
     marginTop: 20,
-    backgroundColor: "#00a331",
+    backgroundColor: "darkseagreen",
   },
   dropdown: {
     width: 200,
@@ -205,45 +218,75 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    height: 50,
-    width: 120,
-    marginTop: 20,
-    borderRadius: 20,
+    padding: 13,
+    width: "100%",
+    marginTop: 15,
+    borderRadius: 10,
     backgroundColor: "#ffbA00",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: -2,
+      height: 4,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 5,
   },
   textInput:{
-    marginTop: 20,
-    marginBottom: 20,
-    padding: 10,
+    marginBottom: 10,
+    padding: 13,
+    paddingTop: 13,
     alignItems: "center",
     width: "100%",
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "gray",
     backgroundColor: "white",
-
+    shadowColor: "#000",
+    shadowOffset: {
+      width: -2,
+      height: 4,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 5,
   },
   date:{
-    borderColor: "gray",
+    width: "100%",
+    backgroundColor: "royalblue",
+    padding: 13,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+    width: 0,
+    height: 2,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 2.62,
+    elevation: 4,
     flexDirection: "row",
     justifyContent: "center",
     alignItems:"center",
   },
-  selectDate:{
-    marginTop : 10,
-    marginLeft: 10,
-    fontSize: 15,
-
-  },
   showDate:{
     width: "100%",
-    padding: 10,
-    borderWidth: 1,
+    padding: 13,
     borderColor: "gray",
     backgroundColor: "white",
     borderRadius: 10,
-    marginBottom: 10,
-  }
+    marginBottom: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+    width: 0,
+    height: 2,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 2.62,
+    elevation: 4,
+  },
+  headerStyle: {
+    fontSize: 20,
+    fontWeight: "600",
+    marginVertical: 10,
+  },
 });
 
 export default CreateDescription;

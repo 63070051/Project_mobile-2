@@ -78,7 +78,6 @@ function CourseCreate({route}) {
       contentContainerStyle={{ paddingBottom: 30 , alignItems: "center"}}
     >
         <View style={styles.box}>
-            <Text style={styles.text_header}>Create Course</Text>
         </View>
         <View style={styles.inside}>
             <View style={styles.inputcontainer}>
@@ -104,7 +103,7 @@ function CourseCreate({route}) {
                     { backgroundColor: "royalblue", marginBottom: 20},
                 ]}
                 >
-                    <Text style={{ color: "white" }}>Upload Photo</Text>
+                    <Text style={{ color: "white", fontSize: 16, fontWeight: "700" }}>Upload Photo</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                 onPress={() => setImage(null)}
@@ -113,11 +112,12 @@ function CourseCreate({route}) {
                     image ? styles.rered : styles.regray,
                 ]}
                 >
-                    <Text style={{ color: "white" }}>Remove Photo</Text>
+                    <Text style={{ color: "white", fontSize: 16, fontWeight: "700" }}>Remove Photo</Text>
                 </TouchableOpacity>
             </View>
             <TextInput
             placeholder="Course Title"
+            placeholderTextColor={"darkgrey"}
             onChangeText={(title) => {
                 setCourseName(title);
             }}
@@ -125,6 +125,7 @@ function CourseCreate({route}) {
             />
             <TextInput
             multiline={true}
+            placeholderTextColor={"darkgrey"}
             placeholder="Course Subtitle"
             onChangeText={(subtitle) => {
                 setCourseSubTitle(subtitle);
@@ -132,6 +133,7 @@ function CourseCreate({route}) {
             style={styles.textinput}
             />
             <TextInput
+            placeholderTextColor={"darkgrey"}
             placeholder="Course Key"
             onChangeText={(key) => {
                 setCourseKey(key);
@@ -145,7 +147,7 @@ function CourseCreate({route}) {
                 backgroundColor: "orange",
             }]}
             >
-            <Text style={{ color: "white" }}>Create Course</Text>
+            <Text style={{ color: "white", fontSize: 16, fontWeight: "700" }}>Create Course</Text>
             </TouchableOpacity>
         </View>
     </ScrollView>
@@ -170,11 +172,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 40,
     backgroundColor: "#FF9A00",
-    height: 250,
+    height: 210,
     position: "absolute"
   },
   inside: {
-    marginTop: 120,
+    marginTop: 80,
     width: "90%",
     padding: 20,
     flexDirection: "column",
@@ -186,9 +188,9 @@ const styles = StyleSheet.create({
       width: -2,
       height: 4,
     },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.05,
     shadowRadius: 3,
-    elevation: 5,
+    elevation: 4,
   },
   textinput: {
     marginTop: 10,
@@ -197,7 +199,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     borderBottomWidth: 1,
-    borderColor: "darkgray"
+    borderColor: "darkgrey",
+    fontSize: 17
   },
   text: {
     fontSize: 20,
@@ -219,7 +222,7 @@ const styles = StyleSheet.create({
       width: -2,
       height: 4,
     },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.05,
     shadowRadius: 3,
     elevation: 5,
   },

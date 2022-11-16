@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
   useWindowDimensions,
-  Button,
+  Button
 } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import {
@@ -218,12 +218,12 @@ function CreateLesson({ route }) {
               })}
           </View>
           <TouchableOpacity
-            style={[styles.saveButtonStyle, { marginTop: 20 }]}
+            style={[styles.saveButtonStyle, { marginTop: 20 , backgroundColor: "royalblue"}]}
             onPress={() => {
               pickDocument();
             }}
           >
-            <Text style={styles.textButtonStyle}>Upload your file</Text>
+            <Text style={[styles.textButtonStyle]}>Upload your file</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.saveButtonStyle, { marginBottom: 10 }]}
