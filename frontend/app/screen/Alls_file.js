@@ -108,10 +108,11 @@ function AllFile({ route }) {
           <View style={styles.mainMaterail}>
             {allFile.length != 0 &&
               allFile.map((value) => {
+                console.log(value)
                 if (props.value.d_id == value.d_id) {
                   return (
                     <Render_File_Upload
-                      key={value.d_id}
+                      key={value.s_id}
                       name={value.name}
                       path={value.path}
                       value={value}
@@ -131,8 +132,9 @@ function AllFile({ route }) {
       style={styles.container}
     >
       {descriptionLesson && descriptionLesson.map((value) => {
+        // console.log(value)
         return (
-          <LessonComponent key={value} title={value.data} value={value} />
+          <LessonComponent key={value.d_id} title={value.data} value={value} />
         );
       })}
     </ScrollView>

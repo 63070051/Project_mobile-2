@@ -21,6 +21,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TextInput } from "react-native-gesture-handler";
 import Path from "../../path";
 
+
+
 function Course(props) {
   const [allCourse, setAllCourse] = useState([]);
   const [user, setUser] = useState([]);
@@ -160,6 +162,7 @@ function Course(props) {
       .then((response) => {
         if (response.data == "success") {
           getUser();
+          getSubject();
           alert("Delete success");
         }
       })

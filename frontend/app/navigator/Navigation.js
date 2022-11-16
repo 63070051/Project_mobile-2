@@ -87,6 +87,7 @@ function CourseStack() {
         component={CourseCreate}
         options={{
           title: "Create Course",
+          headerBackTitleVisible: false,
         }}
       />
       <CourseNavigator.Screen
@@ -94,6 +95,7 @@ function CourseStack() {
         component={EditCourse}
         options={{
           title: "Edit Course",
+          headerBackTitleVisible: false,
         }}
       />
       <CourseNavigator.Screen
@@ -101,6 +103,7 @@ function CourseStack() {
         component={EditLesson}
         options={{
           title: "Edit Lesson",
+          headerBackTitleVisible: false,
         }}
       />
       <CourseNavigator.Screen
@@ -108,13 +111,15 @@ function CourseStack() {
         component={Assignment}
         options={{
           title: "Assignment",
+          headerBackTitleVisible: false,
         }}
       />
       <CourseNavigator.Screen
         name="createDescription"
         component={CreateDescription}
         options={{
-          title: "createDescription",
+          title: "Create Description",
+          headerBackTitleVisible: false,
         }}
       />
       <CourseNavigator.Screen
@@ -122,6 +127,7 @@ function CourseStack() {
         component={EditAssignment}
         options={{
           title: "Edit Assignment",
+          headerBackTitleVisible: false,
         }}
       />
       <CourseNavigator.Screen
@@ -129,6 +135,7 @@ function CourseStack() {
         component={EditYoutube}
         options={{
           title: "Edit Youtube",
+          headerBackTitleVisible: false,
         }}
       />
       <CourseNavigator.Screen
@@ -136,6 +143,7 @@ function CourseStack() {
         component={AllFile}
         options={{
           title: "All File",
+          headerBackTitleVisible: false,
         }}
       />
     </CourseNavigator.Navigator>

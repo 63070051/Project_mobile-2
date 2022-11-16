@@ -71,7 +71,7 @@ router.post(
     await conn.beginTransaction();
     try {
       const [s_file, field] = await conn.query(
-        "UPDATE s_file SET u_id = ?, h_id = ?, d_id = ?, path = ?, name = ?, duedate = CURRENT_TIMESTAMP() WHERE s_id = ?",
+        "UPDATE s_file SET u_id = ?, h_id = ?, d_id = ?, path = ?, name = ?, duedate = CURRENT_TIMESTAMP WHERE s_id = ?",
         [u_id, h_id, d_id, path, filename, s_id]
       );
       const [getfile, field1] = await conn.query(
@@ -124,7 +124,7 @@ router.post("/getAllFileStudent/lesson", async function (req, res, next) {
 router.get("/getSFile", async function (req, res, next) {
   try {
     const [getfile, field] = await pool.query(
-      "SELECT * FROM lesson RIGHT JOIN s_file ON lesson.h_id = s_file.h_id LEFT JOIN user ON user.user_id = lesson.u_id LEFT JOIN dataLesson ON dataLesson.d_id = s_file.d_id"
+      "SELECT * FROM lesson RIGHT JOIN s_file ON lesson.h_id = s_file.h_id LEFT JOIN user ON user.user_id = s_file.u_id LEFT JOIN dataLesson ON dataLesson.d_id = s_file.d_id"
     );
     res.json(getfile);
   } catch (error) {
