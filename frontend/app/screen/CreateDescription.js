@@ -75,7 +75,7 @@ function CreateDescription({ route }) {
 
   function RenderVideo(props) {
     const [playing, setPlaying] = useState(false);
-    console.log(props);
+    // console.log(props);
     const togglePlaying = () => {
       setPlaying((prev) => !prev);
     };

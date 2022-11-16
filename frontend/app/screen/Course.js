@@ -45,15 +45,6 @@ function Course(props) {
         console.log(err);
       });
     await axios
-      .get(`${Path}/getSubject`)
-      .then((response) => {
-        setAllCourse(response.data);
-        setBackUpCourse(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    await axios
       .post(`${Path}/getSubjectStudent`, { id: s_id })
       .then((response) => {
         let loopcourse = [];
@@ -67,69 +58,17 @@ function Course(props) {
       });
   };
 
-  useEffect(() => {
-    getUser();
-  }, []);
-
-  async function myCourse() {
-    let filter = allCourse.filter((value) => {
-      if (course.indexOf(value.course_id) > -1) {
-        return value;
-      }
-    });
-    setAllCourse(filter);
-  }
-
-  const confirmDel = (id) => {
-    return Alert.alert("Are your sure?", "Are you sure to Delete course?", [
-      {
-        text: "Yes",
-        onPress: async () => {
-          DeleteCourse(id);
-        },
-      },
-      {
-        text: "No",
-      },
-    ]);
-  };
-  async function AddCourse() {
-    if (secretkey == textKey) {
-      await axios
-        .post(`${Path}/enrollCourse`, {
-          id: user.user_id,
-          course_id: selectCourse,
-        })
-        .then((response) => {
-          if (response.data == "success") {
-            getUser();
-            setModalVisible(!modalVisible);
-            alert("Enroll success");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      alert("Secret key is wrong");
-    }
-  }
-  async function DeleteCourse(course_id) {
+  async function getSubject() {
     await axios
-      .post(`${Path}/DeleteCourse`, {
-        course_id: course_id,
-      })
+      .get(`${Path}/getSubject`)
       .then((response) => {
-        if (response.data == "success") {
-          getUser();
-          alert("Delete success");
-        }
+        setAllCourse(response.data);
+        setBackUpCourse(response.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }
-
   function RenderCrouse(props) {
     let img = "";
     if (props.img) {
@@ -212,6 +151,74 @@ function Course(props) {
         )}
       </View>
     );
+  }
+  async function DeleteCourse(course_id) {
+    await axios
+      .post(`${Path}/DeleteCourse`, {
+        course_id: course_id,
+      })
+      .then((response) => {
+        if (response.data == "success") {
+          getUser();
+          alert("Delete success");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  const confirmDel = (id) => {
+    return Alert.alert("Are your sure?", "Are you sure to Delete course?", [
+      {
+        text: "Yes",
+        onPress: async () => {
+          DeleteCourse(id);
+        },
+      },
+      {
+        text: "No",
+      },
+    ]);
+  };
+  useEffect(() => {
+    getUser();
+    getSubject();
+    const willFocusSubscription = props.navigation.addListener("focus", () => {
+      getSubject();
+    });
+
+    return willFocusSubscription;
+  }, []);
+
+  async function myCourse() {
+    let filter = allCourse.filter((value) => {
+      if (course.indexOf(value.course_id) > -1) {
+        return value;
+      }
+    });
+    setAllCourse(filter);
+  }
+
+  async function AddCourse() {
+    if (secretkey == textKey) {
+      await axios
+        .post(`${Path}/enrollCourse`, {
+          id: user.user_id,
+          course_id: selectCourse,
+        })
+        .then((response) => {
+          if (response.data == "success") {
+            getUser();
+            setModalVisible(!modalVisible);
+            alert("Enroll success");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      alert("Secret key is wrong");
+    }
   }
 
   return (
@@ -338,7 +345,6 @@ function Course(props) {
               }}
               editcourse={() => {
                 props.navigation.navigate("Editcourse", {
-                  route: props.navigation,
                   teacher: user.user_id,
                   value: value,
                 });

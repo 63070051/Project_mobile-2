@@ -7,6 +7,7 @@ import {
   ScrollView,
   TextInput,
   useWindowDimensions,
+  Linking
 } from "react-native";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -34,7 +35,7 @@ function AllFile({ route }) {
     getAllDescription();
     getAllFile();
   }, []);
-  console.log(descriptionLesson)
+  // console.log(descriptionLesson)
   async function getAllFile() {
     await axios
       .get(`${Path}/getSFile`)
@@ -79,7 +80,7 @@ function AllFile({ route }) {
         >
           <Text>{props.value.email}</Text>
           <AntDesign name="pdffile1" size={28} color="black" />
-          <Text style={{ marginLeft: 10 }}>{props.name}</Text>
+          <Text style={{ marginLeft: 2 }}>{props.name}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -110,7 +111,7 @@ function AllFile({ route }) {
                 if (props.value.d_id == value.d_id) {
                   return (
                     <Render_File_Upload
-                      key={value.f_id}
+                      key={value.d_id}
                       name={value.name}
                       path={value.path}
                       value={value}
@@ -129,9 +130,9 @@ function AllFile({ route }) {
       contentContainerStyle={{ alignItems: "center", paddingBottom: 30 }}
       style={styles.container}
     >
-      {descriptionLesson.map((value) => {
+      {descriptionLesson && descriptionLesson.map((value) => {
         return (
-          <LessonComponent key={value.d_id} title={value.data} value={value} />
+          <LessonComponent key={value} title={value.data} value={value} />
         );
       })}
     </ScrollView>
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFF8EA",
-    paddingHorizontal: 40,
+    paddingHorizontal: 20,
   },
   topMaterial: {
     flexDirection: "row",
@@ -155,6 +156,7 @@ const styles = StyleSheet.create({
   },
   mainMaterail: {
     padding: 10,
+    alignItems : "center"
   },
   material: {
     width: "100%",

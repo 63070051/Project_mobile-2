@@ -17,17 +17,6 @@ import { launchImageLibrary } from "react-native-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
 import Path from "../../path";
-const test = async () => {
-  try {
-    const value = await AsyncStorage.getItem("@login");
-    if (value !== null) {
-      // We have data!!
-      console.log(value);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 function Register(props) {
   const [email, setEmail] = React.useState("");
@@ -117,7 +106,7 @@ function Register(props) {
       quality: 1,
     });
 
-    console.log(result);
+    // console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);

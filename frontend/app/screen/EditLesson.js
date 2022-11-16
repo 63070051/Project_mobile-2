@@ -68,10 +68,7 @@ function EditLesson({ route }) {
           .then((response) => {
             if (response.data == "success") {
               alert("Update Lesson Success");
-              router.replace("courseinfo", {
-                course: course,
-                user: user,
-              });
+              router.goBack();
             }
           })
           .catch((err) => {
@@ -117,7 +114,7 @@ function EditLesson({ route }) {
       // send data to your server!
     }
   };
-  console.log(deleteDocument)
+  // console.log(deleteDocument)
   function File_Upload(props) {
     return (
       <View

@@ -63,6 +63,13 @@ router.post(
       let img_subject = req.file;
       let course_id = req.body.course_id;
       let path = img_subject.path.substring(6);
+
+      const [getOldImg, fields] = await conn.query(
+        "SELECT img from course WHERE course_id = ?",
+        [course_id]
+      );
+      fs.unlink(("./static" + getOldImg[0].img), err => console.log(err)); 
+
       const [course, field] = await conn.query(
         "UPDATE course SET teacher_id = ?, title = ?, subtitle = ?, img = ?, s_key = ? WHERE course_id = ?",
         [teacher_id, title, subtitle, path, key, course_id]

@@ -66,7 +66,7 @@ function EditCourse({ route }) {
         name: newImageUri.split("/").pop(),
       });
       await axios
-        .post(`${Path}/editSubject`, data, {
+        .post(`${Path}/editSubjectImg`, data, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -75,7 +75,7 @@ function EditCourse({ route }) {
           if (response.data == "success") {
             alert("Edit Success");
             {
-              router.replace("coursepage");
+              router.goBack();
             }
           }
         })
@@ -95,7 +95,7 @@ function EditCourse({ route }) {
           if (response.data == "success") {
             alert("Edit Success");
             {
-              router.replace("coursepage");
+              router.goBack();
             }
           }
         })
@@ -190,7 +190,7 @@ function EditCourse({ route }) {
             },
           ]}
         >
-          <Text style={{ color: "white" }}>Create Course</Text>
+          <Text style={{ color: "white" }}>Edit Course</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

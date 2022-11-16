@@ -30,32 +30,61 @@ function RenderCourseInfo(props) {
       <View style={styles.header}>
         <Text style={styles.text_header}>Course Info</Text>
       </View>
-      <View style={[styles.box]}>
+      <View style={[styles.box, { paddingVertical: 10 }]}>
         <View style={[styles.insidecourse]}>
           <View style={styles.boxofinfo}>
-            <MaterialCommunityIcons name="clipboard-text-multiple-outline" size={22} color="black" />
-            <View style={{marginLeft: 10}}>
+            <MaterialCommunityIcons
+              name="clipboard-text-multiple-outline"
+              size={22}
+              color="black"
+            />
+            <View style={{ marginLeft: 10 }}>
               <Text style={styles.headinfo}>Course name</Text>
               <Text style={styles.text}>{props.name}</Text>
             </View>
           </View>
           <View style={styles.boxofinfo}>
             <Feather name="file-text" size={22} color="black" />
-            <View style={{marginLeft: 10}}>
+            <View style={{ marginLeft: 10 }}>
               <Text style={styles.headinfo}>Course description</Text>
               <Text style={styles.text}>{props.description}</Text>
             </View>
           </View>
           <View style={[styles.boxofinfo]}>
             <FontAwesome name="user-o" size={22} color="black" />
-            <View style={{marginLeft: 10, flexDirection: "row", alignItems: "center"}}>
-              <Text style={[styles.headinfo, {marginBottom: 0}]}>Number of member</Text>
-              <Text style={{marginLeft: 10, marginTop: 1}}>{props.member}</Text>
+            <View
+              style={{
+                marginLeft: 10,
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Text style={[styles.headinfo, { marginBottom: 0 }]}>
+                Number of member
+              </Text>
+              <Text style={{ marginLeft: 10, marginTop: 1 }}>
+                {props.member}
+              </Text>
             </View>
           </View>
         </View>
       </View>
     </View>
+  );
+}
+
+function RenderVideo(props) {
+  const [playing, setPlaying] = useState(false);
+  const togglePlaying = () => {
+    setPlaying((prev) => !prev);
+  };
+  return (
+    <Youtube
+      height={200}
+      width={props.width}
+      play={playing}
+      videoId={props.videoId}
+    />
   );
 }
 
@@ -68,60 +97,6 @@ function CourseInfo({ route }) {
   const [listDocument, setListDocument] = useState([]);
   const [allDescription, setAllDescription] = useState([]);
   const [allLesson, setAllLesson] = useState([]);
-
-  function RenderVideo(props) {
-    const [playing, setPlaying] = useState(false);
-    const togglePlaying = () => {
-      setPlaying((prev) => !prev);
-    };
-    return (
-      <Youtube
-        height={200}
-        width={props.width}
-        play={playing}
-        videoId={props.videoId}
-      />
-    );
-  }
-
-  function RenderAssignment(props) {
-    return (
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          marginBottom: 10,
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            props.Assignment();
-          }}
-        >
-          <Text style={{ fontSize: 18, color: "#FF9A00", fontWeight: "bold" }}>
-            {props.text}
-          </Text>
-        </TouchableOpacity>
-        {user.role != "Student" && (
-          <TouchableOpacity
-            style={{ marginLeft: 12 }}
-            onPress={() => {
-              router.navigate("editassignment", { value: props.value });
-            }}
-          >
-            <Feather name="edit" size={22} color="black" />
-          </TouchableOpacity>
-        )}
-        {user.role != "Student" &&(
-          <TouchableOpacity style={{marginLeft : 8}} onPress={()=>{
-            confirmDelAssign(props.value.d_id);
-          }}>
-            <MaterialCommunityIcons name="delete" size={24} color="red" />
-          </TouchableOpacity>
-        )}
-      </View>
-    );
-  }
 
   function RenderCourseOverView(props) {
     let sendDocument = [];
@@ -164,7 +139,10 @@ function CourseInfo({ route }) {
             {user.role != "Student" && (
               <TouchableOpacity
                 onPress={() => {
-                  router.navigate("EditYoutube", { data: sendYoutube , h_id : props.value.h_id});
+                  router.navigate("EditYoutube", {
+                    data: sendYoutube,
+                    h_id: props.value.h_id,
+                  });
                 }}
               >
                 <MaterialCommunityIcons
@@ -176,9 +154,12 @@ function CourseInfo({ route }) {
             )}
             {user.role != "Student" && (
               <TouchableOpacity
-              style={{marginLeft : 7}}
+                style={{ marginLeft: 7 }}
                 onPress={() => {
-                  router.navigate("allfile", { course: course, h_id : props.value.h_id });
+                  router.navigate("allfile", {
+                    course: course,
+                    h_id: props.value.h_id,
+                  });
                 }}
               >
                 <MaterialIcons name="assignment" size={23} color="black" />
@@ -206,6 +187,7 @@ function CourseInfo({ route }) {
                       <RenderAssignment
                         key={value.d_id}
                         text={value.data}
+                        user={user}
                         Assignment={() => {
                           router.navigate("Assignment", {
                             user: user,
@@ -233,7 +215,16 @@ function CourseInfo({ route }) {
                 }}
               >
                 <FontAwesome name="book" size={20} color="white" />
-                <Text style={{ marginLeft: 8, fontSize: 15, fontWeight: "600", color: "white" }}>Material</Text>
+                <Text
+                  style={{
+                    marginLeft: 8,
+                    fontSize: 15,
+                    fontWeight: "600",
+                    color: "white",
+                  }}
+                >
+                  Material
+                </Text>
               </TouchableOpacity>
               {toggle && (
                 <View style={styles.mainMaterail}>
@@ -295,7 +286,47 @@ function CourseInfo({ route }) {
       </View>
     );
   }
-
+  function RenderAssignment(props) {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginBottom: 10,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            props.Assignment();
+          }}
+        >
+          <Text style={{ fontSize: 18, color: "#FF9A00", fontWeight: "bold" }}>
+            {props.text}
+          </Text>
+        </TouchableOpacity>
+        {props.user.role != "Student" && (
+          <TouchableOpacity
+            style={{ marginLeft: 12 }}
+            onPress={() => {
+              router.navigate("editassignment", { value: props.value });
+            }}
+          >
+            <Feather name="edit" size={22} color="black" />
+          </TouchableOpacity>
+        )}
+        {props.user.role != "Student" && (
+          <TouchableOpacity
+            style={{ marginLeft: 8 }}
+            onPress={() => {
+              confirmDelAssign(props.value.d_id);
+            }}
+          >
+            <MaterialCommunityIcons name="delete" size={24} color="red" />
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  }
   function Render_File_Upload(props) {
     return (
       <TouchableOpacity
@@ -317,7 +348,7 @@ function CourseInfo({ route }) {
           }}
         >
           <AntDesign name="pdffile1" size={24} color="black" />
-          <Text style={{ marginLeft: 10 , fontSize: 14}}>{props.name}</Text>
+          <Text style={{ marginLeft: 10, fontSize: 14 }}>{props.name}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -465,17 +496,17 @@ function CourseInfo({ route }) {
         description={course.subtitle}
         member={member}
       />
+      {user.role != "Student" && (
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "80%",
+            marginTop: 20,
+          }}
+        >
+          <Text style={{ fontSize: 24, fontWeight: "500" }}>Create Lesson</Text>
 
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          width: "80%",
-          marginTop: 20,
-        }}
-      >
-        <Text style={{ fontSize: 24, fontWeight: "500" }}>Create Lesson</Text>
-        {user.role != "Student" && (
           <TouchableOpacity
             onPress={() => {
               router.navigate("createLesson", {
@@ -486,8 +517,8 @@ function CourseInfo({ route }) {
           >
             <Text style={{ fontSize: 24, fontWeight: "500" }}>+</Text>
           </TouchableOpacity>
-        )}
-      </View>
+        </View>
+      )}
       {allLesson.map((value) => {
         return (
           <RenderCourseOverView
@@ -556,7 +587,7 @@ const styles = StyleSheet.create({
   inside: {
     width: "100%",
     // alignItems: "center",
-    padding: 10
+    padding: 10,
   },
   text: {
     marginBottom: 15,
@@ -670,17 +701,17 @@ const styles = StyleSheet.create({
   },
   mainMaterail: {
     padding: 10,
-    width: "100%"
+    width: "100%",
   },
   headinfo: {
     fontSize: 16,
     marginBottom: 5,
-    fontWeight: "600"
+    fontWeight: "600",
   },
   text_header: {
     fontSize: 18,
     fontWeight: "800",
-    color: "white"
+    color: "white",
   },
   boxofinfo: {
     flexDirection: "row",
@@ -691,7 +722,7 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     paddingLeft: 5,
     paddingVertical: 10,
-    paddingRight: 25
+    paddingRight: 25,
   },
 });
 
