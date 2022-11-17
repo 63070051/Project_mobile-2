@@ -37,9 +37,7 @@ function Assignment({ route }) {
         c_id: course.course_id,
       })
       .then((response) => {
-        setDueDate(
-          moment(response.data.date).format("D MMMM YYYY, h:mm:ss a")
-        );
+        setDueDate(moment(response.data.date).format("D MMMM YYYY, h:mm:ss a"));
       })
       .catch((err) => {
         console.log(err);

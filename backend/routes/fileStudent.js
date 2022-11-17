@@ -39,7 +39,7 @@ router.post(
     await conn.beginTransaction();
     try {
       const [s_file, field] = await conn.query(
-        "INSERT INTO s_file(u_id, h_id, d_id, path, name, duedate) VALUES(?, ?, ?, ?, ?, CURRENT_TIMESTAMP())",
+        "INSERT INTO s_file(u_id, h_id, d_id, path, name, date) VALUES(?, ?, ?, ?, ?, CURRENT_TIMESTAMP())",
         [u_id, h_id, d_id, path, filename]
       );
       const [getFile, fields] = await conn.query(
@@ -71,7 +71,7 @@ router.post(
     await conn.beginTransaction();
     try {
       const [s_file, field] = await conn.query(
-        "UPDATE s_file SET u_id = ?, h_id = ?, d_id = ?, path = ?, name = ?, duedate = CURRENT_TIMESTAMP WHERE s_id = ?",
+        "UPDATE s_file SET u_id = ?, h_id = ?, d_id = ?, path = ?, name = ?, date = CURRENT_TIMESTAMP WHERE s_id = ?",
         [u_id, h_id, d_id, path, filename, s_id]
       );
       const [getfile, field1] = await conn.query(
