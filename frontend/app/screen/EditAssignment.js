@@ -71,7 +71,7 @@ function EditAssignment({route}){
                 </Text>
             </View>
             <TouchableOpacity onPress={showDatePicker} style={styles.button}>
-                <Text style={{color: "white"}}>Select Date</Text>
+                <Text style={{color: "white", fontSize: 16, fontWeight: "600"}}>Select Due Date</Text>
             </TouchableOpacity>
             <DateTimePickerModal
                 isVisible={isDatePickerVisible}
@@ -82,7 +82,7 @@ function EditAssignment({route}){
             <TouchableOpacity onPress={() =>{
                 editAssign();
             }} style={[styles.button, {backgroundColor: "royalblue"}]}>
-                <Text style={{color: "white"}}>Update Assignment</Text>
+                <Text style={{color: "white", fontSize: 16, fontWeight: "600"}}>Update Assignment</Text>
             </TouchableOpacity>
         </ScrollView>
     );

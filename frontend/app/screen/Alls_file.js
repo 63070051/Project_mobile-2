@@ -65,7 +65,7 @@ function AllFile({ route }) {
           Linking.openURL(`${Path}${props.path}`);
         }}
         style={{
-          width: "90%",
+          width: "100%",
           padding: 13,
           borderColor: "darkgrey",
           flexDirection: "row",
@@ -76,10 +76,11 @@ function AllFile({ route }) {
           style={{
             flexDirection: "row",
             alignItems: "center",
+            justifyContent: "flex-start"
           }}
         >
           <Text>{props.value.email}</Text>
-          <AntDesign name="pdffile1" size={28} color="black" />
+          <AntDesign style={{marginLeft: 10}} name="pdffile1" size={24} color="black" />
           <Text style={{ marginLeft: 2 }}>{props.name}</Text>
         </View>
       </TouchableOpacity>
@@ -158,7 +159,8 @@ const styles = StyleSheet.create({
   },
   mainMaterail: {
     padding: 10,
-    alignItems : "center"
+    alignItems : "center",
+    width: "100%"
   },
   material: {
     width: "100%",
