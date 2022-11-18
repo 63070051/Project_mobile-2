@@ -67,8 +67,7 @@ router.post("/checksyntax", async function (req, res, next) {
   });
   if (
     leftcurlybracket != rightcurlybracket ||
-    leftparenthesis != rigthparenthesis ||
-    checksemicolon != semicolon
+    leftparenthesis != rigthparenthesis
   ) {
     check = "error";
   }
