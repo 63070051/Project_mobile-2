@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  getFocusedRouteNameFromRoute,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
@@ -200,17 +203,27 @@ function TabNavigater() {
       <Tab.Screen
         name="Chat"
         component={ChatStack}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => {
-            return (
-              <Ionicons
-                name="chatbubble-ellipses-outline"
-                size={size}
-                color="black"
-              />
-            );
-          },
+        options={({ route }) => {
+          const routeName = getFocusedRouteNameFromRoute(route);
+          let hide = false
+          if(routeName == "chatinfo"){
+            hide = true;
+          }
+          return (
+            ({
+              tabBarStyle: { display: hide ? "none" : "flex"},
+              headerShown: false,
+              tabBarIcon: ({ color, size }) => {
+                return (
+                  <Ionicons
+                    name="chatbubble-ellipses-outline"
+                    size={size}
+                    color="black"
+                  />
+                );
+              },
+            })
+          )
         }}
       />
       {role == "Admin" && (

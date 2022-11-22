@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     justifyContent: "flex-end",
-    marginRight: 250,
+    // marginRight: 250,
   },
   box: {
     backgroundColor: "#fff",
@@ -441,6 +441,8 @@ const styles = StyleSheet.create({
     marginTop: 50,
     paddingHorizontal: 20,
     flexDirection: "row",
+    justifyContent : "space-between",
+    width : "100%"
   },
   plus: {
     marginTop: 5,

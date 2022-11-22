@@ -12,7 +12,15 @@ import {
 } from "react-native";
 import * as React from "react";
 import axios from "axios";
-import { AntDesign, Zocial, Ionicons, MaterialIcon, FontAwesome, MaterialIcons, MaterialCommunityIcons  } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Zocial,
+  Ionicons,
+  MaterialIcon,
+  FontAwesome,
+  MaterialIcons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { launchImageLibrary } from "react-native-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
@@ -49,28 +57,31 @@ function Register(props) {
       alert("Secret key is not true");
     } else {
       const data = new FormData();
-      const newImageUri =  "file:///" + objectImg.uri.split("file:/").join("");
+      const newImageUri = "file:///" + objectImg.uri.split("file:/").join("");
       data.append("email", email);
       data.append("password", password);
       data.append("profile", {
-        uri : newImageUri,
+        uri: newImageUri,
         type: "image",
         name: newImageUri.split("/").pop(),
       });
-      axios.post(`${Path}/register/account`, data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) =>{
-        if(response.data == "success"){
-          alert("Register Success");
-          {props.navigation.replace("login")}
-        }
-      })
-      .catch((err) =>{
-        console.log(err)
-      })
+      axios
+        .post(`${Path}/register/account`, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          if (response.data == "success") {
+            alert("Register Success");
+            {
+              props.navigation.replace("login");
+            }
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -118,38 +129,52 @@ function Register(props) {
       contentContainerStyle={{ paddingBottom: 30 }}
       style={styles.container}
     >
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null}>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null}>
         <Image
           source={require("../assets/newLogo.png")}
           style={styles.logo}
         ></Image>
         <View style={styles.box}>
           {!image && profile_user_not_upload}
+          {image && (
+            <View style={styles.inputcontainer}>
+              <Image
+                source={{ uri: image }}
+                style={{ width: 150, height: 150, borderRadius: 999 }}
+              />
+            </View>
+          )}
           <View style={styles.inputcontainer}>
-            {image && (
-              <>
-                <Image
-                  source={{ uri: image }}
-                  style={{ width: 150, height: 150, borderRadius: 999 }}
-                />
-              </>
-            )}
             <TouchableOpacity
               onPress={pickImage}
-              style={[styles.button, { backgroundColor: "royalblue" }, {marginBottom: 20}]}
+              style={[
+                styles.button,
+                { backgroundColor: "royalblue" },
+                { marginBottom: 20 },
+              ]}
             >
-              <Text style={{ color: "white", fontSize: 15  }}>Upload Photo</Text>
+              <Text style={{ color: "white", fontSize: 15 }}>Upload Photo</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => setImage(null)}
               style={[styles.button, { backgroundColor: "darkgray" }]}
             >
-              <Text style={{ color: "white", fontSize: 15  }}>Remove Photo</Text>
+              <Text style={{ color: "white", fontSize: 15 }}>Remove Photo</Text>
             </TouchableOpacity>
           </View>
-          <View style={[styles.inputcontainer, { flexDirection: "row" , justifyContent : "space-between"}]}>
+          <View
+            style={[
+              styles.inputcontainer,
+              { flexDirection: "row", justifyContent: "space-between" },
+            ]}
+          >
             {/* <Zocial name="email" size={24} color="black" /> */}
-            <FontAwesome style={styles.user} name="user-o" size={24} color="gray" />
+            <FontAwesome
+              style={styles.user}
+              name="user-o"
+              size={24}
+              color="gray"
+            />
             <TextInput
               style={[styles.input, { width: "65%" }]}
               placeholder="Email"
@@ -161,16 +186,21 @@ function Register(props) {
               }}
             />
             <TouchableOpacity
-              style={[styles.button_send, { width: "30%"}]}
+              style={[styles.button_send, { width: "30%" }]}
               onPress={() => {
                 sendSecretCode();
               }}
             >
-              <Text style={{ color: "white", fontSize: 15  }}>Send</Text>
+              <Text style={{ color: "white", fontSize: 15 }}>Send</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.inputcontainer}>
-          <Ionicons style={styles.key} name="key-outline" size={24} color="gray" />
+            <Ionicons
+              style={styles.key}
+              name="key-outline"
+              size={24}
+              color="gray"
+            />
             <TextInput
               style={styles.input}
               placeholder="Secret Key"
@@ -182,7 +212,12 @@ function Register(props) {
             />
           </View>
           <View style={styles.inputcontainer}>
-            <MaterialIcons style={styles.password} name="lock-outline" size={24} color="gray" />
+            <MaterialIcons
+              style={styles.password}
+              name="lock-outline"
+              size={24}
+              color="gray"
+            />
             <TextInput
               style={styles.input}
               // autoCapitalize='none'
@@ -194,38 +229,61 @@ function Register(props) {
                 setPassword(pass);
               }}
             />
-            <TouchableOpacity style={styles.secret} onPress={() => {setSec(!sec)}}>
+            <TouchableOpacity
+              style={styles.secret}
+              onPress={() => {
+                setSec(!sec);
+              }}
+            >
               {!sec && <Ionicons name="eye-outline" size={24} color="gray" />}
-              {sec && <Ionicons name="eye-off-outline" size={24} color="gray" />}
+              {sec && (
+                <Ionicons name="eye-off-outline" size={24} color="gray" />
+              )}
             </TouchableOpacity>
           </View>
           <View style={styles.inputcontainer}>
-          <MaterialCommunityIcons style={styles.password} name="lock-plus-outline" size={24} color="gray" />
+            <MaterialCommunityIcons
+              style={styles.password}
+              name="lock-plus-outline"
+              size={24}
+              color="gray"
+            />
             <TextInput
               style={styles.input}
               placeholder="Confirm Password"
               placeholderTextColor={"darkgrey"}
               secureTextEntry={secCon}
-              autoCapitalize='none'
+              autoCapitalize="none"
               autoCorrect={false}
               onChangeText={(pass) => {
                 setConfirmpass(pass);
               }}
             />
-            <TouchableOpacity style={styles.secret} onPress={() => {setSeccon(!secCon)}}>
-              {!secCon && <Ionicons name="eye-outline" size={24} color="gray" />}
-              {secCon && <Ionicons name="eye-off-outline" size={24} color="gray" />}
+            <TouchableOpacity
+              style={styles.secret}
+              onPress={() => {
+                setSeccon(!secCon);
+              }}
+            >
+              {!secCon && (
+                <Ionicons name="eye-outline" size={24} color="gray" />
+              )}
+              {secCon && (
+                <Ionicons name="eye-off-outline" size={24} color="gray" />
+              )}
             </TouchableOpacity>
             {checkpass ? (
-              <Text style={{ color: "red" , marginTop : 5}}>Password not match</Text>
+              <Text style={{ color: "red", marginTop: 5 }}>
+                Password not match
+              </Text>
             ) : null}
           </View>
-          <View style={[styles.inputcontainer, {marginBottom: 0}]}>
+          <View style={[styles.inputcontainer, { marginBottom: 0 }]}>
             <TouchableOpacity style={styles.button} onPress={checkHandle}>
               <Text style={{ color: "white", fontSize: 15 }}>Sign up</Text>
             </TouchableOpacity>
           </View>
-        </View> 
+        </View>
       </KeyboardAvoidingView>
     </ScrollView>
   );
@@ -234,7 +292,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFF8EA",
     paddingTop: 30,
-    paddingHorizontal : 25,
+    paddingHorizontal: 25,
     flex: 1,
   },
   inputcontainer: {
@@ -250,7 +308,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     fontSize: 18,
     paddingLeft: 35,
-    color: "gray"
+    color: "gray",
   },
   button: {
     width: "100%",
@@ -305,25 +363,25 @@ const styles = StyleSheet.create({
   secret: {
     position: "absolute",
     right: 6,
-    top: 8
+    top: 8,
   },
-  user:{
+  user: {
     position: "absolute",
     left: 9,
     top: 11,
-    zIndex: 5
+    zIndex: 5,
   },
   password: {
     position: "absolute",
     left: 6,
     top: 8,
-    zIndex: 2
+    zIndex: 2,
   },
-  key:{
+  key: {
     position: "absolute",
     left: 6,
     top: 8,
-    zIndex: 2
-  }
+    zIndex: 2,
+  },
 });
 export default Register;

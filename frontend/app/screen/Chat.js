@@ -33,7 +33,7 @@ function Chat(props) {
   const [backUp, setBackUp] = useState([]);
   const Role = ["All", "Student", "Teacher", "Admin"];
   const [text, setText] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("All");
 
   function Search(text) {
     const filteredData = backUp.filter(
