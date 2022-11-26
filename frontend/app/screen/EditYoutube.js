@@ -102,6 +102,7 @@ function EditYoutube({ route }) {
       .then((response) => {
         if (response.data == "success") {
           alert("Update Success");
+          router.goBack();
         }
       })
       .catch((err) => {
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
   },
   save: {
     position: "absolute",
-    right: 12,
+    right: 50,
     top: 10,
     zIndex: 2,
   },
